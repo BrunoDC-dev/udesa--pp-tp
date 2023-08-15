@@ -21,11 +21,3 @@ capacityL (Lin city1 city2 quailty) = capacityQ quailty
 
 delayL :: Link -> Float     -- la demora que sufre una conexion en este canal
 delayL (Lin city1 city2 quality) = delayQ quality
-
-
-testCity = newC "testCity" (newP 2 2)
-testCity2 = newC "testCity2" (newP 3 3)
-
-testQuality1 = newQ "A" 10 0.1
-testQuality2 = newQ "B" 20 0.2
-testlink= newL testCity testCity2 testQuality1
