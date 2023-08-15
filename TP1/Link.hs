@@ -1,6 +1,6 @@
 --Link.hs
 
-module Link ( Link, newL, linksL, connectsL, capacityL, delayL ) where
+module Link ( Link, newL, linksL, connectsL, capacityL, delayL ,testlink, testCity, testCity2) where
 import City
 import Quality
 import Point
