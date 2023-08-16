@@ -1,8 +1,6 @@
 --Quality.hs
 module Quality ( Quality, newQ, capacityQ, delayQ )
    where
-import Distribution.Simple.Test (test)
-
 data Quality = Qua String Int Float deriving (Eq, Show)
 
 newQ :: String -> Int -> Float -> Quality
