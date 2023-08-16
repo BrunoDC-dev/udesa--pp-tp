@@ -7,3 +7,9 @@ Finalmente establece canales que conectan distintas ciudades ocupando una unidad
 capacidad por cada enlace recorrido.
 
 Para sostener este modelo se cuenta con las siguientes entidades:
+
+
+
+cosas a chequear:
+    Fucion Linkr no permitir que se linken ciudades que no estan en la region\
+    verifivar caso negativo pathr

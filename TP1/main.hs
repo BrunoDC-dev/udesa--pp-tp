@@ -4,6 +4,9 @@ import  Tunel
 --import  Region
 import  Point
 import Quality
+import  Region
+import Distribution.Simple.Test (test)
+import Data.Array (array)
 
 
 testCity = newC "testCity" (newP 2 2)
@@ -22,3 +25,23 @@ testlink4= newL testCity3 testCity5 testQuality2
 
 testTunel = newT [testlink,testlink2]
 testTunel2 = newT [testlink3,testlink4]
+
+testRegion = newR 
+
+arrayCity = [testCity,testCity2,testCity3,testCity4,testCity5]
+arrayLink = [testlink,testlink2,testlink3,testlink4]
+arrayTunel = [testTunel,testTunel2] 
+
+addArrayCity :: Region -> [City] -> Region
+addArrayCity region [] = region
+addArrayCity region (x:xs) =  addArrayCity (foundR region x) xs
+
+adLink :: Region -> [Link] -> Region
+adLink region [] = region
+adLink region (x:xs) = adLink (foundL region x) xs
+
+adTunel :: Region -> [Tunel] -> Region
+adTunel region [] = region
+adTunel region (x:xs) = adTunel (foundT region x) xs
+
+
