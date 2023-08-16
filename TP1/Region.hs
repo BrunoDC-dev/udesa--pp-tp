@@ -3,7 +3,7 @@
 
 module Region ( Region, newR, foundR, linkR, --tunelR
 pathR, linksForR, connectedR, linkedR, --delayR, availableCapacityForR, usedCapacityForR
-  )
+foundL, foundT)
    where
 import City
 import Link
@@ -50,3 +50,14 @@ linkedR (Reg cities (link:rest) tunels) city1 city2 = linksL city1 city2 link ||
 
 
 --availableCapacityForR :: Region -> City -> City -> Int -- indica la capacidad disponible entre dos ciudades
+
+
+
+-------------------Funcioines Propias---------------------
+
+
+foundL :: Region -> Link -> Region
+foundL (Reg cities links tunels) link = Reg cities (link:links) tunels
+
+foundT :: Region -> Tunel -> Region
+foundT (Reg cities links tunels) tunel = Reg cities links ( tunel:tunels)
