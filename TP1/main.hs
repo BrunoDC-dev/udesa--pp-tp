@@ -4,6 +4,7 @@ import  Tunel
 --import  Region
 import  Point
 import Quality
+import  Region
 
 
 testCity = newC "testCity" (newP 2 2)
@@ -22,3 +23,8 @@ testlink4= newL testCity3 testCity5 testQuality2
 
 testTunel = newT [testlink,testlink2]
 testTunel2 = newT [testlink3,testlink4]
+
+testRegion = newR 
+
+
+
