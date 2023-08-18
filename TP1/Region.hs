@@ -61,3 +61,10 @@ foundL (Reg cities links tunels) link = Reg cities (link:links) tunels
 
 foundT :: Region -> Tunel -> Region
 foundT (Reg cities links tunels) tunel = Reg cities links ( tunel:tunels)
+
+linkPathCheck :: [City] -> [Link] -> Bool
+linkPathCheck [] _ = False
+linkPathCheck _ [] = False
+linkPathCheck (x:xs) (y:ys) = if connectsL x y
+                              then True 
+                              else linkPathCheck (x:xs) ys
