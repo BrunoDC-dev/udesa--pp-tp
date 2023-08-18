@@ -1,12 +1,10 @@
 --Region.hs
 
 
-module Region ( Region, newR, foundR, linkR, --tunelR
-pathR, linksForR, connectedR, linkedR, --delayR, availableCapacityForR, usedCapacityForR
-foundL, foundT)
+module Region ( Region, newR, foundR, linkR, tunelR, connectedR,linkedR, delayR, availableCapacityForR,foundL, foundT)
    where
-import City
-import Link
+import City 
+import Link 
 import Tunel
 import Quality
 
@@ -18,41 +16,47 @@ foundR :: Region -> City -> Region -- agrega una nueva ciudad a la región
 foundR (Reg cities links tunels) city = Reg (city:cities) links tunels
 
 linkR :: Region -> City -> City -> Quality -> Region -- enlaza dos ciudades de la región con un enlace de la calidad indicada
-linkR (Reg cities links tunels) city1 city2 quality = Reg cities (newL city1 city2 quality:links) tunels
+linkR (Reg cities links tunnels) city1 city2 quality =
+  let newLink = newL city1 city2 quality
+  in Reg cities (newLink : links) tunnels
 
-pathR :: Region -> City -> City -> [City] -- indica el camino entre dos ciudades de la región
-pathR (Reg cities links tunels) city1 city2 = if connectedR (Reg cities links tunels) city1 city2 then [city1,city2] else pathR (Reg cities links tunels) city1 city2
+tunelR :: Region -> [City] -> Region
+tunelR (Reg cities links tunnels) tunnelCities =
+  let linksInTunnel = findLinksInTunnel tunnelCities links
+      newTunnel = newT linksInTunnel
+  in Reg cities links (newTunnel : tunnels)
 
-linksForR :: Region -> City -> [Link] -- indica los enlaces de la región que parten desde la ciudad indicada
-linksForR (Reg cities [] tunels) city = []
-linksForR (Reg cities (link:rest) tunels) city = if connectsL city link
-   then link:linksForR (Reg cities rest tunels) city else linksForR (Reg cities rest tunels) city
+findLinksInTunnel :: [City] -> [Link] -> [Link]
+findLinksInTunnel _ [] = []
+findLinksInTunnel tunnelCities (link@(Lin city1 city2 _):rest)
+  | all (`elem` [city1, city2]) tunnelCities = link : findLinksInTunnel tunnelCities rest
+  | otherwise = findLinksInTunnel tunnelCities rest
 
---tunelR :: Region -> [ City ] -> Region -- genera una comunicación entre dos ciudades distintas de la región
+connectedR :: Region -> City -> City -> Bool
+connectedR (Reg _ _ tunnels) city1 city2 = any (\tunnel -> connectsT city1 city2 tunnel) tunnels
 
+linkedR :: Region -> City -> City -> Bool
+linkedR (Reg _ links _) city1 city2 = any (\link -> linksL city1 city2 link) links
 
+delayR :: Region -> City -> City -> Float
+delayR region@(Reg _ _ tunnels) city1 city2
+  | connectedR region city1 city2 = delayT (findTunnel city1 city2 tunnels)
+  | otherwise = 0.0
 
--- verificar que esten enlazados
+findTunnel :: City -> City -> [Tunel] -> Tunel
+findTunnel city1 city2 (tunnel@(Tun links):rest)
+  | connectsT city1 city2 tunnel = tunnel
+  | otherwise = findTunnel city1 city2 rest
 
+availableCapacityForR :: Region -> City -> City -> Int
+availableCapacityForR region@(Reg _ _ tunnels) city1 city2
+  | connectedR region city1 city2 = minimum (map (\tunnel -> availableCapacityInTunnel tunnel) relevantTunnels)
+  | otherwise = 0
+  where
+    relevantTunnels = filter (\tunnel -> connectsT city1 city2 tunnel) tunnels
 
-
-
-connectedR :: Region -> City -> City -> Bool -- indica si estas dos ciudades estan conectadas por un tunel
-connectedR (Reg cities links []) city1 city2 = False
-connectedR (Reg cities links (tunel:rest)) city1 city2 = connectsT city1 city2  tunel|| connectedR (Reg cities links rest) city1 city2
-
-linkedR :: Region -> City -> City -> Bool -- indica si estas dos ciudades estan enlazadas
-linkedR (Reg cities [] tunels) city1 city2 = False
-linkedR (Reg cities (link:rest) tunels) city1 city2 = linksL city1 city2 link || linkedR (Reg cities rest tunels) city1 city2
-
----Tunnnell
---delayR :: Region -> City -> City -> Float -- dadas dos ciudades conectadas, indica la demora
-
-
---availableCapacityForR :: Region -> City -> City -> Int -- indica la capacidad disponible entre dos ciudades
-
-
-
+availableCapacityInTunnel :: Tunel -> Int
+availableCapacityInTunnel (Tun links) = minimum (map capacityL links)
 -------------------Funcioines Propias---------------------
 
 
@@ -68,3 +72,6 @@ linkPathCheck _ [] = False
 linkPathCheck (x:xs) (y:ys) = if connectsL x y
                               then True 
                               else linkPathCheck (x:xs) ys
+
+sameRegion :: Region -> City -> City -> Bool
+sameRegion (Reg cities _ _) city1 city2 = elem city1 cities && elem city2 cities
