@@ -5,9 +5,6 @@ import  Tunel
 import  Point
 import Quality
 import  Region
-import Distribution.Simple.Test (test)
-import Data.Array (array)
-
 
 testCity = newC "testCity" (newP 2 2)
 testCity2 = newC "testCity2" (newP 3 3)

@@ -1,5 +1,5 @@
 --Tunel.hs
-module Tunel ( Tunel, newT, connectsT, usesT, delayT )
+module Tunel ( Tunel(Tun), newT, connectsT, usesT, delayT )
    where
 import Link
 import City
@@ -11,15 +11,11 @@ newT :: [Link] -> Tunel
 newT = Tun
 
 connectsT :: City -> City -> Tunel -> Bool
-connectsT city1 city2 (Tun []) = False
-connectsT city1 city2 (Tun (link:rest)) =
-  linksL city1 city2 link || connectsT city1 city2 (Tun rest)
+connectsT city1 city2 (Tun links)= any (\link -> linksL city1 city2 link) links -- indica si estas dos ciudades distintas estan conectadas mediante este tunel
 
 usesT :: Link -> Tunel -> Bool  -- indica si este tunel atraviesa ese link
-usesT link (Tun [] ) = False
-usesT link (Tun (link2:rest)) = link == link2 || usesT link (Tun rest)  
+usesT link (Tun links) = link `elem` links  
 
 
 delayT :: Tunel -> Float -- la demora que sufre una conexion en este tunel
-delayT (Tun [] ) = 0
-delayT (Tun (link:rest)) = delayL link + delayT (Tun rest)
+delayT (Tun links) = sum (map delayL links) -- sumo todas las demoras de los links que componen el tunel
