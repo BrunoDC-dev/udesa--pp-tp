@@ -2,7 +2,7 @@
 module City ( City, newC, nameC, distanceC ) where
 import Point
 
-data City = Cit String Point deriving (Eq, Show)
+data City = Cit String Point deriving (Eq, Show, Ord)
 
 newC :: String -> Point -> City
 newC name point = Cit name point
