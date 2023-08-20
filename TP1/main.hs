@@ -15,18 +15,18 @@ testCity5 = newC "testCity5" (newP 6 6)
 testQuality1 = newQ "A" 10 0.1
 testQuality2 = newQ "B" 20 0.2
 
-testlink= newL testCity testCity2 testQuality1
+testlink= newL testCity2 testCity testQuality1
 testlink2= newL testCity testCity4 testQuality2
 testlink3= newL testCity2 testCity3 testQuality1
 testlink4= newL testCity3 testCity5 testQuality2
 
-testTunel = newT [testlink,testlink2]
+testTunel = newT [testlink,testlink2, testlink4,testlink3]
 testTunel2 = newT [testlink3,testlink4]
 
 testRegion = newR 
 
-arrayCity = [testCity,testCity2,testCity3,testCity4,testCity5]
-arrayLink = [testlink,testlink2,testlink3,testlink4]
+arrayCity = [testCity,testCity2,testCity4]
+arrayLink = [testlink3,testlink,testlink4,testlink2]
 arrayTunel = [testTunel,testTunel2] 
 
 addArrayCity :: Region -> [City] -> Region
