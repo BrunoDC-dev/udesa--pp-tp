@@ -3,7 +3,7 @@
 
 module Region ( Region, newR, foundR, linkR, tunelR, connectedR,linkedR, 
 delayR, availableCapacityForR,foundL, foundT, constructorTunel, findPathLinks,
-linksdeCiudad,todasLasPosibilidades)
+linksdeCiudad,findShortestPath)
    where
 import City 
 import Link 
@@ -11,7 +11,11 @@ import Tunel
 import Quality
 import GHC.Exts.Heap (GenClosure(link))
 
-import Data.Maybe
+import Data.List (sortOn)
+import Data.Maybe (listToMaybe)
+import Data.Function (on)
+import Data.Map (Map)
+import qualified Data.Map as Map
 data Region = Reg [City] [Link] [Tunel] deriving (Eq, Show)
 newR :: Region
 newR = Reg [] [] []
@@ -102,8 +106,47 @@ linksdeCiudad :: [Link] -> City -> [City] -> [Link]
 linksdeCiudad links city excludedCities =
     filter (\(Lin c1 c2 _) -> (c1 == city || c2 == city) && not (c1 `elem` excludedCities) && not (c2 `elem` excludedCities)) links
 
+----- bread first search siiiiiiiiiiiiiiiiiiiii
 
-todasLasPosibilidades :: [Link] ->[City] ->City -> [[Link]]
-todasLasPosibilidades links cities city = 
-  let linksresultado = linksdeCiudad links city cities
-  in map (\link -> [link]) linksresultado 
+
+
+type Graph = Map City [Link]
+
+bfs :: Graph -> City -> City -> Maybe [Link]
+bfs graph startCity endCity = bfs' [(startCity, [])] Map.empty
+  where
+    bfs' :: [(City, [Link])] -> Map City Bool -> Maybe [Link]
+    bfs' [] _ = Nothing
+    bfs' ((city, path):rest) visited
+      | city == endCity = Just (reverse path)
+      | otherwise =
+          case Map.lookup city visited of
+            Just _ -> bfs' rest visited
+            Nothing -> bfs' (rest ++ neighbors) (Map.insert city True visited)
+      where
+        neighbors = case Map.lookup city graph of
+                      Just links -> [(toCity link, link:path) | link <- links]
+                      Nothing -> []
+
+        toCity (Lin _ c2 _) = c2
+
+shortestPath :: Graph -> City -> City -> Maybe [Link]
+shortestPath graph startCity endCity = bfs graph startCity endCity
+
+findShortestPath :: [Link] -> City -> City -> Maybe [Link]
+findShortestPath links startCity endCity = shortestPath graph startCity endCity
+  where
+    graph = buildGraph links
+
+buildGraph :: [Link] -> Graph
+buildGraph links = foldr addLinks Map.empty links
+  where
+    addLinks (Lin city1 city2 quality) graph =
+      let link1 = Lin city1 city2 quality
+          link2 = Lin city2 city1 quality
+          graph' = Map.insertWith (++) city1 [link1] graph
+      in Map.insertWith (++) city2 [link2] graph'
+
+toCity :: Link -> City
+toCity (Lin _ city _) = city
+
