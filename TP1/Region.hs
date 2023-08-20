@@ -3,7 +3,7 @@
 
 module Region ( Region, newR, foundR, linkR, tunelR, connectedR,linkedR, 
 delayR, availableCapacityForR,foundL, foundT, constructorTunel, findPathLinks,
-linksdeCiudad,)
+linksdeCiudad,todasLasPosibilidades)
    where
 import City 
 import Link 
@@ -101,3 +101,9 @@ findPath (Lin cityLink1 cityLink2 linkName : rest) city1 city2 currentPath
 linksdeCiudad :: [Link] -> City -> [City] -> [Link]
 linksdeCiudad links city excludedCities =
     filter (\(Lin c1 c2 _) -> (c1 == city || c2 == city) && not (c1 `elem` excludedCities) && not (c2 `elem` excludedCities)) links
+
+
+todasLasPosibilidades :: [Link] ->[City] ->City -> [[Link]]
+todasLasPosibilidades links cities city = 
+  let linksresultado = linksdeCiudad links city cities
+  in map (\link -> [link]) linksresultado 
