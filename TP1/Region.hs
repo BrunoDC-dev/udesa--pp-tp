@@ -56,14 +56,20 @@ delayR region@(Reg _ _ tunnels) city1 city2
 
 
 availableCapacityForR :: Region -> City -> City -> Int
-availableCapacityForR region@(Reg _ _ tunnels) city1 city2
-  | connectedR region city1 city2 = minimum (map (\tunnel -> availableCapacityInTunnel tunnel) relevantTunnels)
-  | otherwise = 0
-  where
-    relevantTunnels = filter (\tunnel -> connectsT city1 city2 tunnel) tunnels
+availableCapacityForR (Reg cities links tunnels) city1 city2 =
+  if not (city1 `elem` cities && city2 `elem` cities)
+    then error "Las ciudades no existen en la región"
+    else if city1 == city2
+      then error "Las ciudades son iguales"
+      else
+  case findShortestPath links city1 city2 of
+    Nothing -> error "No path found between the cities"
+    Just path -> minimumCapacity path
+    
+minimumCapacity :: [Link] -> Int
+minimumCapacity [] = maxBound
+minimumCapacity (Lin _ _ (Qua name capacity delay) : rest) = min capacity (minimumCapacity rest)
 
-availableCapacityInTunnel :: Tunel -> Int
-availableCapacityInTunnel (Tun links) = minimum (map capacityL links)
 -------------------Funcioines Propias---------------------
 
 findTunnel :: City -> City -> [Tunel] -> Tunel
