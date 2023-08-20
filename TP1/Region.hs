@@ -1,13 +1,17 @@
 --Region.hs
 
 
-module Region ( Region, newR, foundR, linkR, tunelR, connectedR,linkedR, delayR, availableCapacityForR,foundL, foundT)
+module Region ( Region, newR, foundR, linkR, tunelR, connectedR,linkedR, 
+delayR, availableCapacityForR,foundL, foundT, constructorTunel, findPathLinks,
+linksdeCiudad,todasLasPosibilidades)
    where
 import City 
 import Link 
 import Tunel
 import Quality
+import GHC.Exts.Heap (GenClosure(link))
 
+import Data.Maybe
 data Region = Reg [City] [Link] [Tunel] deriving (Eq, Show)
 newR :: Region
 newR = Reg [] [] []
@@ -20,17 +24,12 @@ linkR (Reg cities links tunnels) city1 city2 quality =
   let newLink = newL city1 city2 quality
   in Reg cities (newLink : links) tunnels
 
-tunelR :: Region -> [City] -> Region
-tunelR (Reg cities links tunnels) tunnelCities =
-  let linksInTunnel = findLinksInTunnel tunnelCities links
-      newTunnel = newT linksInTunnel
-  in Reg cities links (newTunnel : tunnels)
 
-findLinksInTunnel :: [City] -> [Link] -> [Link]
-findLinksInTunnel _ [] = []
-findLinksInTunnel tunnelCities (link@(Lin city1 city2 _):rest)
-  | all (`elem` [city1, city2]) tunnelCities = link : findLinksInTunnel tunnelCities rest
-  | otherwise = findLinksInTunnel tunnelCities rest
+
+
+
+tunelR :: Region -> [City] -> Region
+tunelR (Reg citiesRegion links tunnels) cities = Reg citiesRegion links (constructorTunel links cities  : tunnels) 
 
 connectedR :: Region -> City -> City -> Bool
 connectedR (Reg _ _ tunnels) city1 city2 = any (\tunnel -> connectsT city1 city2 tunnel) tunnels
@@ -75,3 +74,36 @@ linkPathCheck (x:xs) (y:ys) = if connectsL x y
 
 sameRegion :: Region -> City -> City -> Bool
 sameRegion (Reg cities _ _) city1 city2 = elem city1 cities && elem city2 cities
+
+constructorTunel :: [Link]-> [City] -> Tunel
+constructorTunel links  cities = 
+  if checkCitiesInNonRepeated links (head cities) (last cities)
+then newT links
+else error "No se puede crear un tunel con las ciudades indicadas"
+
+findPathLinks :: [Link] -> City -> City -> [Link]
+findPathLinks links city1 city2 = findPath links city1 city2 []
+
+
+findPath :: [Link] -> City -> City -> [Link] -> [Link]
+findPath _ city1 city2 currentPath | city1 == city2 = currentPath
+findPath [] _ _ currentPath = []  -- No path found
+findPath (Lin cityLink1 cityLink2 linkName : rest) city1 city2 currentPath
+    | (city1 == cityLink1 && city2 == cityLink2) || (city1 == cityLink2 && city2 == cityLink1) =
+        currentPath ++ [Lin cityLink1 cityLink2 linkName]
+    | city1 == cityLink1 =
+        findPath rest cityLink2 city2 (currentPath ++ [Lin cityLink1 cityLink2 linkName])
+    | city1 == cityLink2 =
+        findPath rest cityLink1 city2 (currentPath ++ [Lin cityLink1 cityLink2 linkName])
+    | otherwise =
+        findPath rest city1 city2 currentPath
+
+linksdeCiudad :: [Link] -> City -> [City] -> [Link]
+linksdeCiudad links city excludedCities =
+    filter (\(Lin c1 c2 _) -> (c1 == city || c2 == city) && not (c1 `elem` excludedCities) && not (c2 `elem` excludedCities)) links
+
+
+todasLasPosibilidades :: [Link] ->[City] ->City -> [[Link]]
+todasLasPosibilidades links cities city = 
+  let linksresultado = linksdeCiudad links city cities
+  in map (\link -> [link]) linksresultado 
