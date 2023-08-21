@@ -14,7 +14,9 @@ import Data.List (sortOn)
 import Data.Function (on)
 import Data.Map (Map)
 import qualified Data.Map as Map
+
 data Region = Reg [City] [Link] [Tunel] deriving (Eq, Show)
+
 newR :: Region
 newR = Reg [] [] []
 
