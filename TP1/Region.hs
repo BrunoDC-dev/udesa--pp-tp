@@ -2,7 +2,8 @@
 
 
 module Region ( Region(Reg), newR, foundR, linkR, tunelR, connectedR,linkedR,
-delayR, availableCapacityForR,foundL, foundT,findShortestPath, lowerQuality)
+delayR, availableCapacityForR,foundL, foundT,findShortestPath, lowerQuality,
+sameRegion, minimumCapacity, linkExists)
    where
 import City
 import Link
@@ -106,23 +107,26 @@ availableCapacityForR (Reg cities links tunnels) city1 city2 =
 -------------------Funcioines Propias---------------------
 minimumCapacity :: [Link] -> Int
 minimumCapacity [] = maxBound
-minimumCapacity (Lin _ _ (Qua name capacity delay) : rest) = min capacity (minimumCapacity rest)
+-- minimumCapacity (Lin _ _ (Qua _ capacity _) : rest) = min capacity (minimumCapacity rest)
+
+minimumCapacity links = minimum (map capacityL links)
 
 linkExists :: City -> City -> [Link] -> Bool
 linkExists _ _ [] = False
 linkExists c1 c2 (Lin city1 city2 _ : rest)
       | (c1 == city1 && c2 == city2) || (c1 == city2 && c2 == city1) = True
       | otherwise = linkExists c1 c2 rest
+
 findTunnel :: City -> City -> [Tunel] -> Tunel
 findTunnel city1 city2 (tunnel@(Tun links):rest)
   | connectsT city1 city2 tunnel = tunnel
   | otherwise = findTunnel city1 city2 rest
 
 foundL :: Region -> Link -> Region
-foundL (Reg cities links tunels) link = Reg cities (link:links) tunels
+foundL (Reg c links t) link = Reg c (link:links) t
 
 foundT :: Region -> Tunel -> Region
-foundT (Reg cities links tunels) tunel = Reg cities links ( tunel:tunels)
+foundT (Reg c l tunels) tunel = Reg c l (tunel:tunels)
 
 
 sameRegion :: Region -> City -> City -> Bool
