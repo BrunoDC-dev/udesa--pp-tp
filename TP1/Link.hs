@@ -15,6 +15,8 @@ connectsL city (Lin city1 city2 _) = city == city1 || city == city2
 
 linksL :: City -> City -> Link -> Bool -- indica si estas dos ciudades distintas estan conectadas mediante este link
 linksL city1 city2 (Lin city3 city4 quality) = (city1 == city3 && city2 == city4) || (city1 == city4 && city2 == city3)
+-- linksL city1 city2 (Lin city3 city4 _) =
+--    elem city1 [city3, city4] && elem city2 [city3, city4]
 
 capacityL :: Link -> Int
 capacityL (Lin city1 city2 quailty) = capacityQ quailty
