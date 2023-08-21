@@ -1,17 +1,16 @@
 --Region.hs
 
 
-module Region ( Region, newR, foundR, linkR, tunelR, connectedR,linkedR, 
-delayR, availableCapacityForR,foundL, foundT,findShortestPath)
+module Region ( Region, newR, foundR, linkR, tunelR, connectedR,linkedR,
+delayR, availableCapacityForR,foundL, foundT,findShortestPath, lowerQuality)
    where
-import City 
-import Link 
+import City
+import Link
 import Tunel
 import Quality
 import GHC.Exts.Heap (GenClosure(link))
-import Data.Maybe (fromJust)
+import Data.Maybe ( fromJust, listToMaybe,isNothing )
 import Data.List (sortOn)
-import Data.Maybe (listToMaybe)
 import Data.Function (on)
 import Data.Map (Map)
 import qualified Data.Map as Map
@@ -19,28 +18,65 @@ data Region = Reg [City] [Link] [Tunel] deriving (Eq, Show)
 newR :: Region
 newR = Reg [] [] []
 
-foundR :: Region -> City -> Region -- agrega una nueva ciudad a la región
-foundR (Reg cities links tunels) city = Reg (city:cities) links tunels
+
+foundR :: Region -> City -> Region
+foundR (Reg cities links tunnels) newCity@(Cit newCityName newPoint)
+  | any (\(Cit _ existingPoint) -> existingPoint == newPoint) cities = error "City with same coordinates already exists"
+  | otherwise = Reg (newCity:cities) links tunnels
 
 linkR :: Region -> City -> City -> Quality -> Region
 linkR (Reg cities links tunnels) city1 city2 quality
-  | city1 `elem` cities && city2 `elem` cities = 
-      let newLink = newL city1 city2 quality
-      in Reg cities (newLink : links) tunnels
+  | city1 `elem` cities && city2 `elem` cities =
+      if linkExists city1 city2 links
+        then error "El enlace ya existe en la región"
+        else let newLink = newL city1 city2 quality
+             in Reg cities (newLink : links) tunnels
   | otherwise = error "Las ciudades no existen en la región"
 
 
 
 
 
-
 tunelR :: Region -> [City] -> Region
-tunelR (Reg citiesRegion links tunnels) cities =
-    let path = findShortestPath links (head cities) (last cities)
-    in
-    if path == Nothing
-        then error "No se puede crear un tunel con las ciudades indicadas"
-        else Reg citiesRegion links (newT (fromJust path) : tunnels)
+tunelR _ [] = error "La lista de ciudades está vacía. Debe proporcionar al menos dos ciudades."
+tunelR _ [_] = error "La lista de ciudades contiene solo una ciudad. Debe proporcionar al menos dos ciudades."
+tunelR (Reg citiesRegion links tunnels) cities@(city1 : city2 : _)
+    | city1 == city2 = error "Las dos ciudades proporcionadas son iguales. Deben ser diferentes."
+    | otherwise =
+        let path = findShortestPath links city1 city2
+        in
+        case path of
+            Nothing -> error "No se puede crear un túnel con las ciudades indicadas."
+            Just newPath ->
+                let updatedLinks = lowerQuality links newPath
+                in Reg citiesRegion updatedLinks (newT newPath : tunnels)
+
+
+lowerQuality :: [Link] -> [Link] -> [Link]
+lowerQuality links1 links2 = filter (\(Lin _ _ qua) -> qualityGreaterThanZero qua) modifiedLinks
+  where
+    modifiedLinks = map lowerIfPresent links1
+
+    lowerIfPresent :: Link -> Link
+    lowerIfPresent link@(Lin src dest qua) =
+      if linkPresent link links2
+        then Lin src dest (lowerQualityOfQua qua)
+        else link
+
+    linkPresent :: Link -> [Link] -> Bool
+    linkPresent link = any (\(Lin src dest _) -> (src, dest) == getLinkEndpoints link || (dest, src) == getLinkEndpoints link)
+
+    getLinkEndpoints :: Link -> (City, City)
+    getLinkEndpoints (Lin src dest _) = (src, dest)
+
+    lowerQualityOfQua :: Quality -> Quality
+    lowerQualityOfQua (Qua name intVal floatVal) =
+      case intVal of
+        0 -> Qua name intVal floatVal
+        _ -> Qua name (intVal - 1) floatVal
+
+    qualityGreaterThanZero :: Quality -> Bool
+    qualityGreaterThanZero (Qua _ intVal _) = intVal > 0
 
 
 connectedR :: Region -> City -> City -> Bool
@@ -65,13 +101,18 @@ availableCapacityForR (Reg cities links tunnels) city1 city2 =
   case findShortestPath links city1 city2 of
     Nothing -> error "No path found between the cities"
     Just path -> minimumCapacity path
-    
+
+
+-------------------Funcioines Propias---------------------
 minimumCapacity :: [Link] -> Int
 minimumCapacity [] = maxBound
 minimumCapacity (Lin _ _ (Qua name capacity delay) : rest) = min capacity (minimumCapacity rest)
 
--------------------Funcioines Propias---------------------
-
+linkExists :: City -> City -> [Link] -> Bool
+linkExists _ _ [] = False
+linkExists c1 c2 (Lin city1 city2 _ : rest)
+      | (c1 == city1 && c2 == city2) || (c1 == city2 && c2 == city1) = True
+      | otherwise = linkExists c1 c2 rest
 findTunnel :: City -> City -> [Tunel] -> Tunel
 findTunnel city1 city2 (tunnel@(Tun links):rest)
   | connectsT city1 city2 tunnel = tunnel
@@ -86,6 +127,7 @@ foundT (Reg cities links tunels) tunel = Reg cities links ( tunel:tunels)
 
 sameRegion :: Region -> City -> City -> Bool
 sameRegion (Reg cities _ _) city1 city2 = elem city1 cities && elem city2 cities
+
 
 
 ----- bread first search siiiiiiiiiiiiiiiiiiiii
