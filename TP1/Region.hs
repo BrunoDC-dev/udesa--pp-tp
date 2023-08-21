@@ -1,20 +1,21 @@
 --Region.hs
 
 
-module Region ( Region, newR, foundR, linkR, tunelR, connectedR,linkedR,
+module Region ( Region(Reg), newR, foundR, linkR, tunelR, connectedR,linkedR,
 delayR, availableCapacityForR,foundL, foundT,findShortestPath, lowerQuality)
    where
 import City
 import Link
 import Tunel
 import Quality
-import GHC.Exts.Heap (GenClosure(link))
 import Data.Maybe ( fromJust, listToMaybe,isNothing )
 import Data.List (sortOn)
 import Data.Function (on)
 import Data.Map (Map)
 import qualified Data.Map as Map
+
 data Region = Reg [City] [Link] [Tunel] deriving (Eq, Show)
+
 newR :: Region
 newR = Reg [] [] []  
 
