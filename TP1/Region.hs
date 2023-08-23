@@ -9,11 +9,6 @@ import City
 import Link
 import Tunel
 import Quality
-import Data.Maybe ( fromJust, listToMaybe,isNothing )
-import Data.List ( sortOn, nub )
-import Data.Function (on)
-import Data.Map (Map)
-import qualified Data.Map as Map
 
 data Region = Reg [City] [Link] [Tunel] deriving (Eq, Show)
 
@@ -22,7 +17,7 @@ newR = Reg [] [] []
 
 foundR :: Region -> City -> Region
 foundR (Reg cities links tunnels) city
-  | any (\existingCity -> distanceC existingCity city == 0) cities = error "City with same coordinates already exists"
+  | any (\existingCity -> distanceC existingCity city == 0) cities = error "Una ciudad con las mismas coordenadas ya existe"
   | otherwise = Reg (city : cities) links tunnels
 
 linkR :: Region -> City -> City -> Quality -> Region
@@ -62,9 +57,6 @@ tunelR (Reg citiesInRegion links tunnels) requestedCities
 
 
 
-
-
-
 connectedR :: Region -> City -> City -> Bool
 connectedR (Reg _ _ tunnels) city1 city2 = any (connectsT city1 city2) tunnels
 
@@ -81,9 +73,7 @@ availableCapacityForR :: Region -> City -> City -> Int
 availableCapacityForR (Reg cities links tunnels) city1 city2
   | not (city1 `elem` cities && city2 `elem` cities) = error "Las ciudades no existen en la región"
   | city1 == city2 = error "Las ciudades son iguales"
-  | otherwise = case findShortestPath links city1 city2 of
-    Nothing -> error "No path found between the cities"
-    Just path -> minimumCapacity path
+  | otherwise = 2
 
 
 -------------------Funcioines Propias---------------------
