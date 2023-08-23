@@ -1,5 +1,5 @@
 -- City.hs
-module City ( City(Cit), newC, nameC, distanceC ) where
+module City ( City, newC, nameC, distanceC ) where
 import Point
 
 data City = Cit String Point deriving (Eq, Show, Ord)
