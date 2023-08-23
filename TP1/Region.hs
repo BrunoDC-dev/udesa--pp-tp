@@ -73,9 +73,7 @@ availableCapacityForR :: Region -> City -> City -> Int
 availableCapacityForR (Reg cities links tunnels) city1 city2
   | not (city1 `elem` cities && city2 `elem` cities) = error "Las ciudades no existen en la región"
   | city1 == city2 = error "Las ciudades son iguales"
-  | otherwise = 2
-
-
+  | otherwise =  minimumCapacity (filter (linksL city1 city2) links)
 -------------------Funcioines Propias---------------------
 minimumCapacity :: [Link] -> Int
 minimumCapacity [] = maxBound
