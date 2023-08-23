@@ -1,5 +1,5 @@
 -- Point.hs
-module Point ( Point(Poi), newP, difP ) where
+module Point ( Point, newP, difP ) where
 
 data Point = Poi Int Int deriving (Eq, Show,Ord)
 
