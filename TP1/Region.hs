@@ -34,6 +34,7 @@ tunelR _ [_] = error "La lista de ciudades contiene solo una ciudad. Debe propor
 tunelR region@(Reg citiesInRegion links tunnels) requestedCities
   | hasDuplicateCities requestedCities = error "La lista de ciudades contiene duplicados."
   | not allCitiesInRegion = error "No todas las ciudades proporcionadas existen en la región."
+  | citiesConnectedWithTunnels = error "Alguna de las ciudades ya está conectada a través de un túnel."
   | not citiesConnectedInOrder = error "No todas las ciudades están conectadas en el orden proporcionado."
   | not hasCapacityForLinks = error "No hay suficiente capacidad para todos los links entre las ciudades."
   | otherwise = Reg citiesInRegion links (newT tunnelLinks : tunnels)
@@ -57,7 +58,7 @@ tunelR region@(Reg citiesInRegion links tunnels) requestedCities
 
     hasCapacityForLinks = all (\(c1, c2) -> (availableCapacityForR region c1 c2 ) > 0) (zip requestedCities (tail requestedCities))
 
-
+    citiesConnectedWithTunnels =  any (\tunnel -> connectsT (head requestedCities) (last requestedCities) tunnel) tunnels
 
 connectedR :: Region -> City -> City -> Bool
 connectedR (Reg _ _ tunnels) city1 city2 = any (connectsT city1 city2) tunnels
