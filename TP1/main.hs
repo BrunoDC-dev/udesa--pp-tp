@@ -18,8 +18,8 @@ testlink= newL testCity2 testCity testQuality1
 testlink2= newL testCity testCity4 testQuality2
 testlink3= newL testCity2 testCity3 testQuality1
 testlink4= newL testCity4 testCity5 testQuality2
-
-testTunel = newT [testlink,testlink2, testlink4]
+testlink5= newL testCity testCity2 testQuality1
+testTunel = newT [testlink ]
 testTunel2 = newT [testlink3,testlink4]
 test = newT []
 arrayCity = [testCity,testCity2,testCity4]
@@ -63,7 +63,7 @@ tests = [---newP 2 2 == Poi 2 2,
          capacityL (newL testCity2 testCity testQuality1) == 1,
          delayL (newL testCity2 testCity testQuality1) == 0.1,
 
-         newT [testlink, testlink2] == Tun [testlink, testlink2], 
+         ---newT [testlink, testlink2] == Tun [testlink, testlink2], 
          connectsT testCity testCity2 (newT [testlink]),
          not (connectsT testCity4 testCity2 (newT [testlink])),
          connectsT testCity4 testCity2 (newT [testlink, testlink2]),

@@ -68,13 +68,20 @@ delayR region@(Reg _ _ tunnels) city1 city2
   | connectedR region city1 city2 = delayT (findTunnel city1 city2 tunnels)
   | otherwise = 0.0
 
-
 availableCapacityForR :: Region -> City -> City -> Int
 availableCapacityForR (Reg cities links tunnels) city1 city2
-  | not (city1 `elem` cities && city2 `elem` cities) = error "Las ciudades no existen en la región"
-  | city1 == city2 = error "Las ciudades son iguales"
-  | otherwise =  minimumCapacity (filter (linksL city1 city2) links)
+    | not (city1 `elem` cities && city2 `elem` cities) = error "Las ciudades no existen en la región"
+    | distanceC city1 city2 == 0 = error "Las ciudades son iguales"
+    | otherwise = reduceCapacity (minimumCapacity (filter (linksL city1 city2) links)) tunnels city1 city2
+
+reduceCapacity :: Int -> [Tunel] -> City -> City -> Int
+reduceCapacity capacity [] _ _ = capacity
+reduceCapacity capacity ( links : rest) city1 city2 =
+    let reduction = if connectsT city1 city2  links then 1 else 0
+    in reduceCapacity (capacity - reduction) rest city1 city2
+
 -------------------Funcioines Propias---------------------
+
 minimumCapacity :: [Link] -> Int
 minimumCapacity [] = maxBound
 -- minimumCapacity (Lin _ _ (Qua _ capacity _) : rest) = min capacity (minimumCapacity rest)
@@ -88,7 +95,7 @@ linkExists c1 c2 (link : rest)
       | otherwise = linkExists c1 c2 rest
 
 findTunnel :: City -> City -> [Tunel] -> Tunel
-findTunnel city1 city2 (tunnel@(Tun links):rest)
+findTunnel city1 city2 (tunnel@( links):rest)
   | connectsT city1 city2 tunnel = tunnel
   | otherwise = findTunnel city1 city2 rest
 
