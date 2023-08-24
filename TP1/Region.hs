@@ -72,13 +72,20 @@ availableCapacityForR :: Region -> City -> City -> Int
 availableCapacityForR (Reg cities links tunnels) city1 city2
     | not (city1 `elem` cities && city2 `elem` cities) = error "Las ciudades no existen en la región"
     | distanceC city1 city2 == 0 = error "Las ciudades son iguales"
-    | otherwise = reduceCapacity (minimumCapacity (filter (linksL city1 city2) links)) tunnels city1 city2
+    | otherwise = reduceCapacity capacity tunnels city1 city2
+  where
+    capacity = minimumCapacity (filter (linksL city1 city2) links)
 
-reduceCapacity :: Int -> [Tunel] -> City -> City -> Int
-reduceCapacity capacity [] _ _ = capacity
-reduceCapacity capacity ( links : rest) city1 city2 =
-    let reduction = if connectsT city1 city2  links then 1 else 0
-    in reduceCapacity (capacity - reduction) rest city1 city2
+    reduceCapacity :: Int -> [Tunel] -> City -> City -> Int
+    reduceCapacity capacity [] _ _ = capacity
+    reduceCapacity capacity (tunnel : rest) city1 city2 =
+        let link = findLinkConnectingCities city1 city2 links
+            reduction = if usesT link tunnel then 1 else 0
+        in reduceCapacity (capacity - reduction) rest city1 city2
+
+    findLinkConnectingCities :: City -> City -> [Link] -> Link
+    findLinkConnectingCities city1 city2 links = head [link | link <- links, linksL city1 city2 link]
+
 
 -------------------Funcioines Propias---------------------
 
