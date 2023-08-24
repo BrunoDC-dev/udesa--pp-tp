@@ -31,10 +31,12 @@ linkR (Reg cities links tunnels) city1 city2 quality
 tunelR :: Region -> [City] -> Region
 tunelR _ [] = error "La lista de ciudades está vacía. Debe proporcionar al menos dos ciudades."
 tunelR _ [_] = error "La lista de ciudades contiene solo una ciudad. Debe proporcionar al menos dos ciudades."
-tunelR (Reg citiesInRegion links tunnels) requestedCities
+tunelR region@(Reg citiesInRegion links tunnels) requestedCities
   | hasDuplicateCities requestedCities = error "La lista de ciudades contiene duplicados."
-  | allCitiesInRegion && citiesConnectedInOrder = Reg citiesInRegion links (newT tunnelLinks : tunnels)
-  | otherwise = error errorMessage
+  | not allCitiesInRegion = error "No todas las ciudades proporcionadas existen en la región."
+  | not citiesConnectedInOrder = error "No todas las ciudades están conectadas en el orden proporcionado."
+  | not hasCapacityForLinks = error "No hay suficiente capacidad para todos los links entre las ciudades."
+  | otherwise = Reg citiesInRegion links (newT tunnelLinks : tunnels)
   where
     allCitiesInRegion = all (`elem` citiesInRegion) requestedCities
     (citiesConnectedInOrder, tunnelLinks) = checkOrder requestedCities links []
@@ -53,7 +55,7 @@ tunelR (Reg citiesInRegion links tunnels) requestedCities
       | linksL cityA cityB link = Just link
       | otherwise = findLink cityA cityB rest
 
-    errorMessage = "No todas las ciudades están conectadas en el orden proporcionado."
+    hasCapacityForLinks = all (\(c1, c2) -> (availableCapacityForR region c1 c2 ) > 0) (zip requestedCities (tail requestedCities))
 
 
 
