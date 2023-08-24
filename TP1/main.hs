@@ -11,8 +11,8 @@ testCity3 = newC "testCity3" (newP 4 4)
 testCity4 = newC "testCity4" (newP 5 5)
 testCity5 = newC "testCity5" (newP 6 6)
 
-testQuality1 = newQ "A" 1 0.1
-testQuality2 = newQ "B" 1 0.2
+testQuality1 = newQ "A" 2 1
+testQuality2 = newQ "B" 2 0.2
 
 testlink= newL testCity2 testCity testQuality1
 testlink2= newL testCity testCity4 testQuality2
