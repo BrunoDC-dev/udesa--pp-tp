@@ -5,7 +5,7 @@ import City
 import Quality
 import Point
 data Link = Lin City City Quality deriving (Eq, Show)
-
+ 
 
 newL :: City -> City -> Quality -> Link -- genera un link entre dos ciudades distintas
 newL city1 city2 q  | distanceC city1 city2 == 0 = error "no es posible crear un link con la misma ciudad"
