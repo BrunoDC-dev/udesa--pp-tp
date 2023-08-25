@@ -6,9 +6,6 @@ import Link
 import City
 import Point
 import Quality
-
-import Data.List
-import GHC.Exts.Heap (GenClosure(link))
 data Tunel = Tun [Link] deriving (Eq, Show)
 
 newT :: [Link] -> Tunel

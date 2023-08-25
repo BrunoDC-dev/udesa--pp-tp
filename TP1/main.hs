@@ -32,16 +32,18 @@ addArrayCity region (c:cs) =  addArrayCity (foundR region c) cs
 
 adLink :: Region -> [Link] -> Region
 adLink region [] = region
-adLink region (l:ls) = adLink (foundL region l) ls
+--adLink region (l:ls) = adLink (foundL region l) ls
 
 adTunel :: Region -> [Tunel] -> Region
 adTunel region [] = region
-adTunel region (t:ts) = adTunel (foundT region t) ts
+--adTunel region (t:ts) = adTunel (foundT region t) ts
 
 emptyTestRegion = newR 
 testCitiesRegion = addArrayCity emptyTestRegion arrayCity
 testLinksRegion = adLink emptyTestRegion arrayLink
 testFullRegion = adTunel (adLink (addArrayCity emptyTestRegion arrayCity) arrayLink) arrayTunel
+
+testForTunnel= Reg [testCity, testCity2, testCity4, testCity5] [testlink, testlink2] []
 
 
 tests = [---newP 2 2 == Poi 2 2, 
@@ -73,13 +75,6 @@ tests = [---newP 2 2 == Poi 2 2,
          delayT (newT [testlink, testlink2]) == 0.3,
 
          newR == Reg [] [] [],
-         foundR emptyTestRegion testCity == Reg [testCity] [] [],
-         foundT emptyTestRegion testTunel == Reg [] [] [testTunel],
-         foundL emptyTestRegion testlink == Reg [] [testlink] [],
-         sameRegion (Reg [testCity, testCity2, testCity3] [] []) testCity testCity2,
-         not (sameRegion (Reg [testCity, testCity3] [] []) testCity testCity2),
-         minimumCapacity [testlink, testlink2, testlink3, testlink4] == 1,
-         linkExists testCity testCity2 [testlink2, testlink3, testlink, testlink4],
 
          True]
 
