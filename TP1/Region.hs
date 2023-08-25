@@ -1,7 +1,7 @@
 --Region.hs
 
 module Region ( Region(Reg), newR, foundR, linkR, tunelR, connectedR, linkedR,
-delayR, availableCapacityForR, foundL, foundT, sameRegion, minimumCapacity, 
+delayR, availableCapacityForR, sameRegion, minimumCapacity, 
 linkExists, hasDuplicateCities)
    where
 import City
@@ -113,3 +113,6 @@ findLink _ _ [] = Nothing
 findLink cityA cityB (link : rest)
       | linksL cityA cityB link = Just link
       | otherwise = findLink cityA cityB rest
+
+sameRegion :: Region -> City-> City -> Bool
+sameRegion (Reg cities _ _) city1 city2  = city1 `elem` cities && city2 `elem` cities
