@@ -4,6 +4,23 @@ import  Tunel
 import  Point
 import Quality
 import  Region
+import Control.Exception
+import System.IO.Unsafe
+
+fallo :: IO a -> IO Bool
+fallo action = do
+    result <- tryJust isException action
+    return $ case result of
+        Left _ -> True
+        Right _ -> False
+    where
+        isException :: SomeException -> Maybe ()
+        isException _ = Just ()
+
+testF :: IO Bool -> Bool
+testF action = unsafePerformIO action
+
+t = [ testF (fallo (print ( tunelR testForTunnel [] )))]
 
 testCity = newC "testCity" (newP 2 2)
 testCity2 = newC "testCity2" (newP 3 3)
