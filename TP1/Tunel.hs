@@ -6,15 +6,12 @@ import Link
 import City
 import Point
 import Quality
-
-import Data.List
-import GHC.Exts.Heap (GenClosure(link))
 data Tunel = Tun [Link] deriving (Eq, Show)
 
 newT :: [Link] -> Tunel
 newT = Tun
 
-connectsT :: City -> City -> Tunel -> Bool
+connectsT :: City -> City -> Tunel -> Bool -- indica si éste túnel conecta estas dos ciudades distintas
 connectsT city1 city2 (Tun links)
  
   | distanceC city1 city2 == 0 = error "No es posible crear un túnel con la misma ciudad."
@@ -48,4 +45,4 @@ usesT link (Tun links) = link `elem` links
 
 
 delayT :: Tunel -> Float -- la demora que sufre una conexion en este tunel
-delayT (Tun links) = sum (map delayL links) -- sumo todas las demoras de los links que componen el tunel
+delayT (Tun links) = sum (map delayL links)

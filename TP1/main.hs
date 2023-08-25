@@ -4,6 +4,23 @@ import  Tunel
 import  Point
 import Quality
 import  Region
+import Control.Exception
+import System.IO.Unsafe
+
+fallo :: IO a -> IO Bool
+fallo action = do
+    result <- tryJust isException action
+    return $ case result of
+        Left _ -> True
+        Right _ -> False
+    where
+        isException :: SomeException -> Maybe ()
+        isException _ = Just ()
+
+testF :: IO Bool -> Bool
+testF action = unsafePerformIO action
+
+t = [ testF (fallo (print ( tunelR testForTunnel [] )))]
 
 testCity0 = newC "testCity5" (newP 0 0)
 testCity = newC "testCity" (newP 2 2)
@@ -40,16 +57,18 @@ addArrayCity region (c:cs) = addArrayCity (foundR region c) cs
 
 adLink :: Region -> [Link] -> Region
 adLink region [] = region
-adLink region (l:ls) = adLink (foundL region l) ls
+--adLink region (l:ls) = adLink (foundL region l) ls
 
 adTunel :: Region -> [Tunel] -> Region
 adTunel region [] = region
-adTunel region (t:ts) = adTunel (foundT region t) ts
+--adTunel region (t:ts) = adTunel (foundT region t) ts
 
 emptyTestRegion = newR 
 testCitiesRegion = addArrayCity emptyTestRegion arrayCity
 testLinksRegion = adLink emptyTestRegion arrayLink
 testFullRegion = adTunel (adLink (addArrayCity emptyTestRegion arrayCity) arrayLink) arrayTunel
+
+testForTunnel= Reg [testCity, testCity2, testCity4, testCity5] [testlink, testlink2] []
 
 
 tests = [---newP 2 2 == Poi 2 2, 
