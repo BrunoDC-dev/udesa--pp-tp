@@ -1,9 +1,8 @@
 --Region.hs
 
-
-module Region ( Region(Reg), newR, foundR, linkR, tunelR, connectedR,linkedR,
-delayR, availableCapacityForR,foundL, foundT,
-sameRegion, minimumCapacity, linkExists)
+module Region ( Region(Reg), newR, foundR, linkR, tunelR, connectedR, linkedR,
+delayR, availableCapacityForR, foundL, foundT, sameRegion, minimumCapacity, 
+linkExists, hasDuplicateCities)
    where
 import City
 import Link
@@ -11,6 +10,7 @@ import Tunel
 import Quality
 
 data Region = Reg [City] [Link] [Tunel] deriving (Eq, Show)
+
 
 newR :: Region
 newR = Reg [] [] []
@@ -21,8 +21,9 @@ foundR (Reg cities links tunnels) city
   | otherwise = Reg (city : cities) links tunnels
 
 linkR :: Region -> City -> City -> Quality -> Region
-linkR (Reg cities links tunnels) city1 city2 quality
-  | city1 `elem` cities && city2 `elem` cities =
+linkR region@(Reg cities links tunnels) city1 city2 quality
+--  | city1 `elem` cities && city2 `elem` cities =
+  | sameRegion region city1 city2 =
       if linkExists city1 city2 links
         then error "El enlace ya existe en la región"
         else  Reg cities (newL city1 city2 quality : links) tunnels
@@ -72,8 +73,9 @@ delayR region@(Reg _ _ tunnels) city1 city2
   | otherwise = 0.0
 
 availableCapacityForR :: Region -> City -> City -> Int
-availableCapacityForR (Reg cities links tunnels) city1 city2
+availableCapacityForR region@(Reg cities links tunnels) city1 city2
     | not (city1 `elem` cities && city2 `elem` cities) = error "Las ciudades no existen en la región"
+--    | not (sameRegion region city1 city2) = error "Las ciudades no existen en la región"
     | distanceC city1 city2 == 0 = error "Las ciudades son iguales"
     | otherwise = reduceCapacity capacity tunnels city1 city2
   where
@@ -94,8 +96,6 @@ availableCapacityForR (Reg cities links tunnels) city1 city2
 
 minimumCapacity :: [Link] -> Int
 minimumCapacity [] = maxBound
--- minimumCapacity (Lin _ _ (Qua _ capacity _) : rest) = min capacity (minimumCapacity rest)
-
 minimumCapacity links = minimum (map capacityL links)
 
 linkExists :: City -> City -> [Link] -> Bool
@@ -129,3 +129,4 @@ allLinksConnectedInOrder cities links = all (\(city1, city2) -> linksExist city1
     connections = zip cities (tail cities)
     
     linksExist city1 city2 = any (linksL city1 city2) links || any (linksL city2 city1) links
+--                                                             ^^ redundante?
