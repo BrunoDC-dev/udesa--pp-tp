@@ -6,10 +6,15 @@ import Quality
 import  Region
 import Control.Exception
 import System.IO.Unsafe
+import Control.Applicative (Alternative(empty))
+import GHC.Exts.Heap (GenClosure(link))
 
-fallo :: IO a -> IO Bool
-fallo action = do
-    result <- tryJust isException action
+
+
+
+testF :: Show a => a -> Bool
+testF action = unsafePerformIO $ do
+    result <- tryJust isException (evaluate action)
     return $ case result of
         Left _ -> True
         Right _ -> False
@@ -17,11 +22,11 @@ fallo action = do
         isException :: SomeException -> Maybe ()
         isException _ = Just ()
 
-testF :: IO Bool -> Bool
-testF action = unsafePerformIO action
+---TestPoints
 
-t = [ testF (fallo (print ( tunelR testForTunnel [] )))]
+testPont =  newP 2 2
 
+----TestCities
 testCity0 = newC "testCity5" (newP 0 0)
 testCity = newC "testCity" (newP 2 2)
 testCity2 = newC "testCity2" (newP 3 3)
@@ -31,87 +36,92 @@ testCity5 = newC "testCity5" (newP 6 6)
 testCity6 = newC "testCity6" (newP 3 4)
 testCity7 = newC "testCity7" (newP 6 8)
 
-testQuality1 = newQ "A" 2 1
+-----TestQualities
+testQuality1 = newQ "A" 1 0.5
 testQuality2 = newQ "B" 2 0.2
-testQuality3 = newQ "C" 1 2
 
+
+----TestLinks
 testlink= newL testCity2 testCity testQuality1
-testlink2= newL testCity testCity4 testQuality2
+testlink2= newL testCity testCity4 testQuality1
 testlink3= newL testCity2 testCity3 testQuality1
 testlink4= newL testCity4 testCity5 testQuality2
-testlink5= newL testCity testCity2 testQuality1
 testlink6= newL testCity0 testCity6 testQuality1
 testlink7= newL testCity6 testCity7 testQuality1
 
-testTunel = newT [testlink5, testlink2,testlink4 ]
-testTunel2 = newT [testlink3,testlink4]
-test = newT []
+--- testTunels
 
-arrayCity = [testCity,testCity2,testCity4]
-arrayLink = [testlink3,testlink,testlink4,testlink2]
-arrayTunel = [testTunel,testTunel2] 
+testTunel = newT [testlink, testlink2]
 
-addArrayCity :: Region -> [City] -> Region
-addArrayCity region [] = region
-addArrayCity region (c:cs) = addArrayCity (foundR region c) cs
-
-adLink :: Region -> [Link] -> Region
-adLink region [] = region
---adLink region (l:ls) = adLink (foundL region l) ls
-
-adTunel :: Region -> [Tunel] -> Region
-adTunel region [] = region
---adTunel region (t:ts) = adTunel (foundT region t) ts
-
+----testRegions
 emptyTestRegion = newR 
-testCitiesRegion = addArrayCity emptyTestRegion arrayCity
-testLinksRegion = adLink emptyTestRegion arrayLink
-testFullRegion = adTunel (adLink (addArrayCity emptyTestRegion arrayCity) arrayLink) arrayTunel
+regionWithCity = foundR emptyTestRegion testCity
+regionWithCities =foundR (foundR regionWithCity testCity2) testCity4
+regionWithLink =  linkR regionWithCities testCity testCity2 testQuality1
+regionForTunel =  linkR regionWithLink testCity4 testCity testQuality1
 
-testForTunnel= Reg [testCity, testCity2, testCity4, testCity5] [testlink, testlink2] []
+finalregion = tunelR regionForTunel [testCity2 ,testCity , testCity4]
 
-
-tests = [---newP 2 2 == Poi 2 2, 
+exceptionsTest= [ 
+    testF (newL testCity testCity testQuality1),
+    testF (linksL testCity testCity testlink), 
+    testF (connectsT testCity testCity testTunel),
+    testF (connectsT testCity testCity2 (newT [])),
+    testF(foundR regionWithCity (newC "testCity" (newP 2 2))),
+    testF(linkR regionWithCities testCity5 testCity2 testQuality1),
+    testF(linkR regionWithLink testCity2 testCity testQuality2),
+    testF(tunelR regionForTunel []),
+    testF(tunelR regionForTunel [testCity2]),
+    testF(tunelR regionForTunel [testCity2,testCity2]),
+    testF(tunelR regionForTunel [testCity5,testCity2,testCity4]),
+    testF(tunelR regionForTunel [testCity4,testCity2,testCity]),
+    testF(tunelR finalregion [testCity2, testCity ,testCity4]),
+    testF(tunelR finalregion [ testCity ,testCity4]),
+    testF(delayR finalregion testCity testCity4),
+    testF(availableCapacityForR finalregion testCity5 testCity4),
+    testF(availableCapacityForR finalregion testCity2 testCity2),
+    testF(availableCapacityForR finalregion testCity4 testCity2)
+                ]
+tests = [
+         newP 2 2 == testPont, 
          difP (newP 0 0) (newP 3 4) == 5.0,
 
-         --newC "testCity" (newP 2 2) == Cit "testCity" (newP 2 2), 
+         newC "testCity" (newP 2 2) ==testCity, 
          nameC (newC "testCity" (newP 2 2)) == "testCity",
          distanceC (newC "testCity" (newP 0 0)) (newC "testCity2" (newP 3 4)) == 5.0,
 
-         --newQ "A" 1 0.1 == Qua "A" 1 0.1, 
+         newQ "A" 1 0.5 == testQuality1,  
          capacityQ (newQ "A" 1 0.1) == 1,
          delayQ (newQ "A" 1 0.1) == 0.1,
 
-         --newL testCity2 testCity testQuality1 == Lin testCity2 testCity testQuality1, 
+         newL testCity2 testCity testQuality1 == testlink, 
          connectsL testCity (newL testCity2 testCity testQuality1),
          not (connectsL testCity (newL testCity2 testCity3 testQuality1)),
          linksL testCity testCity2 (newL testCity2 testCity testQuality1),
          not (linksL testCity testCity2 (newL testCity2 testCity3 testQuality1)),
-         capacityL (newL testCity2 testCity testQuality1) == 2,
-         delayL (testlink6) == 5,
+         capacityL (newL testCity2 testCity (newQ "A" 2  0.2)) == 2,
+         delayL (newL testCity0 testCity6 testQuality1) == distanceC testCity0 testCity6 * delayQ testQuality1,
 
-         ---newT [testlink, testlink2] == Tun [testlink, testlink2], 
-         connectsT testCity testCity2 (newT [testlink]),
-         not (connectsT testCity4 testCity2 (newT [testlink])),
+         newT [testlink, testlink2] == testTunel, 
+         connectsT testCity4 testCity2 (newT [testlink,testlink2]),
+         not (connectsT testCity testCity2 (newT [testlink,testlink2])),
          connectsT testCity4 testCity2 (newT [testlink, testlink2]),
          connectsT testCity5 testCity (newT [testlink, testlink3, testlink4]),
          not (connectsT testCity5 testCity (newT [testlink, testlink2, testlink3])),
          usesT testlink (newT [testlink, testlink2]),
-         delayT (newT [testlink6, testlink7]) == 10,
+         delayT (newT [testlink6, testlink7]) == delayL testlink6 + delayL testlink7,
 
-         newR == Reg [] [] [],
-         foundR emptyTestRegion testCity == Reg [testCity] [] [],
-         --foundT emptyTestRegion testTunel == Reg [] [] [testTunel],
-         --foundL emptyTestRegion testlink == Reg [] [testlink] [],
-         sameRegion (Reg [testCity, testCity2, testCity3] [] []) testCity testCity2,
-         not (sameRegion (Reg [testCity, testCity3] [] []) testCity testCity2),
-         minimumCapacity [testlink, testlink2, testlink3, newL testCity testCity3 testQuality3] == 1,
-         linkR (Reg [testCity, testCity2, testCity3] [testlink] []) testCity testCity3 testQuality1 == Reg [testCity, testCity2, testCity3] [newL testCity testCity3 testQuality1, testlink] [],
-         linkExists testCity testCity2 [testlink2, testlink3, testlink, testlink4],
-         hasDuplicateCities [1, 2, 3, 1, -1],
-         not (hasDuplicateCities [1, 2, 3, 4, 5]),
-
-         True]
+         newR  == emptyTestRegion,
+         foundR emptyTestRegion testCity == regionWithCity, 
+         linkR regionWithCities testCity testCity2 testQuality1 ==regionWithLink,
+         tunelR regionForTunel [testCity2 ,testCity , testCity4] == finalregion,
+         connectedR finalregion testCity2 testCity4,
+         not (connectedR finalregion testCity testCity4),
+         linkedR finalregion testCity testCity2,
+         not (linkedR finalregion testCity2 testCity4),
+         delayR finalregion testCity2 testCity4 == delayT testTunel,
+         availableCapacityForR finalregion testCity2 testCity == 0
+         ] ++ exceptionsTest
 
 state tests | and tests = "Correcto!"
             | otherwise = "Hubo errores :("
