@@ -1,7 +1,8 @@
 --Region.hs
 
-
-module Region ( Region(Reg), newR, foundR, linkR, tunelR, connectedR,linkedR,delayR, availableCapacityForR)
+module Region ( Region(Reg), newR, foundR, linkR, tunelR, connectedR, linkedR,
+delayR, availableCapacityForR, sameRegion, minimumCapacity, 
+linkExists, hasDuplicateCities)
    where
 import City
 import Link
@@ -9,6 +10,7 @@ import Tunel
 import Quality
 
 data Region = Reg [City] [Link] [Tunel] deriving (Eq, Show)
+
 
 newR :: Region
 newR = Reg [] [] []
@@ -19,8 +21,9 @@ foundR (Reg cities links tunnels) city
   | otherwise = Reg (city : cities) links tunnels
 
 linkR :: Region -> City -> City -> Quality -> Region  -- enlaza dos ciudades de la región con un enlace de la calidad indicada
-linkR (Reg cities links tunnels) city1 city2 quality
-  | city1 `elem` cities && city2 `elem` cities =
+linkR region@(Reg cities links tunnels) city1 city2 quality
+--  | city1 `elem` cities && city2 `elem` cities =
+  | sameRegion region city1 city2 =
       if linkExists city1 city2 links
         then error "El enlace ya existe en la región"
         else  Reg cities (newL city1 city2 quality : links) tunnels
@@ -66,6 +69,7 @@ delayR region@(Reg _ _ tunnels) city1 city2
 availableCapacityForR :: Region -> City -> City -> Int -- indica la capacidad disponible entre dos ciudades
 availableCapacityForR (Reg cities links tunnels) city1 city2
     | not (city1 `elem` cities && city2 `elem` cities) = error "Las ciudades no existen en la región"
+--    | not (sameRegion region city1 city2) = error "Las ciudades no existen en la región"
     | distanceC city1 city2 == 0 = error "Las ciudades son iguales"
     | otherwise = reduceCapacity capacity tunnels city1 city2
   where
@@ -109,3 +113,6 @@ findLink _ _ [] = Nothing
 findLink cityA cityB (link : rest)
       | linksL cityA cityB link = Just link
       | otherwise = findLink cityA cityB rest
+
+sameRegion :: Region -> City-> City -> Bool
+sameRegion (Reg cities _ _) city1 city2  = city1 `elem` cities && city2 `elem` cities

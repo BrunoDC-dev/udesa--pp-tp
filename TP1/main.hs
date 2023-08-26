@@ -22,30 +22,38 @@ testF action = unsafePerformIO action
 
 t = [ testF (fallo (print ( tunelR testForTunnel [] )))]
 
+testCity0 = newC "testCity5" (newP 0 0)
 testCity = newC "testCity" (newP 2 2)
 testCity2 = newC "testCity2" (newP 3 3)
 testCity3 = newC "testCity3" (newP 4 4)
 testCity4 = newC "testCity4" (newP 5 5)
 testCity5 = newC "testCity5" (newP 6 6)
+testCity6 = newC "testCity6" (newP 3 4)
+testCity7 = newC "testCity7" (newP 6 8)
 
 testQuality1 = newQ "A" 2 1
 testQuality2 = newQ "B" 2 0.2
+testQuality3 = newQ "C" 1 2
 
 testlink= newL testCity2 testCity testQuality1
 testlink2= newL testCity testCity4 testQuality2
 testlink3= newL testCity2 testCity3 testQuality1
 testlink4= newL testCity4 testCity5 testQuality2
 testlink5= newL testCity testCity2 testQuality1
+testlink6= newL testCity0 testCity6 testQuality1
+testlink7= newL testCity6 testCity7 testQuality1
+
 testTunel = newT [testlink5, testlink2,testlink4 ]
 testTunel2 = newT [testlink3,testlink4]
 test = newT []
+
 arrayCity = [testCity,testCity2,testCity4]
 arrayLink = [testlink3,testlink,testlink4,testlink2]
 arrayTunel = [testTunel,testTunel2] 
 
 addArrayCity :: Region -> [City] -> Region
 addArrayCity region [] = region
-addArrayCity region (c:cs) =  addArrayCity (foundR region c) cs
+addArrayCity region (c:cs) = addArrayCity (foundR region c) cs
 
 adLink :: Region -> [Link] -> Region
 adLink region [] = region
@@ -79,8 +87,8 @@ tests = [---newP 2 2 == Poi 2 2,
          not (connectsL testCity (newL testCity2 testCity3 testQuality1)),
          linksL testCity testCity2 (newL testCity2 testCity testQuality1),
          not (linksL testCity testCity2 (newL testCity2 testCity3 testQuality1)),
-         capacityL (newL testCity2 testCity testQuality1) == 1,
-         delayL (newL testCity2 testCity testQuality1) == 0.1,
+         capacityL (newL testCity2 testCity testQuality1) == 2,
+         delayL (testlink6) == 5,
 
          ---newT [testlink, testlink2] == Tun [testlink, testlink2], 
          connectsT testCity testCity2 (newT [testlink]),
@@ -89,9 +97,19 @@ tests = [---newP 2 2 == Poi 2 2,
          connectsT testCity5 testCity (newT [testlink, testlink3, testlink4]),
          not (connectsT testCity5 testCity (newT [testlink, testlink2, testlink3])),
          usesT testlink (newT [testlink, testlink2]),
-         delayT (newT [testlink, testlink2]) == 0.3,
+         delayT (newT [testlink6, testlink7]) == 10,
 
          newR == Reg [] [] [],
+         foundR emptyTestRegion testCity == Reg [testCity] [] [],
+         --foundT emptyTestRegion testTunel == Reg [] [] [testTunel],
+         --foundL emptyTestRegion testlink == Reg [] [testlink] [],
+         sameRegion (Reg [testCity, testCity2, testCity3] [] []) testCity testCity2,
+         not (sameRegion (Reg [testCity, testCity3] [] []) testCity testCity2),
+         minimumCapacity [testlink, testlink2, testlink3, newL testCity testCity3 testQuality3] == 1,
+         linkR (Reg [testCity, testCity2, testCity3] [testlink] []) testCity testCity3 testQuality1 == Reg [testCity, testCity2, testCity3] [newL testCity testCity3 testQuality1, testlink] [],
+         linkExists testCity testCity2 [testlink2, testlink3, testlink, testlink4],
+         hasDuplicateCities [1, 2, 3, 1, -1],
+         not (hasDuplicateCities [1, 2, 3, 4, 5]),
 
          True]
 
