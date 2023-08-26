@@ -17,17 +17,12 @@ connectsT city1 city2 (Tun links)
   | distanceC city1 city2 == 0 = error "No es posible crear un túnel con la misma ciudad."
   | length links < 1 = error "No es posible crear un túnel con menos de un link."
   | length links ==1  =  linksL city1 city2 (head links)
- 
   | connectsL city1 (head links) && connectsL city2 (last links) 
     && not( isCityInSecondLink city1 links) && not (isCityInPenultimateLink city2 links) = True
- 
   | connectsL city2 (head links) && connectsL city1 (last links) 
-    && not (isCityInSecondLink city2 links) &&  not (isCityInPenultimateLink city1 links) = True
- 
+    && not (isCityInSecondLink city2 links) &&  not (isCityInPenultimateLink city1 links) = True 
   | otherwise = False
- 
   where
- 
     isCityInSecondLink :: City -> [Link] -> Bool
     isCityInSecondLink city links
       | length links >= 2 =  connectsL city (links !! 1)

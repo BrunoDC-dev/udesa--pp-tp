@@ -1,8 +1,6 @@
 --Region.hs
 
-module Region ( Region(Reg), newR, foundR, linkR, tunelR, connectedR, linkedR,
-delayR, availableCapacityForR, sameRegion, minimumCapacity, 
-linkExists, hasDuplicateCities)
+module Region ( Region, newR, foundR, linkR, tunelR, connectedR, linkedR, delayR, availableCapacityForR)
    where
 import City
 import Link
@@ -22,7 +20,6 @@ foundR (Reg cities links tunnels) city
 
 linkR :: Region -> City -> City -> Quality -> Region  -- enlaza dos ciudades de la región con un enlace de la calidad indicada
 linkR region@(Reg cities links tunnels) city1 city2 quality
---  | city1 `elem` cities && city2 `elem` cities =
   | sameRegion region city1 city2 =
       if linkExists city1 city2 links
         then error "El enlace ya existe en la región"
@@ -51,7 +48,7 @@ tunelR region@(Reg citiesInRegion links tunnels) requestedCities
         Just link -> checkOrder (city2 : rest) linkList (link : acc)
         Nothing -> (False, [])
 
-    hasCapacityForLinks = all (\(c1, c2) -> (availableCapacityForR region c1 c2 ) > 0) (zip requestedCities (tail requestedCities))
+    hasCapacityForLinks = all (\(c1 ,c2) -> (availableCapacityForR region c1 c2 ) > 0) (zip requestedCities (tail requestedCities))
 
     citiesConnectedWithTunnels =  any (\tunnel -> connectsT (head requestedCities) (last requestedCities) tunnel) tunnels
 
@@ -64,16 +61,19 @@ linkedR (Reg _ links _) city1 city2 = any (linksL city1 city2) links
 delayR :: Region -> City -> City -> Float -- dadas dos ciudades conectadas, indica la demora
 delayR region@(Reg _ _ tunnels) city1 city2
   | connectedR region city1 city2 = delayT (findTunnel city1 city2 tunnels)
-  | otherwise = 0.0
+  | otherwise = error "Las ciudades no están conectadas"
 
 availableCapacityForR :: Region -> City -> City -> Int -- indica la capacidad disponible entre dos ciudades
-availableCapacityForR (Reg cities links tunnels) city1 city2
-    | not (city1 `elem` cities && city2 `elem` cities) = error "Las ciudades no existen en la región"
---    | not (sameRegion region city1 city2) = error "Las ciudades no existen en la región"
+availableCapacityForR region@(Reg cities links tunnels) city1 city2
+    | not (sameRegion region city1 city2) = error "Las ciudades no existen en la región"
     | distanceC city1 city2 == 0 = error "Las ciudades son iguales"
+    | not (citiesLinked city1 city2 links) = error "Las ciudades no están conectadas"
     | otherwise = reduceCapacity capacity tunnels city1 city2
   where
     capacity = minimumCapacity (filter (linksL city1 city2) links)
+    
+    citiesLinked :: City -> City -> [Link] -> Bool
+    citiesLinked cityA cityB links = any (\link -> linksL cityA cityB link) links
 
     reduceCapacity :: Int -> [Tunel] -> City -> City -> Int
     reduceCapacity capacity [] _ _ = capacity
@@ -84,6 +84,7 @@ availableCapacityForR (Reg cities links tunnels) city1 city2
             in reduceCapacity (capacity - reduction) rest city1 city2
         Nothing ->
             reduceCapacity capacity rest city1 city2
+
 
 
 
