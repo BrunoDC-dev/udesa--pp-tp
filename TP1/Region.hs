@@ -48,7 +48,7 @@ tunelR region@(Reg citiesInRegion links tunnels) requestedCities
         Just link -> checkOrder (city2 : rest) linkList (link : acc)
         Nothing -> (False, [])
 
-    hasCapacityForLinks = all (\(c1, c2) -> (availableCapacityForR region c1 c2 ) > 0) (zip requestedCities (tail requestedCities))
+    hasCapacityForLinks = all (\(c1 ,c2) -> (availableCapacityForR region c1 c2 ) > 0) (zip requestedCities (tail requestedCities))
 
     citiesConnectedWithTunnels =  any (\tunnel -> connectsT (head requestedCities) (last requestedCities) tunnel) tunnels
 
