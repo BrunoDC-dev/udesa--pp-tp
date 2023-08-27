@@ -124,6 +124,6 @@ tests = [
          ] ++ exceptionsTest
 
 state tests | and tests = "Correcto!"
-            | otherwise = "Hubo errores :("
+            | otherwise = "Hubo errores"
 
 main = print tests
