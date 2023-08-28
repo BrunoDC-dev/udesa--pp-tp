@@ -6,8 +6,6 @@ import Quality
 import  Region
 import Control.Exception
 import System.IO.Unsafe
-import Control.Applicative (Alternative(empty))
-import GHC.Exts.Heap (GenClosure(link))
 
 
 
