@@ -1,12 +1,11 @@
 package queue;
 
-
-public class NonEmptyQueue implements QueueState {
-    private final String element;
+class NonEmptyQueue implements QueueState {
+    private final String head;
     private final QueueState tail;
 
-    public NonEmptyQueue(String element, QueueState tail) {
-        this.element = element;
+    public NonEmptyQueue(String head, QueueState tail) {
+        this.head = head;
         this.tail = tail;
     }
 
@@ -17,12 +16,17 @@ public class NonEmptyQueue implements QueueState {
 
     @Override
     public String head() {
-        return element;
+        return head;
     }
 
     @Override
     public QueueState take() {
         return tail;
+    }
+
+    @Override
+    public QueueState add(String element) {
+        return new NonEmptyQueue(head, tail.add(element));
     }
 
     @Override

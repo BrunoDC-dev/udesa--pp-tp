@@ -1,6 +1,5 @@
 package queue;
-
-public class EmptyQueue implements QueueState {
+class EmptyQueue implements QueueState {
     @Override
     public boolean isEmpty() {
         return true;
@@ -8,12 +7,17 @@ public class EmptyQueue implements QueueState {
 
     @Override
     public String head() {
-        throw new IllegalStateException("Queue is empty");
+        throw new Error("Queue is empty");
     }
 
     @Override
     public QueueState take() {
-        throw new IllegalStateException("Queue is empty");
+        throw new Error("Queue is empty");
+    }
+
+    @Override
+    public QueueState add(String element) {
+        return new NonEmptyQueue(element, this);
     }
 
     @Override

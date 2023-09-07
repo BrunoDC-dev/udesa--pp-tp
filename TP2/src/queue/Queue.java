@@ -1,6 +1,4 @@
-
-    package queue;
-
+package queue;
 
 public class Queue {
     private QueueState state;
@@ -10,11 +8,8 @@ public class Queue {
     }
 
     public Queue add(String element) {
-        return new Queue(new NonEmptyQueue(element, state));
-    }
-
-    private Queue(QueueState state) {
-        this.state = state;
+        this.state = this.state.add(element);
+        return this;
     }
 
     public boolean isEmpty() {
@@ -25,8 +20,12 @@ public class Queue {
         return state.head();
     }
 
-    public Queue take() {
-        return new Queue(state.take());
+    public String take() {
+        /* Takes the first element of the queue */
+
+        String head = state.head();
+        this.state = state.take();
+        return head;
     }
 
     public int size() {
