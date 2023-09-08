@@ -18,7 +18,7 @@ class NonEmptyQueue implements QueueState {
     public String head() {
         return head;
     }
-
+//pruebaa
     @Override
     public QueueState take() {
         return tail;
@@ -26,8 +26,9 @@ class NonEmptyQueue implements QueueState {
 
     @Override
     public QueueState add(String element) {
+        
         return new NonEmptyQueue(head, tail.add(element));
-    }
+    }  
 
     @Override
     public int size() {
