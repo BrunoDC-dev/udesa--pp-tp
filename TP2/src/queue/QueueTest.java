@@ -39,13 +39,12 @@ public class QueueTest {
     Queue queue = new Queue();
     String firstAddedObject = "First";
     String secondAddedObject = "Second";
-
+    
     queue.add( firstAddedObject );
     queue.add( secondAddedObject );
-    System.out.println(queue.take());
-    System.out.println(queue.take());
-    /*assertEquals( queue.take(), firstAddedObject );
-    assertEquals( queue.take(), secondAddedObject );*/
+
+    assertEquals( queue.take(), firstAddedObject );
+    assertEquals( queue.take(), secondAddedObject );
     assertTrue( queue.isEmpty() );
   }
 
