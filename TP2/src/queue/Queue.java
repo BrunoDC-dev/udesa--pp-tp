@@ -1,38 +1,34 @@
 package queue;
 
-import java.util.LinkedList;
-import java.util.NoSuchElementException;
-
 public class Queue {
+    private QueueState state;
 
-    private LinkedList<Object> cargoList = new LinkedList<>();
-
-    public boolean isEmpty() {
-        return cargoList.isEmpty();
+    public Queue() {
+        this.state = new EmptyQueue();
     }
 
-    public Queue add(Object cargo) {
-        cargoList.addLast(cargo);
+    public Queue add(String element) {
+        this.state = this.state.add(element);
         return this;
     }
 
-    public Object take() {
-        try {
-            return cargoList.removeFirst();
-        } catch (NoSuchElementException e) {
-            throw new Error("Queue is empty");
-        }
+    public boolean isEmpty() {
+        return state.isEmpty();
     }
 
-    public Object head() {
-        try {
-            return cargoList.getFirst();
-        } catch (NoSuchElementException e) {
-            throw new Error("Queue is empty");
-        }
+    public String head() {
+        return state.head();
+    }
+
+    public String take() {
+        /* Takes the first element of the queue */
+
+        String head = state.head();
+        this.state = state.take();
+        return head;
     }
 
     public int size() {
-        return cargoList.size();
+        return state.size();
     }
 }
