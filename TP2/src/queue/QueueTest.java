@@ -101,4 +101,5 @@ public class QueueTest {
       assertTrue( e.getMessage().equals( "Queue is empty" ) );
     }
   }
+  
 }
