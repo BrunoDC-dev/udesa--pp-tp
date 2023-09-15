@@ -88,7 +88,6 @@ public class QueueTest {
     });
     assertEquals("Queue is empty", exception.getMessage());
     */
-
     assertThrows(Error.class, () -> queue.take(), "Queue is empty");
   }
 
@@ -140,4 +139,5 @@ public class QueueTest {
   public Queue newQueue() {
         return new Queue();
   }
+  
 }
