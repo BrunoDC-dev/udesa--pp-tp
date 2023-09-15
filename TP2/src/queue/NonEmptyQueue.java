@@ -1,8 +1,8 @@
 package queue;
 
 class NonEmptyQueue implements QueueState {
-    private final String head;
-    private final QueueState tail;
+    private  String head;
+    private  QueueState tail;
 
     public NonEmptyQueue(String head, QueueState tail) {
         this.head = head;

@@ -1,7 +1,7 @@
 package queue;
 
 public class Queue {
-    private QueueState state;
+    private QueueState  state;
 
     public Queue() {
         this.state = new EmptyQueue();
