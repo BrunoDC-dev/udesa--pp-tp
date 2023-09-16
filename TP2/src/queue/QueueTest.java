@@ -14,15 +14,15 @@ public class QueueTest {
   }
 
   @Test public void test02AddElementsToTheQueue() {
-    assertFalse( newQueue().add( "Something" ).isEmpty() );
+    assertFalse( newQueue().add( getAddedObject() ).isEmpty() );
   }
 
   @Test public void test03AddedElementsIsAtHead() {
-    assertEquals( "Something", newQueue().add( "Something" ).head() );
+    assertEquals( getAddedObject(), newQueue().add( getAddedObject() ).head() );
   }
 
   @Test public void test04TakeRemovesElementsFromTheQueue() {
-    Queue queue = newQueue().add( "Something" );
+    Queue queue = newQueue().add( getAddedObject() );
 
     queue.take();
     assertTrue( queue.isEmpty() );
@@ -30,114 +30,72 @@ public class QueueTest {
 
   @Test public void test05TakeReturnsLastAddedObject() {
     Queue queue = newQueue();
-    String addedObject = "Something";
-    queue.add( addedObject );
-    
-    assertEquals( addedObject, queue.take() );
+    queue.add( getAddedObject() );
+    assertEquals( getAddedObject(), queue.take() );
   }
 
   @Test public void test06QueueBehavesFIFO() {
     Queue queue = newQueue();
-    String firstAddedObject = "First";
-    String secondAddedObject = "Second";
     
-    queue.add( firstAddedObject );
-    queue.add( secondAddedObject );
+    queue.add( getFirstAddedObject() );
+    queue.add( getSecondAddedObject() );
 
-    assertEquals( queue.take(), firstAddedObject );
-    assertEquals( queue.take(), secondAddedObject );
+    assertEquals( queue.take(), getFirstAddedObject() );
+    assertEquals( queue.take(), getSecondAddedObject() );
     assertTrue( queue.isEmpty() );
   }
 
+
   @Test public void test07HeadReturnsFirstAddedObject() {
     Queue queue = newQueue();
-    String firstAddedObject = "First";
 
-    queue.add( firstAddedObject );
-    queue.add( "Second" );
+    queue.add( getFirstAddedObject() );
+    queue.add( getSecondAddedObject() );
 
-    assertEquals( queue.head(), firstAddedObject );
+    assertEquals( queue.head(), getFirstAddedObject() );
   }
 
   @Test public void test08HeadDoesNotRemoveObjectFromQueue() {
     Queue queue = newQueue();
-    queue.add( "Something" );
+    queue.add( getAddedObject() );
     assertEquals( 1, queue.size() );
     queue.head();
     assertEquals( 1, queue.size() );
   }
 
   @Test public void test09SizeRepresentsObjectInTheQueue() {
-    assertEquals( 2, newQueue().add( "First" ).add( "Second" ).size() );
+    assertEquals( 2, newQueue().add(getFirstAddedObject() ).add( getSecondAddedObject()).size() );
   }
 
   @Test public void test10CanNotTakeWhenThereAreNoObjectsInTheQueue() {
     Queue queue = newQueue();
-    /*
-    // try {
-    //   queue.take();
-    //   fail( "Expected Error was not thrown." );
-    // } catch (Error e) {
-    //   assertTrue( e.getMessage().equals( "Queue is empty" ) );
-    // }
-    */
-
-    /*
-    Throwable exception = assertThrows(Error.class, () -> {
-        queue.take();
-    });
-    assertEquals("Queue is empty", exception.getMessage());
-    */
     assertThrows(Error.class, () -> queue.take(), "Queue is empty");
   }
 
   @Test public void test11CanNotTakeWhenThereAreNoObjectsInTheQueueAndTheQueueHadObjects() {
     Queue queue = newQueue();
-    queue.add( "Something" );
+    queue.add( getAddedObject() );
     queue.take();
-    /*
-    // try {
-    //   queue.take();
-    //   fail( "Expected Error was not thrown." );
-    // } catch (Error e) {
-    //   assertTrue( e.getMessage().equals( "Queue is empty" ) );
-    // }
-    */
-    
-    /*
-    Throwable exception = assertThrows(Error.class, () -> {
-        queue.take();
-    });
-    assertEquals("Queue is empty", exception.getMessage());
-    */
-
     assertThrows(Error.class, () -> queue.take(), "Queue is empty");
   }
 
   @Test public void test12CanNotHeadWhenThereAreNoObjectsInTheQueue() {
     Queue queue = newQueue();
-
-    /*
-    // try {
-    //   queue.head();
-    //   fail( "Expected Error was not thrown." );
-    // } catch (Error e) {
-    //   assertTrue( e.getMessage().equals( "Queue is empty" ) );
-    // }
-    */
-
-    /*
-    Throwable exception = assertThrows(Error.class, () -> {
-        queue.head();
-    });
-    assertEquals("Queue is empty", exception.getMessage());
-    */
-
     assertThrows(Error.class, () -> queue.head(), "Queue is empty");
   }
 
-  public Queue newQueue() {
+  private Queue newQueue() {
         return new Queue();
   }
-  
+  private String getSecondAddedObject() {
+    return "Second";
+}
+
+  private String getFirstAddedObject() {
+    return "First";
+  }
+
+  private String getAddedObject() {
+    return "Something";
+  }
 }

@@ -1,5 +1,5 @@
 package queue;
-class EmptyQueue implements QueueState {
+class EmptyQueue extends QueueState {
     
     public boolean isEmpty() {
         return true;

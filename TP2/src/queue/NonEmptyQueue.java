@@ -1,6 +1,6 @@
 package queue;
 
-class NonEmptyQueue implements QueueState {
+class NonEmptyQueue extends QueueState {
     private  String head;
     private  QueueState tail;
 
