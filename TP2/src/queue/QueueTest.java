@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.Test;
 
 public class QueueTest {
@@ -14,57 +13,58 @@ public class QueueTest {
   }
 
   @Test public void test02AddElementsToTheQueue() {
-    assertFalse( newQueue().add( getAddedObject() ).isEmpty() );
+    assertFalse( newQueue().add( addedObject ).isEmpty() );
   }
 
   @Test public void test03AddedElementsIsAtHead() {
-    assertEquals( getAddedObject(), newQueue().add( getAddedObject() ).head() );
+    assertEquals( addedObject, newQueue().add( addedObject ).head() );
   }
 
   @Test public void test04TakeRemovesElementsFromTheQueue() {
-    Queue queue = newQueue().add( getAddedObject() );
+    Queue queue = newQueue().add( addedObject );
 
     queue.take();
     assertTrue( queue.isEmpty() );
   }
 
   @Test public void test05TakeReturnsLastAddedObject() {
-    Queue queue = newQueue();
-    queue.add( getAddedObject() );
-    assertEquals( getAddedObject(), queue.take() );
+    Queue queue = newQueue();                  //
+    queue.add( addedObject );                  //
+    assertEquals( addedObject, queue.take() ); //
+    // assertEquals( addedObject, newQueue().add( addedObject ).take() );
   }
 
   @Test public void test06QueueBehavesFIFO() {
     Queue queue = newQueue();
     
-    queue.add( getFirstAddedObject() );
-    queue.add( getSecondAddedObject() );
+    queue.add( firstAddedObject );
+    queue.add( secondAddedObject );
 
-    assertEquals( queue.take(), getFirstAddedObject() );
-    assertEquals( queue.take(), getSecondAddedObject() );
+    assertEquals( queue.take(), firstAddedObject );
+    assertEquals( queue.take(), secondAddedObject );
     assertTrue( queue.isEmpty() );
   }
-
 
   @Test public void test07HeadReturnsFirstAddedObject() {
     Queue queue = newQueue();
 
-    queue.add( getFirstAddedObject() );
-    queue.add( getSecondAddedObject() );
+    queue.add( firstAddedObject );
+    queue.add( secondAddedObject );
 
-    assertEquals( queue.head(), getFirstAddedObject() );
+    assertEquals( queue.head(), firstAddedObject );
   }
 
   @Test public void test08HeadDoesNotRemoveObjectFromQueue() {
-    Queue queue = newQueue();
-    queue.add( getAddedObject() );
+    Queue queue = newQueue(); //
+    queue.add( addedObject ); //
+    // Queue queue = newQueue().add( addedObject );
     assertEquals( 1, queue.size() );
     queue.head();
     assertEquals( 1, queue.size() );
   }
 
   @Test public void test09SizeRepresentsObjectInTheQueue() {
-    assertEquals( 2, newQueue().add(getFirstAddedObject() ).add( getSecondAddedObject()).size() );
+    assertEquals( 2, newQueue().add(firstAddedObject ).add( secondAddedObject).size() );
   }
 
   @Test public void test10CanNotTakeWhenThereAreNoObjectsInTheQueue() {
@@ -73,8 +73,9 @@ public class QueueTest {
   }
 
   @Test public void test11CanNotTakeWhenThereAreNoObjectsInTheQueueAndTheQueueHadObjects() {
-    Queue queue = newQueue();
-    queue.add( getAddedObject() );
+    Queue queue = newQueue(); //
+    queue.add( addedObject ); //
+    // Queue queue = newQueue().add( addedObject );
     queue.take();
     assertThrows(Error.class, () -> queue.take(), "Queue is empty");
   }
@@ -84,18 +85,20 @@ public class QueueTest {
     assertThrows(Error.class, () -> queue.head(), "Queue is empty");
   }
 
+  @Test public void test13CanNotHeadWhenThereAreNoObjectsInTheQueueAndTheQueueHadObjects() {
+    Queue queue = newQueue(); //
+    queue.add( addedObject ); //
+    // Queue queue = newQueue().add( addedObject );
+    queue.take();
+    assertThrows(Error.class, () -> queue.head(), "Queue is empty");
+  }
+
+  private String firstAddedObject = "first";
+  private String secondAddedObject = "second";
+  private String addedObject = "something";
+  
   private Queue newQueue() {
         return new Queue();
   }
-  private String getSecondAddedObject() {
-    return "Second";
-}
 
-  private String getFirstAddedObject() {
-    return "First";
-  }
-
-  private String getAddedObject() {
-    return "Something";
-  }
 }
