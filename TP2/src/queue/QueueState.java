@@ -1,9 +1,9 @@
 package queue;
 
-interface QueueState {
-    boolean isEmpty();
-    String head();
-    QueueState take();
-    QueueState add(String element);
-    int size();
+public abstract class QueueState {
+    public abstract boolean isEmpty();
+    public abstract String head();
+    public abstract QueueState take();
+    public abstract QueueState add(String element);
+    public abstract int size();
 }
