@@ -23,7 +23,6 @@ public class QueueTest {
   @Test public void test04TakeRemovesElementsFromTheQueue() {
     Queue queue = newQueueWith( addedObject );
     queue.take();
-
     assertTrue( queue.isEmpty() );
   }
 
@@ -56,26 +55,26 @@ public class QueueTest {
 
   @Test public void test10CanNotTakeWhenThereAreNoObjectsInTheQueue() {
     Queue queue = newEmptyQueue();
-    assertThrows(Error.class, () -> queue.take(), "Queue is empty");
+    assertThrows(Error.class, () -> queue.take(),errorMessage);
   }
 
   @Test public void test11CanNotTakeWhenThereAreNoObjectsInTheQueueAndTheQueueHadObjects() {
     Queue queue = newQueueWith( addedObject );
     queue.take();
-    assertThrows(Error.class, () -> queue.take(), "Queue is empty");
+    assertThrows(Error.class, () -> queue.take(),errorMessage);
   }
 
   @Test public void test12CanNotHeadWhenThereAreNoObjectsInTheQueue() {
     Queue queue = newEmptyQueue();
-    assertThrows(Error.class, () -> queue.head(), "Queue is empty");
+    assertThrows(Error.class, () -> queue.head(),errorMessage);
   }
 
   @Test public void test13CanNotHeadWhenThereAreNoObjectsInTheQueueAndTheQueueHadObjects() {
     Queue queue = newQueueWith( addedObject );
     queue.take();
-    assertThrows(Error.class, () -> queue.head(), "Queue is empty");
+    assertThrows(Error.class, () -> queue.head(),errorMessage);
   }
-
+  private String errorMessage ="Queue is empty";
   private String firstAddedObject = "first";
   private String secondAddedObject = "second";
   private String addedObject = "something";

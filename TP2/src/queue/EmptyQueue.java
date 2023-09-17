@@ -1,18 +1,18 @@
 package queue;
 class EmptyQueue extends QueueState {
-    
+    private String errorMessage ="Queue is empty";
     public boolean isEmpty() {
         return true;
     }
 
     
     public String head() {
-        throw new Error("Queue is empty");
+        throw new Error(errorMessage);
     }
 
     
     public QueueState take() {
-        throw new Error("Queue is empty");
+        throw new Error(errorMessage);
     }
 
     
