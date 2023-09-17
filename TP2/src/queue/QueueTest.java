@@ -32,18 +32,14 @@ public class QueueTest {
   }
 
   @Test public void test06QueueBehavesFIFO() {
-    Queue queue = newQueueWith( firstAddedObject );
-    queue.add( secondAddedObject );
-
+    Queue queue = newQueueWith( firstAddedObject ).add( secondAddedObject );
     assertEquals( queue.take(), firstAddedObject );
     assertEquals( queue.take(), secondAddedObject );
     assertTrue( queue.isEmpty() );
   }
 
   @Test public void test07HeadReturnsFirstAddedObject() {
-    Queue queue = newQueueWith( firstAddedObject );
-    queue.add( secondAddedObject );
-
+    Queue queue = newQueueWith( firstAddedObject ).add( secondAddedObject );
     assertEquals( queue.head(), firstAddedObject );
   }
 
