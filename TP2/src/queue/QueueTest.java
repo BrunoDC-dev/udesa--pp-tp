@@ -28,9 +28,7 @@ public class QueueTest {
   }
 
   @Test public void test05TakeReturnsLastAddedObject() {
-    Queue queue = newQueueWith( addedObject );   //
-    assertEquals( addedObject, queue.take() ); //
-    // assertEquals( addedObject, newQueueWith( addedObject ).take() );
+    assertEquals( addedObject, newQueueWith( addedObject ).take() );
   }
 
   @Test public void test06QueueBehavesFIFO() {
