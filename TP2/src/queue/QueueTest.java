@@ -79,8 +79,8 @@ public class QueueTest {
     return new Queue();
   }
 
-  private Queue newQueueWith(String string) {
-    return new Queue().add( string );
+  private Queue newQueueWith(String element) {
+    return new Queue().add( element );
   }
 
 }
