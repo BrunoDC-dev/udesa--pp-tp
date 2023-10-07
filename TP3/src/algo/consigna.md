@@ -17,6 +17,10 @@ Nos toca desarrollar el sistema de posicionamiento de Nemo, para eso se nos pide
 El DoD es muy exigente en sus estándares de desarrollo y nos pide por contrato un desarrollo usando la técnica de TDD, con una completa cobertura con casos de test. Se ve que entienden del tema! 
 Les preocupa mucho el código repetido, el uso de Ifs, los malos nombres y las responsabilidades entre objetos mal repartidas (*).
 
-Algunas características del submarino que tenemos que controlar son que: por ahora no hay problemas con sumergirse demasiado, tampoco pasa nada si le insistimos en emerger cuando está en superficie. Por otro lado, la cápsula sólo se puede lanzar en superficie o en el primer nivel de inmersión. En estos casos lanzar la cápsula no tiene ningún efecto detectable en el submarino. Pero si se intenta liberar a mayor profundidad de lo permitido el submarino se destruye, probablemente por exceso de chocolate.
+Algunas características del submarino que tenemos que controlar son que: 
+* por ahora no hay problemas con sumergirse demasiado, 
+* tampoco pasa nada si le insistimos en emerger cuando está en superficie. 
+* La cápsula sólo se puede lanzar en superficie o en el primer nivel de inmersión. En estos casos lanzar la cápsula no tiene ningún efecto detectable en el submarino. 
+* Si se intenta liberar a mayor profundidad de lo permitido el submarino se destruye, probablemente por exceso de chocolate.
 
-* comentaron algo como que incluye todo lo visto y corregido hasta ahora, porque se va a evaluar también ¯\_(ツ)_/¯
+(*) comentaron algo como que incluye todo lo visto y corregido hasta ahora, porque se va a evaluar también ¯\_(ツ)_/¯
