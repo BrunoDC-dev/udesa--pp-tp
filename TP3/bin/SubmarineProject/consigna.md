@@ -1,7 +1,7 @@
 # Enunciado
 
 Nuestra consultora, San Andrés Robotics y su exitoso desarrollo del Mars Rover, llamó la atención de la sección de investigación marina del mayor contratista de software del mundo, el DoD. 
-Nos confiaron su proyecto más mimado, *Nemo*. 
+Nos confiaron su proyecto más mimado, Nemo. 
 Nemo es un sumergible autónomo con la capacidad de navegar en superficie o sumergido, que incluye la capacidad de lanzar en forma vertical unas cápsulas de otro proyecto más mimado aún, pero secreto, sólo nos comentaron su nombre, Incredible Chocolate Brownie Moment que por suerte suena por demás inofensivo. 
 
 A Nemo se lo controla por un canal incorruptible por el que se le envían uno o más comandos prepautados. 
@@ -14,8 +14,8 @@ Los comandos son:
 * 'm' que le indica a Nemo liberar la cápsula. 
 
 Nos toca desarrollar el sistema de posicionamiento de Nemo, para eso se nos pide la capacidad de procesar cada comando y mantener actualizada la actitud del sumergible en un sistema cartesiano. 
-El DoD es muy exigente en sus estándares de desarrollo y nos pide por contrato un desarrollo usando la **técnica de TDD**, con una completa cobertura con casos de test. Se ve que entienden del tema! 
-Les preocupa mucho el **código repetido**, el **uso de Ifs**, los malos nombres y las responsabilidades entre objetos mal repartidas (*).
+El DoD es muy exigente en sus estándares de desarrollo y nos pide por contrato un desarrollo usando la técnica de TDD, con una completa cobertura con casos de test. Se ve que entienden del tema! 
+Les preocupa mucho el código repetido, el uso de Ifs, los malos nombres y las responsabilidades entre objetos mal repartidas (*).
 
 Algunas características del submarino que tenemos que controlar son que: 
 * por ahora no hay problemas con sumergirse demasiado, 

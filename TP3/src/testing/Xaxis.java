@@ -1,4 +1,4 @@
-package algo.testing;
+package testing;
 
 public class Xaxis extends Nemo {
     private String direction = "positive";

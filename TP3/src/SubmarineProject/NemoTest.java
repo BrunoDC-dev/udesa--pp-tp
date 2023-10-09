@@ -67,6 +67,7 @@ public class NemoTest {
         assertTrue(nemo.isInSurface());
         assertEquals(nemo.getHeigth(), 0);
     }
+    
     @Test public void test09NemoMoves90degreesToRight(){
         //Nemo gira 90 grados a la derecha
         Nemo nemo = new Nemo();
