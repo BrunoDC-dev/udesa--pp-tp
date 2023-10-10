@@ -1,11 +1,18 @@
 package SubMarineProject;
 import java.util.Arrays;
 
+import SubMarineProject.Coordenates.Coordenates;
+import SubMarineProject.Coordenates.East;
+import SubMarineProject.Coordenates.North;
+import SubMarineProject.Coordenates.South;
+import SubMarineProject.Coordenates.West;
+import SubMarineProject.Messages.Message;
+
 
 public class Nemo {
     private boolean isInSurface;
     private int height;
-    private int direction;
+    private Coordenates direction;
     private int amountOfCapsules;
     private int[] coordenates;
     private int Xcoord;
@@ -14,67 +21,64 @@ public class Nemo {
     public Nemo(){
         this.isInSurface = true;
         this.height = 0;
-        this.direction = 0;
+        this.direction = new East();
         this.amountOfCapsules = 0;
         this.Xcoord = 0;
         this.Ycoord = 0;
         this.coordenates = new int[]{Xcoord, Ycoord};
     }
-    public void recieveMessage(String... messages){
-        Arrays.stream(messages).forEach(this::execute);
-        // for(String message : messages){
-        //     this.execute(message);
-        // }
+    public void recieveMessage(Message... messages){
+       // Arrays.stream(messages).forEach(this::execute);
+       Nemo updatedNemo = this; // Start with the current Nemo object
+        updatedNemo = Arrays.stream(messages)
+            .reduce(updatedNemo, (nemo, message) -> nemo.execute(message), (nemo1, nemo2) -> nemo1);
+     // Update the current Nemo object with the updated Nemo object
+        this.isInSurface = updatedNemo.isInSurface;
+        this.height = updatedNemo.height;
+        this.direction = updatedNemo.direction;
+        this.amountOfCapsules = updatedNemo.amountOfCapsules;
+        this.Xcoord = updatedNemo.Xcoord;
+        this.Ycoord = updatedNemo.Ycoord;
+        this.coordenates = updatedNemo.coordenates;
     }
-    public void execute (String message){
-        if(message.equals("d")){
-            this.moveDown();
-        }else if (message.equals("u")){
-            this.moveUp();
-        }else if(message.equals("l")){
-            this.turnLeft();
-        }else if(message.equals("r")){
-            this.turnRight();
-        }else if(message.equals("f")){
-            this.move();
-        }else if(message.equals("m")){
-            this.liberateCapsule();
-        }
+    public  Nemo execute (Message message){
+       return message.Execute(this);
     }
-    public void move(){
-        if(this.direction == 0){
-            this.Xcoord += 1;
-        }else if(this.direction == 90){
-            this.Ycoord += 1;
-        }else if(this.direction == 180){
-            this.Xcoord -= 1;
-        }else if(this.direction == 270){
-            this.Ycoord -= 1;
-        }
+    public Nemo move(){
+        int[] coordenates = this.direction.move();
+        this.Xcoord += coordenates[0];
+        this.Ycoord += coordenates[1];
+        this.coordenates = new int[]{Xcoord, Ycoord};
+        return this;
     }
-    public void turnRight() {
-        this.direction = (this.direction - 90 + 360) % 360;
+    public Nemo turnRight() {
+        this.direction = this.direction.turnRight();
+        return this;
     }
     
-    public void turnLeft(){
-        this.direction = (this.direction + 90 + 360) % 360;
+    public Nemo turnLeft(){
+        this.direction = this.direction.turnLeft();
+        return this;
     }
-    public void moveDown(){
+    public Nemo moveDown(){        
         this.height -= 1;
         this.isInSurface = false;
+        return this;
     }
-    public void moveUp(){
+    public Nemo moveUp(){
         this.height += 1;
         if (getHeight() == 0){
             this.isInSurface = true;
         } 
+        return this;
     }
-    public void liberateCapsule(){
+    public  Nemo liberateCapsule(){
         if(getHeight() >=-1){
             this.amountOfCapsules += 1;
         }else{
             throw new RuntimeException("Nemo exploded");
         }
+        return this;
     }
     public boolean isInSurface(){
         return this.isInSurface;
@@ -83,7 +87,7 @@ public class Nemo {
     public int getHeight(){
         return this.height;
     }
-    public int getDirection(){
+    public Coordenates getDirection(){
         return this.direction;
     }
     public int getAmountOfCapsules(){

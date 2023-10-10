@@ -6,10 +6,21 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.function.Executable;
+
+import SubMarineProject.Coordenates.Coordenates;
+import SubMarineProject.Coordenates.East;
+import SubMarineProject.Coordenates.North;
+import SubMarineProject.Coordenates.South;
+import SubMarineProject.Messages.Message;
+
 import java.util.Arrays;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import SubMarineProject.Messages.*;
+
+
 
 public class NemoTest {
 
@@ -28,89 +39,89 @@ public class NemoTest {
     }
     @Test public void test03NemoDirectionIs0(){
         //Nemo incializa con direccion 0
-        assertEquals(0, nemo.getDirection());
+        assertEquals(new East(), nemo.getDirection());
     }
     @Test public void test04CapsuleLiberateInSurface(){
         //Nemo libera una capsula en la superficie
-        nemo.recieveMessage("m");
+        nemo.recieveMessage(LiberateCapsule);
         assertTrue(nemo.isInSurface());
         assertEquals(nemo.getAmountOfCapsules(), 1);
     }
     @Test public void test05LiberateMoreThanOneCapsule(){
         //Nemo libera una capsula en la superficie
-        nemo.recieveMessage("m","m");
+        nemo.recieveMessage(LiberateCapsule,LiberateCapsule);
         assertEquals(nemo.getAmountOfCapsules(), 2);
     }
     @Test public void test06EmergeInSurface(){
         //Nemo emerge en la superficie
-        nemo.recieveMessage("u");
+        nemo.recieveMessage(MoveUp);
         assertTrue(nemo.isInSurface());
     }
     @Test public void test07NemoDescends(){
         //Nemo desciende en el eje z
-        nemo.recieveMessage("d");
+        nemo.recieveMessage(MoveDown);
         assertFalse(nemo.isInSurface());
         assertEquals(nemo.getHeight(), -1);
     }
     @Test public void test08NemoDescendsAndEmerge(){
         //Nemo desciende y emerge en la superficie
-        nemo.recieveMessage("d", "u");
+        nemo.recieveMessage(MoveDown,MoveUp);
         assertTrue(nemo.isInSurface());
         assertEquals(nemo.getHeight(), 0);
     }
     
     @Test public void test09NemoMoves90degreesToRight(){
         //Nemo gira 90 grados a la derecha
-        assertDirection(270, "r");
+        assertDirection(new South(), TurnRight);
     }
     @Test public void test10NemoMoves90degreesToLeft(){
         //Nemo gira 90 grados a la izquierda
-        assertDirection(90, "l");
+        assertDirection(new North(), TurnLeft);
     }
     @Test public void test11NemoMovesDirectionEndIn0(){
         //Nemo gira 180 grados a la derecha
-        assertDirection(0, "r", "l");
+        assertDirection(new East(), TurnRight, TurnLeft);
     }
     @Test public void test12NemoMovesInXCoordenat(){
         //Nemo se mueve en el eje x
-        assertCoordsAfterCommands(1, 0, "f");
+        assertCoordsAfterCommands(1, 0, Move);
     }
     @Test public void test13NemoMovesInYCoordenat(){
         //Nemo se mueve en el eje y
-        assertCoordsAfterCommands(0, 1, "l", "f");
+        assertCoordsAfterCommands(0, 1, TurnLeft, Move);
     }
     @Test public void test14NemoMovesMinusXCoordenate(){
         //Nemo se mueve en el eje x negativo
 
-        assertCoordsAfterCommands(-1, 0, "l", "l", "f");
+        assertCoordsAfterCommands(-1, 0, TurnLeft, TurnLeft, Move);
     }
     @Test public void test15NemoMovesMinusYCoordenate(){
         //Nemo se mueve en el eje y negativo
-        assertCoordsAfterCommands(0, -1, "r", "f");
+        assertCoordsAfterCommands(0, -1,TurnRight, Move);
     }
     @Test public void test16NemoSpinAndMovesXCoordenate (){
         //Nemo gira y se mueve en el eje x
-        assertCoordsAfterCommands(1, 0, "r", "r", "r", "r", "f");
+        assertCoordsAfterCommands(1, 0, TurnRight, TurnRight, TurnRight,TurnRight, Move);
     }
     @Test public void test17NemoMovesXCoordinateTurnBack (){
         //Nemo se mueve en el eje x y gira 180 grados
-        assertCoordsAfterCommands(0, 0, "f", "r", "r", "f");
+        assertCoordsAfterCommands(0, 0, Move, TurnRight, TurnRight, Move);
     }
     @Test public void test18NemoMovesYCoordinateTurnBack (){
         //Nemo se mueve en el eje y y gira 180 grados
-        assertCoordsAfterCommands(0, 0, "l", "f", "r", "r", "f");
+        assertCoordsAfterCommands(0, 0,     TurnLeft, Move, TurnRight, TurnRight, Move);
     }
     @Test public void test19CanLiberateCapsleInHeightMinus1(){
         //Nemo libera una capsula en la altura -1
-        nemo.recieveMessage("d", "m");
+        nemo.recieveMessage(MoveDown,LiberateCapsule);
         assertEquals(nemo.getAmountOfCapsules(), 1);
         assertEquals(nemo.getHeight(), -1);
         assertFalse(nemo.isInSurface());
     }
     @Test public void test20CantLiberateCapsleInHeightMinus2(){
         //Nemo libera una capsula en la altura -2
-        nemo.recieveMessage("d", "d");
-        assertThrowsLike(()->nemo.recieveMessage("m"), nemoExploedString);
+        nemo.recieveMessage(MoveDown,MoveDown);
+        assertThrowsLike(()->nemo.recieveMessage(LiberateCapsule), nemoExploedString);
     }
 
     private Nemo nemo;
@@ -121,12 +132,12 @@ public class NemoTest {
         assertEquals( message,assertThrows( Exception.class, executable ).getMessage() );
     }
 
-    private void assertDirection(int direction, String ... message) {
+    private void assertDirection(Coordenates direction, Message ... message) {
         nemo.recieveMessage(message);
         assertEquals(direction, nemo.getDirection());
     }
 
-    private void assertCoordsAfterCommands( int x, int y, String ... message ) {
+    private void assertCoordsAfterCommands( int x, int y, Message ... message ) {
         nemo.recieveMessage(message);
         assertCoords(x, y);
     }
@@ -135,4 +146,11 @@ public class NemoTest {
         assertEquals(x, nemo.getXcoord());
         assertEquals(y, nemo.getYcoord());
     }
+    private Message Move= new Move();
+    private Message MoveUp= new MoveUp();
+    private Message MoveDown= new MoveDown();
+    private Message TurnRight= new TurnRight();
+    private Message TurnLeft= new TurnLeft();
+    private Message LiberateCapsule= new LiberateCapsule();
+
 }
