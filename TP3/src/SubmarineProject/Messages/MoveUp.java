@@ -3,7 +3,7 @@ package SubMarineProject.Messages;
 import SubMarineProject.Nemo;
 
 public class MoveUp extends Message {
-    public String name = "MoveUp";
+    public String name = "u";
     public Nemo Execute(Nemo nemo) {
         return nemo.moveUp();
     }

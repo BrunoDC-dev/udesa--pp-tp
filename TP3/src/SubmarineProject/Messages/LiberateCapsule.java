@@ -6,7 +6,7 @@ import SubMarineProject.Nemo;
  */
 public class LiberateCapsule  extends Message{
 
-    public String name = "LiberateCapsule";
+    public String name = "m";
     public String getMessage(){
         return "Liberate Capsule";
     }

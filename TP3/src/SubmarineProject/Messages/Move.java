@@ -3,7 +3,7 @@ package SubMarineProject.Messages;
 import SubMarineProject.Nemo;
 
 public class Move extends Message {
-    public String name = "Move";
+    public String name = "f";
     public String getMessage(){
         return "Move";
     }

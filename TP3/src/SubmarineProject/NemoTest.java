@@ -7,10 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.function.Executable;
 
-import SubMarineProject.Coordenates.Coordenates;
-import SubMarineProject.Coordenates.East;
-import SubMarineProject.Coordenates.North;
-import SubMarineProject.Coordenates.South;
 import SubMarineProject.Messages.Message;
 
 import java.util.Arrays;
@@ -18,6 +14,10 @@ import java.util.Arrays;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import SubMarineProject.Brujula.Brujula;
+import SubMarineProject.Brujula.East;
+import SubMarineProject.Brujula.North;
+import SubMarineProject.Brujula.South;
 import SubMarineProject.Messages.*;
 
 
@@ -43,36 +43,36 @@ public class NemoTest {
     }
     @Test public void test04CapsuleLiberateInSurface(){
         //Nemo libera una capsula en la superficie
-        nemo.recieveMessage(LiberateCapsule);
+        nemo.recieveMessage("m");
         assertTrue(nemo.isInSurface());
         assertEquals(nemo.getAmountOfCapsules(), 1);
     }
     @Test public void test05LiberateMoreThanOneCapsule(){
         //Nemo libera una capsula en la superficie
-        nemo.recieveMessage(LiberateCapsule,LiberateCapsule);
+        nemo.recieveMessage("m","m");
         assertEquals(nemo.getAmountOfCapsules(), 2);
     }
     @Test public void test06EmergeInSurface(){
         //Nemo emerge en la superficie
-        nemo.recieveMessage(MoveUp);
+        nemo.recieveMessage("u");
         assertTrue(nemo.isInSurface());
     }
     @Test public void test07NemoDescends(){
         //Nemo desciende en el eje z
-        nemo.recieveMessage(MoveDown);
+        nemo.recieveMessage("d");
         assertFalse(nemo.isInSurface());
         assertEquals(nemo.getHeight(), -1);
     }
     @Test public void test08NemoDescendsAndEmerge(){
         //Nemo desciende y emerge en la superficie
-        nemo.recieveMessage(MoveDown,MoveUp);
+        nemo.recieveMessage("d","u");
         assertTrue(nemo.isInSurface());
         assertEquals(nemo.getHeight(), 0);
     }
     
     @Test public void test09NemoMoves90degreesToRight(){
         //Nemo gira 90 grados a la derecha
-        assertDirection(new South(), TurnRight);
+        assertDirection(new South(), "r");
     }
     @Test public void test10NemoMoves90degreesToLeft(){
         //Nemo gira 90 grados a la izquierda
@@ -132,7 +132,7 @@ public class NemoTest {
         assertEquals( message,assertThrows( Exception.class, executable ).getMessage() );
     }
 
-    private void assertDirection(Coordenates direction, Message ... message) {
+    private void assertDirection(Brujula direction, Message ... message) {
         nemo.recieveMessage(message);
         assertEquals(direction, nemo.getDirection());
     }
@@ -146,11 +146,5 @@ public class NemoTest {
         assertEquals(x, nemo.getXcoord());
         assertEquals(y, nemo.getYcoord());
     }
-    private Message Move= new Move();
-    private Message MoveUp= new MoveUp();
-    private Message MoveDown= new MoveDown();
-    private Message TurnRight= new TurnRight();
-    private Message TurnLeft= new TurnLeft();
-    private Message LiberateCapsule= new LiberateCapsule();
 
 }

@@ -1,14 +1,14 @@
-package SubMarineProject.Coordenates;
+package SubMarineProject.Brujula;
 
 /**
  * West
  */
-public class West extends Coordenates{
+public class West extends Brujula{
     public String name = "West";
-    public Coordenates turnRight(){
+    public Brujula turnRight(){
        return new North();
     }
-    public Coordenates turnLeft(){
+    public Brujula turnLeft(){
         return new South();
     }
     public int[] move(){

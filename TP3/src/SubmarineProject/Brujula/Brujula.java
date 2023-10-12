@@ -1,21 +1,21 @@
-package SubMarineProject.Coordenates;
+package SubMarineProject.Brujula;
 
 import java.util.Objects;
 
-public abstract class Coordenates {
+public abstract class Brujula {
     public String name;
-    public abstract Coordenates turnRight();
-    public abstract Coordenates turnLeft();
+    public abstract Brujula turnRight();
+    public abstract Brujula turnLeft();
     public abstract int[] move();
     @Override
     public boolean equals(Object obj) {
         if (obj == this) {
             return true;
         }
-        if (!(obj instanceof Coordenates)) {
+        if (!(obj instanceof Brujula)) {
             return false;
         }
-        Coordenates other = (Coordenates) obj;
+        Brujula other = (Brujula) obj;
         return Objects.equals(name, other.name);
     }
 }
