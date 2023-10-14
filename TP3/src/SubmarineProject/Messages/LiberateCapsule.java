@@ -5,12 +5,13 @@ import SubMarineProject.Nemo;
  * LiberateCapsule
  */
 public class LiberateCapsule  extends Message{
-
-    public String name = "LiberateCapsule";
+    public LiberateCapsule() {
+        super('m'); // Set the name in the superclass constructor
+    }
     public String getMessage(){
         return "Liberate Capsule";
     }
-    public Nemo Execute(Nemo nemo) {
-        return nemo.liberateCapsule();
+    public void Execute(Nemo nemo) {
+        nemo.liberateCapsule();
     }
 }
