@@ -14,7 +14,7 @@ public class East extends Brujula{
        return new North();
     }
     public void move(Nemo nemo){
-        nemo.fowardInY();
+        nemo.fowardInX();
     }
 
     
