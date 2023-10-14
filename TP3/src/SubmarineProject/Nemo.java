@@ -1,40 +1,48 @@
 package SubMarineProject;
-import java.util.Arrays;
-
 import SubMarineProject.Brujula.Brujula;
 import SubMarineProject.Brujula.East;
 import SubMarineProject.Coordenadas.Coordenadas;
+import SubMarineProject.Height.Height;
+import SubMarineProject.Messages.LiberateCapsule;
 import SubMarineProject.Messages.Message;
+import SubMarineProject.Messages.Move;
+import SubMarineProject.Messages.MoveDown;
+import SubMarineProject.Messages.MoveUp;
+import SubMarineProject.Messages.TurnLeft;
+import SubMarineProject.Messages.TurnRight;
 
+import java.util.ArrayList;
+import java.util.List;
 
 public class Nemo {
-    private boolean isInSurface;
-    private int height;
     private Brujula direction;
-    private int amountOfCapsules;
-    private int[] coordenates;
     private Coordenadas coordenadas;
+    private Height height;
+    private List<Message> possibleMessages = new ArrayList<>();
+    
 
     public Nemo(){
-        this.isInSurface = true;
-        this.height = 0;
         this.direction = new East();
-        this.amountOfCapsules = 0;
-        this.coordenadas = new Coordenadas();
+        this.coordenadas = new Coordenadas(); 
+        this.height = new Height();
+        this.possibleMessages.add(new Move());
+        this.possibleMessages.add(new MoveDown());
+        this.possibleMessages.add(new MoveUp());
+        this.possibleMessages.add(new TurnLeft());
+        this.possibleMessages.add(new TurnRight());
+        this.possibleMessages.add(new LiberateCapsule());
     }
-    public void recieveMessage(String string){
-       // Arrays.stream(messages).forEach(this::execute);
-
-       for (int i = 0; i < =string.length; i++) {
-        
-       }
+    public void recieveMessage(String string) {
+        string.chars()
+              .mapToObj(letter -> (char) letter)
+              .flatMap(letter -> possibleMessages.stream().filter(message -> message.applies(letter)))
+              .forEach(message-> message.Execute(this));
     }
-    public  Nemo execute (Message message){
-       return message.Execute(this);
+    public  void execute (Message message){
+       message.Execute(this);
     }
-    public Nemo move(){
-        int[] coordenates = this.direction.move();
-        return this;
+    public void move(){
+         this.direction.move(this);
     }
     public Nemo turnRight() {
         this.direction = this.direction.turnRight();
@@ -45,44 +53,47 @@ public class Nemo {
         this.direction = this.direction.turnLeft();
         return this;
     }
-    public Nemo moveDown(){        
-        this.height -= 1;
-        this.isInSurface = false;
-        return this;
+    public void moveDown(){        
+        this.height.Submerged();
     }
-    public Nemo moveUp(){
-        this.height += 1;
-        if (getHeight() == 0){
-            this.isInSurface = true;
-        } 
-        return this;
+    public void moveUp(){
+        this.height.Emerged();
     }
-    public  Nemo liberateCapsule(){
-        if(getHeight() >=-1){
-            this.amountOfCapsules += 1;
-        }else{
-            throw new RuntimeException("Nemo exploded");
-        }
-        return this;
+    public  void liberateCapsule(){
+        height.LiberateCapsule();
     }
     public boolean isInSurface(){
-        return this.isInSurface;
+        return height.isInSurface();
     }
 
     public int getHeight(){
-        return this.height;
+        return this.height.getHeight();
     }
     public Brujula getDirection(){
         return this.direction;
     }
     public int getAmountOfCapsules(){
-        return this.amountOfCapsules;
+        return this.height.getAmountOfCapsules();
     }
     public int [] getCoordenadas(){
         return this.coordenadas.getCoordenates();
     }
-    public int[] getCoordenates(){
-        return this.coordenates;
+    public void fowardInX (){
+        this.coordenadas.addXcoord();
     }
-
+    public void backInX (){
+        this.coordenadas.minusXcordo();
+    }
+    public void fowardInY (){
+        this.coordenadas.addYcoord();
+    }
+    public void backIny (){
+        this.coordenadas.minusYcoord();
+    }
+    public int getXcoord (){
+        return this.coordenadas.getXcoord();
+    }
+    public int getYcoord (){
+        return this.coordenadas.getYcoord();
+    }
 }

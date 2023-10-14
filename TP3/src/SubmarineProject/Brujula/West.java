@@ -1,5 +1,7 @@
 package SubMarineProject.Brujula;
 
+import SubMarineProject.Nemo;
+
 /**
  * West
  */
@@ -11,8 +13,7 @@ public class West extends Brujula{
     public Brujula turnLeft(){
         return new South();
     }
-    public int[] move(){
-        int[]  coordenadas = {-1,0};
-        return coordenadas;
+    public void move(Nemo nemo){
+        nemo.backInX();
     }
 }

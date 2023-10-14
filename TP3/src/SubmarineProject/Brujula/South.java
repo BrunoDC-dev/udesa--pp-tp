@@ -1,5 +1,7 @@
 package SubMarineProject.Brujula;
 
+import SubMarineProject.Nemo;
+
 public class South extends Brujula{
     public String name = "South";
     public Brujula turnRight(){
@@ -8,8 +10,7 @@ public class South extends Brujula{
     public Brujula turnLeft(){
         return new East();
     }
-    public int[] move(){
-        int[]  coordenadas = {0,-1};
-        return coordenadas;
+    public void move(Nemo nemo){
+        nemo.backIny();
     }
 }

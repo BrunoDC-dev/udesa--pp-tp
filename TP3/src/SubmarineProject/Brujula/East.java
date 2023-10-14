@@ -1,5 +1,7 @@
 package SubMarineProject.Brujula;
 
+import SubMarineProject.Nemo;
+
 /**
  * East
  */
@@ -11,9 +13,9 @@ public class East extends Brujula{
     public Brujula turnLeft(){
        return new North();
     }
-    public int[] move(){
-        int[]  coordenadas = {1,0};
-        return coordenadas;
+    public void move(Nemo nemo){
+        nemo.fowardInY();
     }
+
     
 }

@@ -6,20 +6,20 @@ public class Coordenadas {
     public int getXcoord() {
         return Xcoord;
     }
-    public void addXcoord(int x) {
-        Xcoord += x;
+    public void addXcoord( ) {
+        Xcoord += 1;
     }
-    public void minusXcordo(int x) {
-        Xcoord -= x;
+    public void minusXcordo() {
+        Xcoord -= 1;
     }
     public int getYcoord() {
         return Ycoord;
     }
-    public void addYcoord(int y) {
-        Ycoord += y;
+    public void addYcoord() {
+        Ycoord += 1;
     }
-    public void minusYcoord(int y) {
-        Ycoord -= y;
+    public void minusYcoord() {
+        Ycoord -= 1;
     }
     public int[] getCoordenates() {
         return new int[]{Xcoord, Ycoord};

@@ -2,11 +2,13 @@ package SubMarineProject.Brujula;
 
 import java.util.Objects;
 
+import SubMarineProject.Nemo;
+
 public abstract class Brujula {
     public String name;
     public abstract Brujula turnRight();
     public abstract Brujula turnLeft();
-    public abstract int[] move();
+    public abstract void move(Nemo nemo);
     @Override
     public boolean equals(Object obj) {
         if (obj == this) {

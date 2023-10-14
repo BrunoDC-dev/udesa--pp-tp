@@ -21,5 +21,8 @@ public class Height {
     public int getAmountOfCapsules(){
         return amountOfCapsules;
     }
+    public boolean isInSurface (){
+        return level.isInSurface();
+    }
 
 }

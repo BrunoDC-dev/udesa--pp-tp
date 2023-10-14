@@ -1,7 +1,4 @@
 package SubMarineProject.Height;
-import SubMarineProject.Height.SubmergedLevel;
-import SubMarineProject.Height.UnderWater;
-
 public class Surface extends SubmergedLevel{
   public boolean isInSurface(){
     return true;
