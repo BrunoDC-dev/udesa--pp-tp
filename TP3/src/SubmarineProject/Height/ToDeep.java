@@ -21,6 +21,6 @@ public class ToDeep extends SubmergedLevel {
         return previousLevel.Height() - 1;
     }
     public int LiberateCapsule(){
-        throw new RuntimeException("Nemo exlpoeded");
+        throw new RuntimeException("Nemo exploded");
     }
 }
