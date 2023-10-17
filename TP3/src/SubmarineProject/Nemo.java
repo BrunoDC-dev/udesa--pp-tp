@@ -1,35 +1,36 @@
 package SubMarineProject;
-import SubMarineProject.Brujula.Brujula;
-import SubMarineProject.Brujula.East;
-import SubMarineProject.Coordenadas.Coordenadas;
+import SubMarineProject.Coordenates.Coordenates;
+import SubMarineProject.Coordenates.Point;
+import SubMarineProject.Direction.Direction;
+import SubMarineProject.Direction.East;
 import SubMarineProject.Height.Height;
 import SubMarineProject.Messages.LiberateCapsule;
 import SubMarineProject.Messages.Message;
-import SubMarineProject.Messages.Move;
-import SubMarineProject.Messages.MoveDown;
-import SubMarineProject.Messages.MoveUp;
-import SubMarineProject.Messages.TurnLeft;
-import SubMarineProject.Messages.TurnRight;
+import SubMarineProject.Messages.Foward;
+import SubMarineProject.Messages.Down;
+import SubMarineProject.Messages.Up;
+import SubMarineProject.Messages.Left;
+import SubMarineProject.Messages.Right;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Nemo {
-    private Brujula direction;
-    private Coordenadas coordenadas;
+    private Direction direction;
+    private Coordenates coordenadas;
     private Height height;
     private List<Message> possibleMessages = new ArrayList<>();
     
 
     public Nemo(){
         this.direction = new East();
-        this.coordenadas = new Coordenadas(); 
+        this.coordenadas = new Coordenates(new Point(0, 0)); 
         this.height = new Height();
-        this.possibleMessages.add(new Move());
-        this.possibleMessages.add(new MoveDown());
-        this.possibleMessages.add(new MoveUp());
-        this.possibleMessages.add(new TurnLeft());
-        this.possibleMessages.add(new TurnRight());
+        this.possibleMessages.add(new Foward());
+        this.possibleMessages.add(new Down());
+        this.possibleMessages.add(new Up());
+        this.possibleMessages.add(new Left());
+        this.possibleMessages.add(new Right());
         this.possibleMessages.add(new LiberateCapsule());
     }
     public void recieveMessage(String string) {
@@ -37,9 +38,6 @@ public class Nemo {
               .mapToObj(letter -> (char) letter)
               .flatMap(letter -> possibleMessages.stream().filter(message -> message.applies(letter)))
               .forEach(message-> message.Execute(this));
-    }
-    public  void execute (Message message){
-       message.Execute(this);
     }
     public void move(){
          this.direction.move(this);
@@ -69,31 +67,25 @@ public class Nemo {
     public int getHeight(){
         return this.height.getHeight();
     }
-    public Brujula getDirection(){
+    public Direction getDirection(){
         return this.direction;
     }
     public int getAmountOfCapsules(){
         return this.height.getAmountOfCapsules();
     }
-    public int [] getCoordenadas(){
-        return this.coordenadas.getCoordenates();
+    public Point getCoordenadas(){
+        return this.coordenadas.getPoint();
     }
     public void fowardInX (){
-        this.coordenadas.addXcoord();
+        this.coordenadas.add(new Point(1, 0));
     }
     public void backInX (){
-        this.coordenadas.minusXcordo();
+        this.coordenadas.add(new Point(-1, 0));
     }
     public void fowardInY (){
-        this.coordenadas.addYcoord();
+        this.coordenadas.add(new Point(0, 1));
     }
     public void backIny (){
-        this.coordenadas.minusYcoord();
-    }
-    public int getXcoord (){
-        return this.coordenadas.getXcoord();
-    }
-    public int getYcoord (){
-        return this.coordenadas.getYcoord();
+        this.coordenadas.add(new Point(0, -1));
     }
 }
