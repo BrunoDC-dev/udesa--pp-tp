@@ -26,7 +26,7 @@ public class Nemo {
               .flatMap(letter -> possibleMessages.stream().filter(message -> message.applies(letter)))
               .forEach(message-> message.Execute(this));
     }
-    public void move(){
+    public void foward (){
          this.direction.move(this);
     }
     public Nemo turnRight() {

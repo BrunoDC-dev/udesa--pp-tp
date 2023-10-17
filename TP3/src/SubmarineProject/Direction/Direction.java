@@ -8,7 +8,7 @@ public abstract class Direction {
     public String name;
     public abstract Direction turnRight();
     public abstract Direction turnLeft();
-    public abstract void move(Nemo nemo);
+    public abstract void move (Nemo nemo);
     @Override
     public boolean equals(Object obj) {
         if (obj == this) {

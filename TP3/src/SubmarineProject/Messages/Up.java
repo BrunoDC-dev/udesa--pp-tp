@@ -4,7 +4,7 @@ import SubMarineProject.Nemo;
 
 public class Up extends Message {
     public Up() {
-        super('u'); // Set the name in the superclass constructor
+        super('u'); 
     }
     public void Execute(Nemo nemo) {
          nemo.moveUp();

@@ -6,7 +6,7 @@ import SubMarineProject.Nemo;
  */
 public class LiberateCapsule  extends Message{
     public LiberateCapsule() {
-        super('m'); // Set the name in the superclass constructor
+        super('m'); 
     }
     public void Execute(Nemo nemo) {
         nemo.liberateCapsule();
