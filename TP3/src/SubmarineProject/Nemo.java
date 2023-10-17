@@ -1,37 +1,24 @@
 package SubMarineProject;
-import SubMarineProject.Coordenates.Coordenates;
-import SubMarineProject.Coordenates.Point;
-import SubMarineProject.Direction.Direction;
-import SubMarineProject.Direction.East;
+import SubMarineProject.Coordenates.*;
+import SubMarineProject.Direction.*;
+import SubMarineProject.Messages.*;
 import SubMarineProject.Height.Height;
-import SubMarineProject.Messages.LiberateCapsule;
-import SubMarineProject.Messages.Message;
-import SubMarineProject.Messages.Foward;
-import SubMarineProject.Messages.Down;
-import SubMarineProject.Messages.Up;
-import SubMarineProject.Messages.Left;
-import SubMarineProject.Messages.Right;
 
-import java.util.ArrayList;
+
+import java.util.Arrays;
 import java.util.List;
 
 public class Nemo {
     private Direction direction;
     private Coordenates coordenadas;
     private Height height;
-    private List<Message> possibleMessages = new ArrayList<>();
+    private List<Message> possibleMessages = Arrays.asList(new Foward(), new Down(), new Up(), new Left(), new Right(), new LiberateCapsule());
     
 
     public Nemo(){
         this.direction = new East();
         this.coordenadas = new Coordenates(new Point(0, 0)); 
         this.height = new Height();
-        this.possibleMessages.add(new Foward());
-        this.possibleMessages.add(new Down());
-        this.possibleMessages.add(new Up());
-        this.possibleMessages.add(new Left());
-        this.possibleMessages.add(new Right());
-        this.possibleMessages.add(new LiberateCapsule());
     }
     public void recieveMessage(String string) {
         string.chars()
@@ -39,7 +26,7 @@ public class Nemo {
               .flatMap(letter -> possibleMessages.stream().filter(message -> message.applies(letter)))
               .forEach(message-> message.Execute(this));
     }
-    public void move(){
+    public void foward (){
          this.direction.move(this);
     }
     public Nemo turnRight() {

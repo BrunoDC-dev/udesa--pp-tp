@@ -2,9 +2,6 @@ package SubMarineProject.Direction;
 
 import SubMarineProject.Nemo;
 
-/**
- * East
- */
 public class East extends Direction{
     public String name = "East";    
     public Direction turnRight(){
