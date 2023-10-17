@@ -1,13 +1,13 @@
-package SubMarineProject.Brujula;
+package SubMarineProject.Direction;
 
 import SubMarineProject.Nemo;
 
-public class South extends Brujula{
+public class South extends Direction{
     public String name = "South";
-    public Brujula turnRight(){
+    public Direction turnRight(){
         return new West();
     }
-    public Brujula turnLeft(){
+    public Direction turnLeft(){
         return new East();
     }
     public void move(Nemo nemo){

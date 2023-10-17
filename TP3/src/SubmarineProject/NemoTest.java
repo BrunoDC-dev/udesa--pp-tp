@@ -7,13 +7,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.function.Executable;
 
+import SubMarineProject.Direction.Direction;
+import SubMarineProject.Direction.East;
+import SubMarineProject.Direction.North;
+import SubMarineProject.Direction.South;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import SubMarineProject.Brujula.Brujula;
-import SubMarineProject.Brujula.East;
-import SubMarineProject.Brujula.North;
-import SubMarineProject.Brujula.South;
 
 
 
@@ -128,7 +128,7 @@ public class NemoTest {
         assertEquals( message,assertThrows( Exception.class, executable ).getMessage() );
     }
 
-    private void assertDirection(Brujula direction, String command) {
+    private void assertDirection(Direction direction, String command) {
         nemo.recieveMessage(command);
         assertEquals(direction, nemo.getDirection());
     }
@@ -140,7 +140,7 @@ public class NemoTest {
     
 
     private void assertCoords( int x, int y ) {
-        assertEquals(x, nemo.getXcoord());
-        assertEquals(y, nemo.getYcoord());
+        assertEquals(x, nemo.getCoordenadas().getXcoord());
+        assertEquals(y, nemo.getCoordenadas().getYcoord());
     }
 }

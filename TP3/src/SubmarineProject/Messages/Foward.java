@@ -2,12 +2,9 @@ package SubMarineProject.Messages;
 
 import SubMarineProject.Nemo;
 
-public class Move extends Message {
-    public Move() {
+public class Foward extends Message {
+    public Foward() {
         super('f'); // Set the name in the superclass constructor
-    }
-    public String getMessage(){
-        return "Move";
     }
     public void Execute(Nemo nemo) {
         nemo.move();
