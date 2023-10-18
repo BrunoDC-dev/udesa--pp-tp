@@ -11,7 +11,7 @@ public class East extends Direction{
        return new North();
     }
     public void move(Nemo nemo){
-        nemo.fowardInX();
+        nemo.forwardInX();
     }
 
     

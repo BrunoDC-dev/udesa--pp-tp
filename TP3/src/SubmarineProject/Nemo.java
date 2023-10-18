@@ -12,19 +12,21 @@ public class Nemo {
     private Direction direction;
     private Coordenates coordenadas;
     private Height height;
-    private List<Message> possibleMessages = Arrays.asList(new Foward(), new Down(), new Up(), new Left(), new Right(), new LiberateCapsule());
+    private List<Message> possibleMessages = Arrays.asList(new Forward(), new Down(), new Up(), new Left(), new Right(), new LiberateCapsule());
     
 
-    public Nemo(){
+    public Nemo( int x, int y){
         this.direction = new East();
-        this.coordenadas = new Coordenates(new Point(0, 0)); 
-        this.height = new Height();
+        this.coordenadas = new Coordenates(new Point(x, y)); 
+        this.height =  new Height();
     }
+
     public void recieveMessage(String string) {
-        string.chars()
-              .mapToObj(letter -> (char) letter)
-              .flatMap(letter -> possibleMessages.stream().filter(message -> message.applies(letter)))
-              .forEach(message-> message.Execute(this));
+        string.chars().mapToObj(letter -> (char) letter).forEach(this::recieveChar);
+     
+    }
+    public void recieveChar(char letter) {
+        possibleMessages.stream().filter(message -> message.applies(letter)).forEach(message-> message.Execute(this));
     }
     public void foward (){
          this.direction.move(this);
@@ -57,22 +59,19 @@ public class Nemo {
     public Direction getDirection(){
         return this.direction;
     }
-    public int getAmountOfCapsules(){
-        return this.height.getAmountOfCapsules();
-    }
     public Point getCoordenadas(){
         return this.coordenadas.getPoint();
     }
-    public void fowardInX (){
+    public void forwardInX (){
         this.coordenadas.add(new Point(1, 0));
     }
     public void backInX (){
         this.coordenadas.add(new Point(-1, 0));
     }
-    public void fowardInY (){
+    public void forwardInY (){
         this.coordenadas.add(new Point(0, 1));
     }
-    public void backIny (){
+    public void backInY (){
         this.coordenadas.add(new Point(0, -1));
     }
 }

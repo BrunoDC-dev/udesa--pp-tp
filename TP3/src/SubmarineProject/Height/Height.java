@@ -2,7 +2,7 @@ package SubMarineProject.Height;
 
 public class Height {
     private SubmergedLevel level;
-    private int amountOfCapsules = 0 ;
+
     public Height(){
         level = new Surface();
     }
@@ -16,10 +16,7 @@ public class Height {
         return level.Height();
     }
     public void LiberateCapsule(){
-        amountOfCapsules += level.LiberateCapsule();
-    }
-    public int getAmountOfCapsules(){
-        return amountOfCapsules;
+         level.LiberateCapsule();
     }
     public boolean isInSurface (){
         return level.isInSurface();

@@ -7,7 +7,7 @@ public class Surface extends SubmergedLevel{
         return this;
     }
     public SubmergedLevel Submerged(){
-        return new UnderWater();
+        return new BelowSurface();
     }    
     public int Height(){
         return 0;

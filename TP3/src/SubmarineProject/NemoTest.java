@@ -21,7 +21,7 @@ public class NemoTest {
 
     @BeforeEach
     public void setUp() {
-        nemo = new Nemo();
+        nemo = new Nemo( 0 , 0);
     }
  
     @Test public void test01NemoIsInSurface() {
@@ -41,12 +41,15 @@ public class NemoTest {
         //Nemo libera una capsula en la superficie
         nemo.recieveMessage("m");
         assertTrue(nemo.isInSurface());
-        assertEquals(nemo.getAmountOfCapsules(), 1);
+        assertEquals(new East(), nemo.getDirection());
+        assertCoordsAfterCommands(0, 0, nemoExploedString);
     }
     @Test public void test05LiberateMoreThanOneCapsule(){
         //Nemo libera una capsula en la superficie
         nemo.recieveMessage("mm");
-        assertEquals(nemo.getAmountOfCapsules(), 2);
+            assertTrue(nemo.isInSurface());
+        assertEquals(new East(), nemo.getDirection());
+        assertCoords(0, 0);
     }
     @Test public void test06EmergeInSurface(){
         //Nemo emerge en la superficie
@@ -110,7 +113,7 @@ public class NemoTest {
     @Test public void test19CanLiberateCapsleInHeightMinus1(){
         //Nemo libera una capsula en la altura -1
         nemo.recieveMessage("dm");
-        assertEquals(nemo.getAmountOfCapsules(), 1);
+        assertEquals(new East(), nemo.getDirection());
         assertEquals(nemo.getHeight(), -1);
         assertFalse(nemo.isInSurface());
     }

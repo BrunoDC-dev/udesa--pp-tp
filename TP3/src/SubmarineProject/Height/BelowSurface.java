@@ -1,6 +1,6 @@
 package SubMarineProject.Height;
 
-public class UnderWater extends SubmergedLevel {
+public class BelowSurface extends SubmergedLevel {
     public boolean isInSurface(){
         return false;
     }

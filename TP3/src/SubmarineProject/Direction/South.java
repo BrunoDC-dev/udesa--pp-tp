@@ -11,6 +11,6 @@ public class South extends Direction{
         return new East();
     }
     public void move(Nemo nemo){
-        nemo.backIny();
+        nemo.backInY();
     }
 }
