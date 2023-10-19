@@ -1,7 +1,8 @@
 package SubMarineProject.Height;
 
 public class ToDeep extends SubmergedLevel {
-    private static String explosion_message = "Nemo exploded";
+    // private static String explosion_message = "Nemo exploded";
+    public String explosion_message = "Nemo exploded";
 
     private SubmergedLevel previousLevel;
 

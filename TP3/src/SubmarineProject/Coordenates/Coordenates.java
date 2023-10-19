@@ -1,7 +1,7 @@
 package SubMarineProject.Coordenates;
 
 public class Coordenates {
-  private Point point;
+    private Point point;
     public Coordenates(Point point) {
         this.point = point;
     }

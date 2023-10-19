@@ -26,7 +26,9 @@ public class Nemo {
      
     }
     public void recieveChar(char letter) {
-        possibleMessages.stream().filter(message -> message.applies(letter)).forEach(message-> message.Execute(this));
+        possibleMessages.stream()
+                        .filter(message -> message.applies(letter))
+                        .forEach(message-> message.Execute(this));
     }
     public void foward (){
          this.direction.move(this);
