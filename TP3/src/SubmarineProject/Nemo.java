@@ -4,14 +4,11 @@ import SubMarineProject.Depths.Depth;
 import SubMarineProject.Directions.*;
 import SubMarineProject.Messages.*;
 
-import java.util.Arrays;
-import java.util.List;
 
 public class Nemo {
     private Direction direction;
     public Coordinates coordenadas;
     private Depth depth;
-    private List<Message> availableMessages  = Arrays.asList(new Forward(), new Down(), new Up(), new Left(), new Right(), new LiberateCapsule());
     
 
     public Nemo( int x, int y){
@@ -21,13 +18,11 @@ public class Nemo {
     }
 
     public void receiveMessage(String string) {
-        string.chars().mapToObj(letter -> (char) letter).forEach(this::receiveChar);
+        string.chars().forEach(letter -> receiveChar((char) letter));
      
     }
     public void receiveChar(char letter) {
-        availableMessages.stream()
-                        .filter(message -> message.applies(letter))
-                        .forEach(message-> message.Execute(this));
+        Message.getAvailableMessages(letter).Execute(this);
     }
     public void forward (){
          this.direction.move(this);
@@ -64,4 +59,5 @@ public class Nemo {
     public Point getCoordinates(){
         return this.coordenadas.getPosition();
     }
+
 }

@@ -4,7 +4,7 @@ import SubMarineProject.Nemo;
 
 public class Forward extends Message {
     public Forward() {
-        super('f'); // Set the name in the superclass constructor
+        super('f'); 
     }
     public void Execute(Nemo nemo) {
         nemo.forward();
