@@ -9,8 +9,8 @@ public class Coordinates {
         return position;
     }
     public void updateCoordinates(Point point) {
-        int x = this.position.getXcoord() + position.getXcoord();
-        int y = this.position.getYcoord() + position.getYcoord();
+        int x = this.position.getXcoord() + point.getXcoord();
+        int y = this.position.getYcoord() + point.getYcoord();
         this.position = new Point(x, y);
     }
 }

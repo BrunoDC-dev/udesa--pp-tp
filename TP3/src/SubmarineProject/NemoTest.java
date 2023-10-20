@@ -25,162 +25,132 @@ public class NemoTest {
     public void setUp() {
         nemo = new Nemo( 0 , 0);
     }
-
+    @Test public void test00NemoCanBeCreatedAnyWhere() {
+        nemo = new Nemo( 25 , 13);
+        assertCoords(25, 13);
+    }
     // Basic tests
     @Test public void test01NemoIsInSurface() {
-        //Nemo incializa en la superfice
         assertTrue(nemo.isInSurface());
     }
     @Test public void test02NemoStartsAtCenterByDefault() {
-        // Check that the X and Y coordinates are both 0
         assertCoords(0, 0);
     }
     @Test public void test03NemoStartsFacingEast(){
-        //Nemo incializa con direccion 0
         assertEquals(new East(), nemo.getDirection());
     }
-    @Test public void test00NemoStartsAtHeightZero(){
-        //Nemo incializa en 0 de altura
+    @Test public void test04NemoStartsAtHeightZero(){
         assertEquals(0, nemo.getDepth());
     }
-    @Test public void test00EmergeInSurface(){
-        //Nemo emerge en la superficie
-        nemo.receiveMessage("u");
-        assertTrue(nemo.isInSurface());
+    @Test public void test05EmergeInSurface(){
+        assertIsInSurfaceAfterCommands("u");
     }
-
-    // Height tests
-    @Test public void test00NemoDescendsOneUnit(){
-        //Nemo desciende una unidad
+    @Test public void test06NemoDescendsOneUnit(){
         nemo.receiveMessage("d");
         assertEquals(-1, nemo.getDepth());
     }
-    @Test public void test00NotInSurfaceAfterDescending(){
-        //Nemo no esta en la superficie luego de descender
+    @Test public void test07NotInSurfaceAfterDescending(){
         nemo.receiveMessage("d");
         assertFalse(nemo.isInSurface());
     }
-    @Test public void test00DescendingDoesntAffectPosition(){
-        //Nemo desciende y no afecta su posicion
+    @Test public void test08DescendingDoesntAffectPosition(){
         assertCoordsAfterCommands(0, 0,  "d"  );
     }
-    @Test public void test00DescendingDoesntAffectDirection(){
-        //Nemo desciende y no afecta su direccion
+    @Test public void test09DescendingDoesntAffectDirection(){
         assertDirection(new East(), "d");
     }
-    @Test public void test00NemoDescendsAndEmerge1(){
-        //Nemo desciende y emerge a altura 0
+    @Test public void test10NemoDescendsAndEmerge(){
         nemo.receiveMessage("du");
         assertEquals(nemo.getDepth(), 0);
-    }
-    @Test public void test00NemoDescendsAndEmerge2(){
-        //Nemo desciende y emerge en la superficie
-        nemo.receiveMessage("du");
         assertTrue(nemo.isInSurface());
     }
-    // Agregar mas peor de emerge?
-    
-    // Direction tests
-    @Test public void test00NemoMoves90degreesToRight(){
+    @Test public void test11NemoDescendsExtreme(){
+        nemo.receiveMessage("ddddddddddddddddddd");
+        assertEquals(nemo.getDepth(), -19);
+        nemo.receiveMessage("uuuuuuuuuuuuuuuuuuu"); 
+        assertEquals(nemo.getDepth(), 0);
+        assertTrue(nemo.isInSurface());   
+    }
+    @Test public void test12NemoMoves90degreesToRight(){
         //Nemo gira 90 grados a la derecha
         assertDirection(new South(), "r");
     }
-    @Test public void test00NemoMoves90degreesToLeft(){
-        //Nemo gira 90 grados a la izquierda
+    @Test public void test13NemoMoves90degreesToLeft(){
         assertDirection(new North(), "l");
     }
-    @Test public void test00NemoMoves180degreesToRight(){
-        //Nemo gira 180 grados a la derecha
+    @Test public void test14NemoMoves180degreesToRight(){
         assertDirection(new West(), "rr");
     }
-    @Test public void test00NemoMoves180degreesToLeft(){
-        //Nemo gira 180 grados a la izquierda
+    @Test public void test15NemoMoves180degreesToLeft(){
         assertDirection(new West(), "ll");
     }
-    @Test public void test00NemoMoves360degreesToRight(){
-        //Nemo gira 360 grados a la derecha
+    @Test public void test16NemoMoves360degreesToRight(){
         assertDirection(new East(), "rrrr");
     }
-    @Test public void test00NemoMoves360degreesToLeft(){
-        //Nemo gira 360 grados a la izquierda
+    @Test public void test17NemoMoves360degreesToLeft(){
         assertDirection(new East(), "llll");
     }
-    @Test public void test00RotatingLeftRightDoesNothing(){
+    @Test public void test18RotatingLeftRightDoesNothing(){
         assertDirection(new East(), "rl");
     }
-    @Test public void test00RotatingRightLeftDoesNothing(){
+    @Test public void test18RotatingRightLeftDoesNothing(){
         assertDirection(new East(), "lr");
     }
-
-    // Movement tests
-    @Test public void test00NemoMovesInXCoordenate(){
-        //Nemo se mueve en el eje x
+    @Test public void test19NemoMovesInXCoordenate(){
         assertCoordsAfterCommands(1, 0, "f");
     }
-    @Test public void test00NemoMovesInYCoordenate(){
-        //Nemo se mueve en el eje y
+    @Test public void test20NemoMovesInYCoordenate(){
         assertCoordsAfterCommands(0, 1, "lf");
     }
-    @Test public void test00NemoMovesMinusXCoordenate(){
-        //Nemo se mueve en el eje x negativo
+    @Test public void test21NemoMovesMinusXCoordenate(){
         assertCoordsAfterCommands(-1, 0, "llf");
     }
-    @Test public void test00NemoMovesMinusYCoordenate(){
-        //Nemo se mueve en el eje y negativo
+    @Test public void test22NemoMovesMinusYCoordenate(){
         assertCoordsAfterCommands(0, -1,"rf");
     }
-    @Test public void test00NemoSpinAndMovesXCoordenate (){
-        //Nemo gira y se mueve en el eje x
+    @Test public void test23NemoSpinAndMovesXCoordenate (){
         assertCoordsAfterCommands(1, 0, "rrrrf");
     }
-    @Test public void test00NemoMovesXCoordinateTurnBack (){
-        //Nemo se mueve en el eje x y gira 180 grados
+    @Test public void test24NemoMovesXCoordinateTurnBack (){
         assertCoordsAfterCommands(0, 0,"frrf");
     }
-    @Test public void test00NemoMovesYCoordinateTurnBack (){
-        //Nemo se mueve en el eje y y gira 180 grados
+    @Test public void test25NemoMovesYCoordinateTurnBack (){
         assertCoordsAfterCommands(0, 0, "lfrrf" );
     }
+    @Test public void test26LiberatingCapsuleDoesntAffectDirection(){
+        assertDirection(new East(), "m");
+    }
+    @Test public void test27LiberatingCapsuleDoesntAffectHeight(){
+        assertIsInSurfaceAfterCommands("m");
 
-    // Capsule tests
-    @Test public void test00LiberatingCapsuleDoesntAffectDirection(){
-        //Nemo libera una capsula en la superficie
-        nemo.receiveMessage("m");
-        assertEquals(new East(), nemo.getDirection());
     }
-    @Test public void test00LiberatingCapsuleDoesntAffectHeight(){
-        //Nemo libera una capsula en la superficie
-        nemo.receiveMessage("m");
-        assertTrue(nemo.isInSurface());
+    @Test public void test28LiberatingCapsuleDoesntAffectPosition(){
+        assertCoordsAfterCommands(0, 0, "m");
     }
-    @Test public void test00LiberatingCapsuleDoesntAffectPosition(){
-        // Nemo libera una capsula en la superficie
-        nemo.receiveMessage("m");
-        assertCoordsAfterCommands(0, 0, nemoExplodedString);
-    }
-    @Test public void test00LiberateMoreThanOneCapsule(){
-        //Nemo libera una capsula en la superficie
+    @Test public void test29LiberateMoreThanOneCapsuleDoesnAffect(){
         nemo.receiveMessage("mm");
         assertTrue(nemo.isInSurface());
+        assertEquals(0, nemo.getDepth());
         assertEquals(new East(), nemo.getDirection());
         assertCoords(0, 0);
     }
-    @Test public void test19CanLiberateCapsleInHeightMinus1(){
-        //Nemo libera una capsula en la altura -1
+    @Test public void test30CanLiberateCapsleInHeightMinus1(){
         nemo.receiveMessage("dm");
-        assertEquals(new East(), nemo.getDirection());
         assertEquals(nemo.getDepth(), -1);
         assertFalse(nemo.isInSurface());
     }
+    @Test public void test31CanLiberateCapsulesInAnyPosition(){
+        nemo.receiveMessage("fffffmrffffmdrffffm");
+        assertEquals(nemo.getDepth(), -1);
+        assertFalse(nemo.isInSurface());
+        assertEquals(new East(), nemo.getDirection());
+        assertCoords(1, -4);
+    }
     @Test public void test20CantLiberateCapsleInHeightMinus2(){
-        //Nemo libera una capsula en la altura -2
         nemo.receiveMessage("dd");
         assertThrowsLike( () -> nemo.receiveMessage("m"), nemoExplodedString );
     }
-
     private Nemo nemo;
-
-    // private String nemoExplodedString = "Nemo exploded";
     private String nemoExplodedString = new ToDeep(new Underwater()).explosion_message;
     
     private void assertThrowsLike( Executable executable, String message ) {
@@ -201,10 +171,10 @@ public class NemoTest {
         assertEquals(x, nemo.getCoordinates().getXcoord());
         assertEquals(y, nemo.getCoordinates().getYcoord());
     }
-
-    // hacer dos para true/false?  /  pasarle argumento true/false y meter if?
-    private void assertSurfaceAfterCommands( String message ) {
+    private void assertIsInSurfaceAfterCommands( String message ) {
         nemo.receiveMessage(message);
         assertTrue(nemo.isInSurface());
+        assertEquals(0, nemo.getDepth());
     }
+
 }

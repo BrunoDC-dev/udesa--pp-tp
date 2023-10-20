@@ -53,7 +53,7 @@ public class Nemo {
     }
     
     public void updatePosition (Point point){
-        this.coordenadas.updateCoordinates( point);
+        this.coordenadas.updateCoordinates(point);
     }
     public int getDepth(){
         return this.depth.getDepthLevel();
