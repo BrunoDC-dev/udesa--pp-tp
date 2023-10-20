@@ -10,6 +10,7 @@ import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import SubMarineProject.Coordinates.Point;
 import SubMarineProject.Depths.ToDeep;
 import SubMarineProject.Depths.Underwater;
 import SubMarineProject.Directions.Direction;
@@ -23,11 +24,12 @@ public class NemoTest {
 
     @BeforeEach
     public void setUp() {
-        nemo = new Nemo( 0 , 0);
+        nemo = new Nemo( new Point(0 , 0) , new East());
     }
-    @Test public void test00NemoCanBeCreatedAnyWhere() {
-        nemo = new Nemo( 25 , 13);
+    @Test public void test00NemoCanBeCreatedAnyWhereFacingAnything() {
+        nemo = new Nemo( new Point(25, 13), new South());
         assertCoords(25, 13);
+        assertEquals(new South(), nemo.getDirection());
     }
     // Basic tests
     @Test public void test01NemoIsInSurface() {
@@ -146,7 +148,7 @@ public class NemoTest {
         assertEquals(new East(), nemo.getDirection());
         assertCoords(1, -4);
     }
-    @Test public void test20CantLiberateCapsleInHeightMinus2(){
+    @Test public void test32CantLiberateCapsleInHeightMinus2(){
         nemo.receiveMessage("dd");
         assertThrowsLike( () -> nemo.receiveMessage("m"), nemoExplodedString );
     }

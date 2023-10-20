@@ -4,14 +4,14 @@ public class Underwater extends SubmergedLevel {
     public boolean isInSurface(){
         return false;
     }
-    public SubmergedLevel emerged(){
+    public SubmergedLevel emerge(){
         return new Surface();
     }
-    public SubmergedLevel submerged(){
+    public SubmergedLevel submerge(){
         return new ToDeep(this);
     }
 
-    public int depth(){
+    public int getDepth(){
         return -1;
     }
 }

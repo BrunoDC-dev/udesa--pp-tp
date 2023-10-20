@@ -1,15 +1,16 @@
 package SubMarineProject.Depths;
+
 public class Surface extends SubmergedLevel{
     public boolean isInSurface(){
         return true;
     }
-    public SubmergedLevel emerged(){
+    public SubmergedLevel emerge(){
         return this;
     }
-    public SubmergedLevel submerged(){
+    public SubmergedLevel submerge(){
         return new Underwater();
     }    
-    public int depth(){
+    public int getDepth(){
         return 0;
     }
 }
