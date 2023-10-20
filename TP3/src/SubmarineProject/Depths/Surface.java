@@ -1,15 +1,15 @@
-package SubMarineProject.Height;
+package SubMarineProject.Depths;
 public class Surface extends SubmergedLevel{
     public boolean isInSurface(){
         return true;
     }
-    public SubmergedLevel Emerged(){
+    public SubmergedLevel emerged(){
         return this;
     }
-    public SubmergedLevel Submerged(){
-        return new BelowSurface();
+    public SubmergedLevel submerged(){
+        return new Underwater();
     }    
-    public int Height(){
+    public int depth(){
         return 0;
     }
 }

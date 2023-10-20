@@ -1,7 +1,7 @@
-package SubMarineProject.Direction;
+package SubMarineProject.Directions;
 
 import SubMarineProject.Nemo;
-import SubMarineProject.Coordenates.Point;
+import SubMarineProject.Coordinates.Point;
 
 public class North extends Direction{
     public String name = "North";
@@ -12,6 +12,6 @@ public class North extends Direction{
        return new West();
     }
     public void move(Nemo nemo){
-        nemo.add(new Point(0, 1));
+        nemo.updatePosition(new Point(0, 1));
     }
     }

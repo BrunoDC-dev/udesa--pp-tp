@@ -1,4 +1,4 @@
-package SubMarineProject.Coordenates;
+package SubMarineProject.Coordinates;
 
 public class Point {
     private int Xcoord = 0 ;

@@ -1,7 +1,7 @@
-package SubMarineProject.Height;
+package SubMarineProject.Depths;
 
 public class ToDeep extends SubmergedLevel {
-    private static String explosion_message = "Nemo exploded";
+    public String explosion_message = "Nemo exploded";
 
     private SubmergedLevel previousLevel;
 
@@ -11,16 +11,16 @@ public class ToDeep extends SubmergedLevel {
     public boolean isInSurface(){
         return false;
     }
-    public SubmergedLevel Emerged(){
+    public SubmergedLevel emerged(){
         return previousLevel;
     }
-    public SubmergedLevel Submerged(){
+    public SubmergedLevel submerged(){
         return new ToDeep(this);
     }
-    public int Height(){
-        return previousLevel.Height() - 1;
+    public int depth(){
+        return previousLevel.depth() - 1;
     }
-    public int LiberateCapsule(){
+    public int liberateCapsule(){
         throw new RuntimeException(explosion_message);
     }
 }

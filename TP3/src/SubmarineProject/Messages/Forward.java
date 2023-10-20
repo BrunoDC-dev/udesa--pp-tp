@@ -7,6 +7,6 @@ public class Forward extends Message {
         super('f'); // Set the name in the superclass constructor
     }
     public void Execute(Nemo nemo) {
-        nemo.foward();
+        nemo.forward();
     }
 }

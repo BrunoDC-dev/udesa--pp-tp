@@ -1,4 +1,4 @@
-package SubMarineProject.Direction;
+package SubMarineProject.Directions;
 
 import java.util.Objects;
 

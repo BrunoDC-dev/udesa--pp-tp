@@ -1,22 +1,22 @@
-package SubMarineProject.Height;
+package SubMarineProject.Depths;
 
-public class Height {
+public class Depth {
     private SubmergedLevel level;
 
-    public Height(){
+    public Depth(){
         level = new Surface();
     }
     public void Emerged(){
-        level = level.Emerged();
+        level = level.emerged();
     }
     public void Submerged(){
-        level = level.Submerged();
+        level = level.submerged();
     }
-    public int getHeight(){
-        return level.Height();
+    public int getDepthLevel(){
+        return level.depth();
     }
     public void LiberateCapsule(){
-         level.LiberateCapsule();
+         level.liberateCapsule();
     }
     public boolean isInSurface (){
         return level.isInSurface();
