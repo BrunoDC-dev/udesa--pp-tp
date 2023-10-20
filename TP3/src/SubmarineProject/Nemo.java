@@ -1,6 +1,7 @@
 package SubMarineProject;
 import SubMarineProject.Coordinates.*;
-import SubMarineProject.Depths.Depth;
+import SubMarineProject.Depths.SubmergedLevel;
+import SubMarineProject.Depths.Surface;
 import SubMarineProject.Directions.*;
 import SubMarineProject.Messages.*;
 
@@ -10,14 +11,14 @@ import java.util.List;
 public class Nemo {
     private Direction direction;
     public Coordinates coordenadas;
-    private Depth depth;
+    private SubmergedLevel level;
     private List<Message> availableMessages  = Arrays.asList(new Forward(), new Down(), new Up(), new Left(), new Right(), new LiberateCapsule());
     
 
     public Nemo( int x, int y){
         this.direction = new East();
         this.coordenadas = new Coordinates(new Point(x, y)); 
-        this.depth =  new Depth();
+        this.level =  new Surface();
     }
 
     public void receiveMessage(String string) {
@@ -39,24 +40,24 @@ public class Nemo {
     public void turnLeft(){
         this.direction = this.direction.turnLeft();
     }
-    public void moveDown(){        
-        this.depth.Submerged();
+    public void moveDown(){
+        this.level = this.level.submerge();
     }
     public void moveUp(){
-        this.depth.Emerged();
+        this.level = this.level.emerge();
     }
     public  void liberateCapsule(){
-        depth.LiberateCapsule();
+        this.level.liberateCapsule();
     }
     public boolean isInSurface(){
-        return depth.isInSurface();
+        return level.isInSurface();
     }
     
     public void updatePosition (Point point){
         this.coordenadas.updateCoordinates(point);
     }
     public int getDepth(){
-        return this.depth.getDepthLevel();
+        return this.level.getDepth();
     }
     public Direction getDirection(){
         return this.direction;

@@ -2,9 +2,9 @@ package SubMarineProject.Depths;
 
 public abstract  class SubmergedLevel {
     public abstract boolean isInSurface();
-    public abstract SubmergedLevel emerged();
-    public abstract SubmergedLevel submerged();
-    public abstract int depth();
+    public abstract SubmergedLevel emerge();
+    public abstract SubmergedLevel submerge();
+    public abstract int getDepth();
     public int liberateCapsule(){
         return 1;
     }

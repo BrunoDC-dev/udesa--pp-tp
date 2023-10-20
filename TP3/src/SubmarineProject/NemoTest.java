@@ -146,7 +146,7 @@ public class NemoTest {
         assertEquals(new East(), nemo.getDirection());
         assertCoords(1, -4);
     }
-    @Test public void test20CantLiberateCapsleInHeightMinus2(){
+    @Test public void test32CantLiberateCapsleInHeightMinus2(){
         nemo.receiveMessage("dd");
         assertThrowsLike( () -> nemo.receiveMessage("m"), nemoExplodedString );
     }

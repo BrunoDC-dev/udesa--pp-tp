@@ -11,14 +11,14 @@ public class ToDeep extends SubmergedLevel {
     public boolean isInSurface(){
         return false;
     }
-    public SubmergedLevel emerged(){
+    public SubmergedLevel emerge(){
         return previousLevel;
     }
-    public SubmergedLevel submerged(){
+    public SubmergedLevel submerge(){
         return new ToDeep(this);
     }
-    public int depth(){
-        return previousLevel.depth() - 1;
+    public int getDepth(){
+        return previousLevel.getDepth() - 1;
     }
     public int liberateCapsule(){
         throw new RuntimeException(explosion_message);
