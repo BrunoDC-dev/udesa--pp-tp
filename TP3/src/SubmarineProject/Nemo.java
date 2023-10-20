@@ -10,7 +10,7 @@ import java.util.List;
 
 public class Nemo {
     private Direction direction;
-    private Coordenates coordenadas;
+    public Coordenates coordenadas;
     private Height height;
     private List<Message> possibleMessages = Arrays.asList(new Forward(), new Down(), new Up(), new Left(), new Right(), new LiberateCapsule());
     
@@ -31,14 +31,12 @@ public class Nemo {
     public void foward (){
          this.direction.move(this);
     }
-    public Nemo turnRight() {
+    public void turnRight() {
         this.direction = this.direction.turnRight();
-        return this;
     }
     
-    public Nemo turnLeft(){
+    public void turnLeft(){
         this.direction = this.direction.turnLeft();
-        return this;
     }
     public void moveDown(){        
         this.height.Submerged();
@@ -62,16 +60,7 @@ public class Nemo {
     public Point getCoordenadas(){
         return this.coordenadas.getPoint();
     }
-    public void forwardInX (){
-        this.coordenadas.add(new Point(1, 0));
-    }
-    public void backInX (){
-        this.coordenadas.add(new Point(-1, 0));
-    }
-    public void forwardInY (){
-        this.coordenadas.add(new Point(0, 1));
-    }
-    public void backInY (){
-        this.coordenadas.add(new Point(0, -1));
+    public void add(Point point){
+        this.coordenadas.add(point);
     }
 }
