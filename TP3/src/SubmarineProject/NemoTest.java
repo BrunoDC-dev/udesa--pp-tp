@@ -10,14 +10,6 @@ import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import SubMarineProject.Coordinates.Point;
-import SubMarineProject.Depths.ToDeep;
-import SubMarineProject.Depths.Underwater;
-import SubMarineProject.Directions.Direction;
-import SubMarineProject.Directions.East;
-import SubMarineProject.Directions.North;
-import SubMarineProject.Directions.South;
-import SubMarineProject.Directions.West;
 
 
 public class NemoTest {
@@ -132,9 +124,7 @@ public class NemoTest {
     @Test public void test29LiberateMoreThanOneCapsuleDoesnAffect(){
         nemo.receiveMessage("mm");
         assertTrue(nemo.isInSurface());
-        assertEquals(0, nemo.getDepth());
-        assertEquals(new East(), nemo.getDirection());
-        assertCoords(0, 0);
+        assertCoordsDepthAndDirection(0, 0, 0, new East());
     }
     @Test public void test30CanLiberateCapsleInHeightMinus1(){
         nemo.receiveMessage("dm");
@@ -143,14 +133,17 @@ public class NemoTest {
     }
     @Test public void test31CanLiberateCapsulesInAnyPosition(){
         nemo.receiveMessage("fffffmrffffmdrffffm");
-        assertEquals(nemo.getDepth(), -1);
         assertFalse(nemo.isInSurface());
-        assertEquals(new East(), nemo.getDirection());
-        assertCoords(1, -4);
+        assertCoordsDepthAndDirection(1, -4, -1, new East());
     }
     @Test public void test32CantLiberateCapsleInHeightMinus2(){
         nemo.receiveMessage("dd");
-        assertThrowsLike( () -> nemo.receiveMessage("m"), nemoExplodedString );
+        assertExceptionMinus2Depth(-2);
+    }
+    @Test public void test33NemoCanMoveBeforeBlowing(){
+        nemo.receiveMessage("ffffmdrffffd");
+        assertCoords(4, -4);
+        assertExceptionMinus2Depth(-2);
     }
     private Nemo nemo;
     private String nemoExplodedString = new ToDeep(new Underwater()).explosion_message;
@@ -178,5 +171,13 @@ public class NemoTest {
         assertTrue(nemo.isInSurface());
         assertEquals(0, nemo.getDepth());
     }
-
+    private void assertExceptionMinus2Depth(int depth){
+        assertEquals(depth, nemo.getDepth());
+        assertThrowsLike( () -> nemo.receiveMessage("m"), nemoExplodedString );
+    }
+    private void assertCoordsDepthAndDirection (int x, int y, int depth, Direction direction){
+        assertCoords(x, y);
+        assertEquals(depth, nemo.getDepth());
+        assertEquals(direction, nemo.getDirection());
+    }
 }

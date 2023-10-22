@@ -1,10 +1,4 @@
 package SubMarineProject;
-import SubMarineProject.Coordinates.*;
-import SubMarineProject.Depths.SubmergedLevel;
-import SubMarineProject.Depths.Surface;
-import SubMarineProject.Directions.*;
-import SubMarineProject.Messages.*;
-
 
 public class Nemo {
     private Direction direction;
