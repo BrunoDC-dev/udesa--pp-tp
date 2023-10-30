@@ -87,7 +87,40 @@ public class GameTest {
         blackPlays(0,0);
         assertThrowsLike(()->whitePlays(0), "No empty slots");
     }
+    @Test public void testCanWinDiagonal(){
+        dashoboard = new Dashoboard(4, 4, "C");
+        whitePlays(0);
+        blackPlays(1);
+        whitePlays(1);
+        blackPlays(2,2);
+        whitePlays(2);
+        blackPlays(3,3,3);
+        whitePlays(3);
+        assertTrue(dashoboard.finished());
+    }
+    @Test public void testYouCanLooseDiagonal (){
+         dashoboard = new Dashoboard(4, 4, "C");
+        whitePlays(0);
+        blackPlays(1);
+        whitePlays(1);
+        blackPlays(2,2);
+        whitePlays(2);
+        blackPlays(3,3,3);
+        assertFalse(dashoboard.finished());
+    }
+    @Test public void testCanWinDiagonal7x6(){
+        dashoboard = new Dashoboard(4, 5, "C");
+        whitePlays(0);
+        blackPlays(0);
+        whitePlays(1);
+        blackPlays(1,1);
+        whitePlays(2);
+        blackPlays(2,2,2);
+        whitePlays(3,3,3,3);
+        blackPlays(3);
+        assertTrue(dashoboard.finished());
 
+    }
     public String getColumnErrorString() {
         return dashoboard.columnErrorMessage;
     }

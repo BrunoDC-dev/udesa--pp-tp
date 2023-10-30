@@ -26,5 +26,7 @@ public class PieceSlot  extends Slots{
     public Slots place(Piece piece) {
         throw new RuntimeException("No se puede colocar una pieza en un casillero ocupado");
     }
-    
+    public Piece getPiece() {
+        return piece;
+    }
 }

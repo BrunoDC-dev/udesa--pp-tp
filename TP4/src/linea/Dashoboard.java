@@ -6,6 +6,9 @@ import java.util.stream.IntStream;
 import linea.GameMode.Referee;
 import linea.Grid.Columns;
 import linea.Grid.Rows;
+import linea.Pieces.BlackPiece;
+import linea.Pieces.Piece;
+import linea.Pieces.WhitePiece;
 public class Dashoboard {
    
     int width;
@@ -24,8 +27,8 @@ public class Dashoboard {
         this.height = height;
         this.gameType = gameType;
         this.gameIsOver = false;
-        columns = IntStream.range(0, height).mapToObj(i -> new Columns(height, i)).collect(Collectors.toCollection(ArrayList::new));
-        rows = IntStream.range(0, width).mapToObj(i -> new Rows(width, i)).collect(Collectors.toCollection(ArrayList::new));
+        columns = IntStream.range(0, width).mapToObj(i -> new Columns(height, i)).collect(Collectors.toCollection(ArrayList::new));
+        rows = IntStream.range(0, height).mapToObj(i -> new Rows(width, i)).collect(Collectors.toCollection(ArrayList::new));
     }
     public boolean isEmpty(){
         return this.columns.stream().allMatch(column -> column.isEmpty()) && this.rows.stream().allMatch(row -> row.isEmpty());
@@ -58,6 +61,10 @@ public class Dashoboard {
         this.gameIsOver = rows.stream().anyMatch(Rows::winnerInRow);
     }
     public void anyoneWonDiagonal() {
+                this.gameIsOver = anyoneWonDiagonalChekcer(new WhitePiece()) || anyoneWonDiagonalChekcer(new BlackPiece());
+    }
+    public Piece getPieceAt(int column, int row) {
+        return columns.get(column).getPieceAt(row);
     }
     public void anyoneWon() {
         Referee.getReferee(this.gameType).anyoneWon(this);
@@ -79,5 +86,18 @@ public class Dashoboard {
     }
     public String show(){
         return""; //TODO
+    }
+    public boolean anyoneWonDiagonalChekcer(Piece piece){
+        
+        boolean leftSlantDiagonal = IntStream.range(0, this.width - (4 - 1))
+        .anyMatch(col -> IntStream.range(0, this.height - (4 - 1))
+            .anyMatch(row -> IntStream.range(0, 4)
+                .allMatch(k -> this.getPieceAt(col + k, row + k).getClass() == piece.getClass())));
+
+        boolean rightSlantDiagonal = IntStream.range(0, this.width - (4 - 1))
+        .anyMatch(col -> IntStream.range(0, this.height - (4 - 1))
+            .anyMatch(row -> IntStream.range(0, 4)
+                .allMatch(k -> this.getPieceAt(this.width - 1 - col - k, row + k).getClass() == piece.getClass())));
+                return rightSlantDiagonal || leftSlantDiagonal;
     }
 }

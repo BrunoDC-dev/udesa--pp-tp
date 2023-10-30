@@ -8,4 +8,5 @@ public abstract class Slots {
     public abstract boolean hasBlackPiece ();
     public abstract boolean hasWhitePiece ();
     public abstract Slots place(Piece piece);
+    public abstract Piece getPiece();
 }

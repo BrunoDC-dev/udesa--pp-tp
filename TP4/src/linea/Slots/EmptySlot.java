@@ -1,8 +1,13 @@
 package linea.Slots;
 
+import linea.Pieces.EmptyPiece;
 import linea.Pieces.Piece;
 
 public class EmptySlot extends Slots {
+    private Piece piece;
+    public EmptySlot() {
+        this.piece = new EmptyPiece();
+    }
 
     public boolean isEmpty() {
         return true;
@@ -19,6 +24,9 @@ public class EmptySlot extends Slots {
     }
     public Slots place(Piece piece) {
         return new PieceSlot(piece);
+    }
+    public Piece getPiece() {
+        return piece;
     }
 
 }

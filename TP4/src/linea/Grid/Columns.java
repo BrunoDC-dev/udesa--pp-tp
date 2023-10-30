@@ -4,6 +4,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import linea.Pieces.BlackPiece;
+import linea.Pieces.Piece;
 import linea.Pieces.WhitePiece;
 import linea.Slots.EmptySlot;
 import linea.Slots.Slots;
@@ -65,5 +66,7 @@ public class Columns {
     public int getColumnNumber() {
         return columnNumber;
     }
-
+    public Piece getPieceAt(int row) {
+        return slots.get(row).getPiece();
+    }
 }
