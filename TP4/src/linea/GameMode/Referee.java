@@ -14,7 +14,7 @@ public abstract class Referee {
     public Referee(String type){
         this.type = type;
     }
-    public abstract void anyoneWon(Dashoboard dashoboard);
+    public abstract void anyoneWon(Dashoboard dashoboard , String player);
     
     public  boolean canHandle(String type){
         return this.type ==type;

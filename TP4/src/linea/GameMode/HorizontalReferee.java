@@ -6,7 +6,7 @@ public class HorizontalReferee extends Referee {
     public HorizontalReferee(){
        super(  "B" );
     }
-    public void anyoneWon (Dashoboard dashoboard){
-        dashoboard.anyoneWonHorizontal();
+    public void anyoneWon (Dashoboard dashoboard, String piece){
+        dashoboard.anyoneWonHorizontal(piece);
     }
 }

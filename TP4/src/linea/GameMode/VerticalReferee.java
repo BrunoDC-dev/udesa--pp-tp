@@ -6,7 +6,7 @@ public class VerticalReferee extends Referee {
     public VerticalReferee(){
        super(  "A" );
     }
-    public void anyoneWon (Dashoboard dashoboard){
-        dashoboard.anyoneWonVertical();
+    public void anyoneWon (Dashoboard dashoboard , String player){
+        dashoboard.anyoneWonVertical(player);
     }
 }
