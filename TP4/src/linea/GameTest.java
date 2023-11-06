@@ -58,21 +58,29 @@ public class GameTest {
     }
     @Test public void testGameIsOverWhenWhiteWins(){
         simulatePlaying(0,1,0,1,0,1,0);
-         assertTrue(dashoboard.finished());
+        assertTrue(dashoboard.finished());
+        assertTrue(dashoboard.hasWhtieWon());
+        assertFalse(dashoboard.hasBlackWon());
     }
     @Test public void testGamecanwinAnyoneAnywhere(){
         simulatePlaying(0,1,0,1,0,1,3,1);
-         assertTrue(dashoboard.finished());
+        assertTrue(dashoboard.finished());
+        assertFalse(dashoboard.hasWhtieWon());
+        assertTrue(dashoboard.hasBlackWon());
      }
     @Test public void testGameCanEndHorizontally(){
          dashoboard = new Dashoboard(4, 4, "B");
          simulatePlaying(0,0,1,1,2,2,3);
-        assertTrue(dashoboard.finished());
+         assertTrue(dashoboard.finished());
+         assertTrue(dashoboard.hasWhtieWon());
+            assertFalse(dashoboard.hasBlackWon());
     }
     @Test public void testyounotalwaysWIn (){
         dashoboard = new Dashoboard(4, 4, "B");
         simulatePlaying(0,0,1,1,2,2);
         assertFalse(dashoboard.finished());
+        assertFalse(dashoboard.hasWhtieWon());
+        assertFalse(dashoboard.hasBlackWon());
      }
     @Test public void testCantPlaceOverAfullcolumn(){
         
@@ -81,17 +89,23 @@ public class GameTest {
     @Test public void testCanWinDiagonal(){
         dashoboard = new Dashoboard(4, 4, "C");
         simulatePlaying(0,1,1,2,2,3,2,3,3,0,3);
-         assertTrue(dashoboard.finished());
+        assertTrue(dashoboard.finished());
+        assertTrue(dashoboard.hasWhtieWon());
+        assertFalse(dashoboard.hasBlackWon());
      }
     @Test public void testYouCanLooseDiagonal (){
         dashoboard = new Dashoboard(4, 4, "C");
         simulatePlaying(1,0,2,2,1,2,3,3,3,3);
-         assertFalse(dashoboard.finished());
+        assertFalse(dashoboard.finished());
+        assertFalse(dashoboard.hasWhtieWon());
+        assertFalse(dashoboard.hasBlackWon());
      }
     @Test public void testCanWinReverseDiagonal (){
          dashoboard = new Dashoboard(4, 4, "C");
          simulatePlaying(2,0,1,3,1,2,0,1,0,0);
-    assertTrue(dashoboard.finished());
+         assertTrue(dashoboard.finished());
+            assertFalse(dashoboard.hasWhtieWon());
+            assertTrue(dashoboard.hasBlackWon());
      }
     public String getColumnErrorString() {
         return dashoboard.columnErrorMessage;

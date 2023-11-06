@@ -6,7 +6,7 @@ public class DiagonalReferee extends Referee{
     public DiagonalReferee(){
        super(  "C" );
     }
-    public void anyoneWon (Dashoboard dashoboard,String piece){
-        dashoboard.anyoneWonDiagonal(piece);
+    public boolean anyoneWon (Dashoboard dashoboard,String piece){
+       return dashoboard.anyoneWonDiagonal(piece);
     }
 }

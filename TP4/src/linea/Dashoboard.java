@@ -20,14 +20,14 @@ public class Dashoboard {
 
     int width;
     int height;
-    String gameType;
+    Referee gameType;
     ArrayList<Columns> columns = new ArrayList<Columns>();
     
    
     public Dashoboard(int width, int height, String gameType){
         this.width = width;
         this.height = height;
-        this.gameType = gameType;
+        this.gameType =  Referee.getReferee(gameType);
         this.state= new PlayingWhite(this);
         columns = IntStream.range(0, width).mapToObj(i -> new Columns(height, i)).collect(Collectors.toCollection(ArrayList::new));
     }
@@ -44,7 +44,9 @@ public class Dashoboard {
             checkItIsInBounds(columnNumber);
             state.playWhiteAt(columnNumber);
     }
-    
+    public boolean hasWon (String piece){
+        return gameType.anyoneWon(this, piece);
+    }
     public void playBlackAt(int column){
         checkItIsInBounds(column);
         state.playBlackAt(column);
@@ -52,39 +54,42 @@ public class Dashoboard {
     public void modifyState (GameState newState){
         state = newState;
     }
-    public void hasWon (String piece){
-        Referee.getReferee(this.gameType).anyoneWon(this, piece);
+
+    public boolean anyoneWonVertical(String piece) {
+        for (int i = 0; i < columns.size(); i++) {
+            if (columns.get(i).winnerInColumn(piece)) {
+                this.state = new GameOver(this);
+                return true;
+            }
+        }
+        return false;
     }
-    public void anyoneWonVertical(String piece) {
-        columns.stream()
-               .filter(column -> column.winnerInColumn(piece))
-               .findFirst()
-               .ifPresent(column -> this.state = new GameOver(this));
-    }
-   public void anyoneWonHorizontal(String piece) {
+   public boolean anyoneWonHorizontal(String piece) {
     //iterate each column to check if there is 4 in a row
     for (int i = 0; i < height; i++) {
         int counter = 0;
         for (int j = 0; j < columns.size(); j++) {
             System.out.println(columns.get(j).getPieceAt(i) + "   " + piece);
-            if (columns.get(j).getAmountOfPieces()>i && columns.get(j).getPieceAt(i).equals(piece)) {
+            if (columns.get(j).getAmountOfPieces() > i && columns.get(j).getPieceAt(i).equals(piece)) {
                 counter++;
             } else {
                 counter = 0; // reset counter if the current piece is not equal to the given piece
             }
             if (counter == 4) {
                 this.state = new GameOver(this);
-                return;
+                return true;
             }
         }
     }
+    return false;
 }
-     public void anyoneWonDiagonal(String piece) {
+     public boolean anyoneWonDiagonal(String piece) {
 
-                if (anyoneWonDiagonalChekcer(piece)) {
-                    this.state = new GameOver(this);
-                
-                }
+         if (anyoneWonDiagonalChekcer(piece)) {
+             this.state = new GameOver(this);
+             return true;
+         }
+            return false;
      }
     public String getPieceAt(int column, int row) {
         return columns.get(column).getPieceAt(row);
@@ -99,14 +104,16 @@ public class Dashoboard {
         return height;
     }
     public String getGameMode() {
-        return gameType;
+        return gameType.getType();
     }
     public int getAmountOfPieces (){
         return this.columns.stream().mapToInt(column -> column.getAmountOfPieces()).sum();
     }
-    public String show(){
-        return""; //TODO
+
+    public String show() {
+        return ""; //TODO
     }
+    
     public boolean anyoneWonDiagonalChekcer(String piece){
         
         boolean leftSlantDiagonal = IntStream.range(0, this.width - (4 - 1))
@@ -127,10 +134,16 @@ public class Dashoboard {
     public boolean isPlayingBlack() {
         return state.isPlayingBlack();
     }
+
     public void checkItIsInBounds(int columnNumber) {
         if (columnNumber < 0 || columnNumber >= this.width) {
             throw new RuntimeException(columnErrorMessage);
         }
-    } 
-
+    }
+    public boolean hasWhtieWon (){
+       return hasWon("w");
+    }
+    public boolean hasBlackWon (){
+        return hasWon("b");
+     }
 }

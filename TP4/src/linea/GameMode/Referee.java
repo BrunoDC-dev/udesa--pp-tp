@@ -14,16 +14,19 @@ public abstract class Referee {
     public Referee(String type){
         this.type = type;
     }
-    public abstract void anyoneWon(Dashoboard dashoboard , String player);
+    public abstract boolean anyoneWon(Dashoboard dashoboard , String player);
     
     public  boolean canHandle(String type){
         return this.type ==type;
     };
     
-    public static Referee getReferee(String type){
-      return referees.stream()
-        .filter(referee -> referee.canHandle(type))
-        .findFirst()
-        .orElseThrow(() -> new RuntimeException("No referee found for type: " + type));
+    public static Referee getReferee(String type) {
+        return referees.stream()
+                .filter(referee -> referee.canHandle(type))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("No referee found for type: " + type));
+    }
+    public  String getType(){
+        return this.type;
     }
 }
