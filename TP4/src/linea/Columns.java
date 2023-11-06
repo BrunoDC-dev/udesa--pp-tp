@@ -36,10 +36,22 @@ public class Columns {
         return columnNumber;
     }
     public String getPieceAt(int row) {
-        if (row >= slots.size() || row < 0) {
-            return "";
-        }
-        return slots.get(row);
+        // if (row >= slots.size() || row < 0) {
+        //     return "";
+        // }
+        // return slots.get(row);
+        
+        // return IntStream.range(0, slots.size())
+        // .filter(i -> i == row)
+        // .mapToObj(slots::get)
+        // .findFirst()
+        // .orElse("");
+
+        return slots.stream()
+        .skip(row)
+        .findFirst()
+        .map(String::valueOf)
+        .orElse("");
     }
     public boolean winnerInColumn (String piece){
         return IntStream.range(0, slots.size() - 3)

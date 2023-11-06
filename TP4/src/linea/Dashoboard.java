@@ -56,40 +56,62 @@ public class Dashoboard {
     }
 
     public boolean anyoneWonVertical(String piece) {
-        for (int i = 0; i < columns.size(); i++) {
-            if (columns.get(i).winnerInColumn(piece)) {
-                this.state = new GameOver(this);
-                return true;
-            }
+        // for (int i = 0; i < columns.size(); i++) {
+        //     if (columns.get(i).winnerInColumn(piece)) {
+        //         this.state = new GameOver(this);
+        //         return true;
+        //     }
+        // }
+        // return false;
+
+        boolean hay_ganador = IntStream.range(0, this.width)
+        .anyMatch(col -> IntStream.range(0, this.height - (4 - 1))
+            .anyMatch(row -> IntStream.range(0, 4)
+                .allMatch(k -> this.getPieceAt(col, row + k) == piece)));
+        
+        if (hay_ganador){
+            this.state = new GameOver(this);
+            return true;
         }
         return false;
     }
    public boolean anyoneWonHorizontal(String piece) {
     //iterate each column to check if there is 4 in a row
-    for (int i = 0; i < height; i++) {
-        int counter = 0;
-        for (int j = 0; j < columns.size(); j++) {
-            if (columns.get(j).getAmountOfPieces() > i && columns.get(j).getPieceAt(i).equals(piece)) {
-                counter++;
-            } else {
-                counter = 0; // reset counter if the current piece is not equal to the given piece
-            }
-            if (counter == 4) {
-                this.state = new GameOver(this);
-                return true;
-            }
-        }
+
+    // for (int i = 0; i < height; i++) {
+    //     int counter = 0;
+    //     for (int j = 0; j < columns.size(); j++) {
+    //         if (columns.get(j).getAmountOfPieces() > i && columns.get(j).getPieceAt(i).equals(piece)) {
+    //             counter++;
+    //         } else {
+    //             counter = 0; // reset counter if the current piece is not equal to the given piece
+    //         }
+    //         if (counter == 4) {
+    //             this.state = new GameOver(this);
+    //             return true;
+    //         }
+    //     }
+    // }
+    
+    boolean hay_ganador = IntStream.range(0, this.width - (4 - 1))
+    .anyMatch(col -> IntStream.range(0, this.height)
+        .anyMatch(row -> IntStream.range(0, 4)
+            .allMatch(k -> this.getPieceAt(col + k, row) == piece)));
+
+    if (hay_ganador){
+        this.state = new GameOver(this);
+        return true;
     }
     return false;
-}
-     public boolean anyoneWonDiagonal(String piece) {
+    }
+    public boolean anyoneWonDiagonal(String piece) {
 
          if (anyoneWonDiagonalChekcer(piece)) {
              this.state = new GameOver(this);
              return true;
          }
             return false;
-     }
+    }
     public String getPieceAt(int column, int row) {
         return columns.get(column).getPieceAt(row);
     }
