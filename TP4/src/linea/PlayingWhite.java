@@ -7,7 +7,7 @@ public class PlayingWhite  extends GameState{
 
     public void playWhiteAt(int columnNumber) {
         currentGame.addPieceAt(columnNumber, Dashoboard.White);
-        currentGame.hasWon(Dashoboard.White);
+        currentGame.hasWhtieWon();
         currentGame.modifyState(selecState());
     }
 
@@ -16,7 +16,8 @@ public class PlayingWhite  extends GameState{
     }
 
     public boolean isValid() {
-        return !currentGame.isFull() && !currentGame.finished()&& currentGame.isPlayingBlack()&& !currentGame.isPlayingWhite();
+        return !currentGame.isFull() && !currentGame.finished() && currentGame.isPlayingBlack()
+                && !currentGame.isPlayingWhite();
     }
 
     public boolean isPlayingWhite() {   

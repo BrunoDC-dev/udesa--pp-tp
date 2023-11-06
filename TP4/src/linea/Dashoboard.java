@@ -69,7 +69,6 @@ public class Dashoboard {
     for (int i = 0; i < height; i++) {
         int counter = 0;
         for (int j = 0; j < columns.size(); j++) {
-            System.out.println(columns.get(j).getPieceAt(i) + "   " + piece);
             if (columns.get(j).getAmountOfPieces() > i && columns.get(j).getPieceAt(i).equals(piece)) {
                 counter++;
             } else {
@@ -143,7 +142,12 @@ public class Dashoboard {
     public boolean hasWhtieWon (){
        return hasWon("w");
     }
-    public boolean hasBlackWon (){
+
+    public boolean hasBlackWon() {
         return hasWon("b");
-     }
+    }
+
+    public boolean isAdraw() {
+        return this.isFull() && !this.hasWhtieWon() && !this.hasBlackWon() && this.finished();
+    }
 }

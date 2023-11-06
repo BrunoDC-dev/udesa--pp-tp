@@ -100,13 +100,26 @@ public class GameTest {
         assertFalse(dashoboard.hasWhtieWon());
         assertFalse(dashoboard.hasBlackWon());
      }
-    @Test public void testCanWinReverseDiagonal (){
+
+     @Test
+     public void testCanWinReverseDiagonal() {
          dashoboard = new Dashoboard(4, 4, "C");
-         simulatePlaying(2,0,1,3,1,2,0,1,0,0);
+         simulatePlaying(2, 0, 1, 3, 1, 2, 0, 1, 0, 0);
          assertTrue(dashoboard.finished());
-            assertFalse(dashoboard.hasWhtieWon());
-            assertTrue(dashoboard.hasBlackWon());
+         assertFalse(dashoboard.hasWhtieWon());
+         assertTrue(dashoboard.hasBlackWon());
      }
+     // make it draw for the diferent types of games
+    // @Test public void testCanDraw(){
+    //     dashoboard = new Dashoboard(1, 1, "A");
+    //     //simulate a draw
+    //     simulatePlaying(0);
+    //     assertTrue(dashoboard.finished());
+    //     assertFalse(dashoboard.hasWhtieWon());
+    //     assertFalse(dashoboard.hasBlackWon());
+    //     assertTrue(dashoboard.isAdraw());
+    
+    //  }
     public String getColumnErrorString() {
         return dashoboard.columnErrorMessage;
     }
