@@ -4,7 +4,7 @@ import linea.Dashoboard;
 
 public class DiagonalReferee extends Referee{
     public DiagonalReferee(){
-       super(  "C" );
+       super( 'C' );
     }
     public boolean anyoneWon (Dashoboard dashoboard,String piece){
        return dashoboard.anyoneWonDiagonal(piece);

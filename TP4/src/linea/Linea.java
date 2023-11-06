@@ -3,9 +3,9 @@ package linea;
 public class Linea {
     int width;
     int height;
-    String gameType;
+    char gameType;
 
-    public Linea(int width, int height, String gameType) {
+    public Linea(int width, int height, char gameType) {
         this.width = width;
         this.height = height;
         this.gameType = gameType;

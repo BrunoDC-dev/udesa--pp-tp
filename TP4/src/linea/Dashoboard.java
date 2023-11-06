@@ -23,8 +23,8 @@ public class Dashoboard {
     Referee gameType;
     ArrayList<Columns> columns = new ArrayList<Columns>();
     
-   
-    public Dashoboard(int width, int height, String gameType){
+    
+    public Dashoboard(int width, int height, char gameType){
         this.width = width;
         this.height = height;
         this.gameType =  Referee.getReferee(gameType);
@@ -124,7 +124,7 @@ public class Dashoboard {
     public int getHeight() {
         return height;
     }
-    public String getGameMode() {
+    public char getGameMode() {
         return gameType.getType();
     }
     public int getAmountOfPieces (){
