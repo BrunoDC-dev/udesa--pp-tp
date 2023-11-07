@@ -110,15 +110,28 @@ public class GameTest {
          assertTrue(dashoboard.hasBlackWon());
      }
    
-    @Test public void testCanDraw(){
-        dashoboard = new Dashoboard(1, 1, 'A');
-        simulatePlaying(0);
-        assertTrue(dashoboard.finished());
-        assertFalse(dashoboard.hasWhtieWon());
-        assertFalse(dashoboard.hasBlackWon());
-        assertTrue(dashoboard.isAdraw());
-    
-    }
+     @Test
+     public void testCanDraw() {
+         dashoboard = new Dashoboard(1, 1, 'A');
+         simulatePlaying(0);
+         assertTrue(dashoboard.finished());
+         assertFalse(dashoboard.hasWhtieWon());
+         assertFalse(dashoboard.hasBlackWon());
+         assertTrue(dashoboard.isAdraw());
+
+     }
+
+     @Test
+     public void testCantPlay() {
+            dashoboard = new Dashoboard(1, 1, 'A');
+            simulatePlaying(0);
+               assertTrue(dashoboard.finished());
+         assertFalse(dashoboard.hasWhtieWon());
+         assertFalse(dashoboard.hasBlackWon());
+         assertTrue(dashoboard.isAdraw());
+            assertThrowsLike(() -> dashoboard.playWhiteAt(0), Dashoboard.canNotPlayWhenGameIsOverErrorMessage);
+            assertThrowsLike(() -> dashoboard.playBlackAt(0), Dashoboard.canNotPlayWhenGameIsOverErrorMessage);
+     }
     public String getColumnErrorString() {
         return dashoboard.columnErrorMessage;
     }

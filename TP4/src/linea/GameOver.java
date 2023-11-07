@@ -14,7 +14,7 @@ public class GameOver extends GameState {
     }
 
     public boolean isValid() {
-        return currentGame.finished();
+        return currentGame.finished() || currentGame.isAdraw();
     }
 
     public boolean isPlayingWhite() {   

@@ -16,7 +16,8 @@ public abstract class GameState {
 
 
     public GameState selecState (){
-       ArrayList<GameState> states = new ArrayList<GameState>(List.of(new PlayingWhite(currentGame), new PlayingBlack(currentGame), new GameOver(currentGame)));
+        ArrayList<GameState> states = new ArrayList<GameState>(List.of(new PlayingWhite(currentGame),
+        new PlayingBlack(currentGame), new GameOver(currentGame)));
         return states.stream().filter(state -> state.isValid()).findFirst().get();
     }
 }
