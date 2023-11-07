@@ -8,6 +8,7 @@ public class Columns {
     int columnNumber;
     int maxHeigth;
     String slotErrorMessage = "No empty slots";
+    String emptySlot = "  ";
 
     public Columns(int height , int columnNumber){
         this.columnNumber = columnNumber;
@@ -37,12 +38,11 @@ public class Columns {
         .skip(row)
         .findFirst()
         .map(String::valueOf)
-        .orElse(" ");
+        .orElse(emptySlot);
     }
     public boolean winnerInColumn (String piece){
-       return IntStream.range(0, slots.size() - 3)
+        return IntStream.range(0, slots.size() - 3)
             .anyMatch(row -> IntStream.range(0, 4)
             .allMatch(k -> slots.get(row + k).equals(piece)));
     }
-
 }

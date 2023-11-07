@@ -7,8 +7,8 @@ import java.util.stream.IntStream;
 import linea.GameMode.Referee;
 
 public class Dashboard {
-    public static final String White = "w";
-	public static final String Black = "b";
+    public static final String White = "w ";
+	public static final String Black = "b ";
 	
 	public static String positionIlegalErrorMessage = "Movement ilegal";
 	public static String canNotPlayWhenGameIsOverErrorMessage = "Can not play when game is over";
@@ -76,7 +76,7 @@ public class Dashboard {
         return columns.get(column).getPieceAt(row);
     }
     public boolean finished (){ 
-        return  hasWhtieWon() || hasBlackWon() || isAdraw();
+        return  hasWhiteWon() || hasBlackWon() || isAdraw();
     }
     public int getWidth() {
         return width;
@@ -121,15 +121,15 @@ public class Dashboard {
             throw new RuntimeException(columnErrorMessage);
         }
     }
-    public boolean hasWhtieWon (){
-       return hasWon("w");
+    public boolean hasWhiteWon (){
+       return hasWon(White);
     }
 
     public boolean hasBlackWon() {
-        return hasWon("b");
+        return hasWon(Black);
     }
 
     public boolean isAdraw() {
-        return this.isFull() && !this.hasWhtieWon() && !this.hasBlackWon() ;
+        return this.isFull() && !this.hasWhiteWon() && !this.hasBlackWon() ;
     }
 }
