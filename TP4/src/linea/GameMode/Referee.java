@@ -2,19 +2,19 @@ package linea.GameMode;
 
 import java.util.List;
 
-import linea.Dashoboard;
+import linea.Dashboard;
 
 public abstract class Referee {
     char type;
     public static List<Referee> referees = List.of(
         new VerticalReferee(),
-        new HorizontalReferee(),
+        new AllPosibilitiesReferee(),
         new DiagonalReferee()
     );
     public Referee(char type){
         this.type = type;
     }
-    public abstract boolean anyoneWon(Dashoboard dashoboard , String player);
+    public abstract boolean anyoneWon(Dashboard dashoboard , String player);
     
     public  boolean canHandle(char type){
         return this.type ==type;

@@ -2,21 +2,21 @@ package linea;
 
 public class PlayingBlack extends GameState {
 
-    public PlayingBlack(Dashoboard currentGame) {
+    public PlayingBlack(Dashboard currentGame) {
         super(currentGame);
     }
 
     public void playWhiteAt(int columnNumber) {
-            throw new RuntimeException(Dashoboard.notWhiteTurnErrorMessage);
+            throw new RuntimeException(Dashboard.notWhiteTurnErrorMessage);
     }
 
     public void playBlackAt(int columnNumber) {
-       currentGame.addPieceAt(columnNumber, Dashoboard.Black);
+       currentGame.addPieceAt(columnNumber, Dashboard.Black);
        currentGame.modifyState(selecState());
     }
 
     public boolean isValid() {
-        return !currentGame.isFull() && !currentGame.finished() && !currentGame.isPlayingBlack()
+        return !currentGame.isAdraw() && !currentGame.finished() && !currentGame.isPlayingBlack()
                 && currentGame.isPlayingWhite();
     }
 

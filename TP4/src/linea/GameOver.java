@@ -1,16 +1,16 @@
 package linea;
 
 public class GameOver extends GameState {
-    public GameOver(Dashoboard currentGame ) {
+    public GameOver(Dashboard currentGame ) {
         super(currentGame);
     }
 
     public void playWhiteAt(int columnNumber) {
-            throw new RuntimeException(Dashoboard.canNotPlayWhenGameIsOverErrorMessage);
+            throw new RuntimeException(Dashboard.canNotPlayWhenGameIsOverErrorMessage);
     }
 
     public void playBlackAt(int columnNumber) {
-      throw new RuntimeException(Dashoboard.canNotPlayWhenGameIsOverErrorMessage);
+      throw new RuntimeException(Dashboard.canNotPlayWhenGameIsOverErrorMessage);
     }
 
     public boolean isValid() {

@@ -13,9 +13,6 @@ public class Columns {
         this.columnNumber = columnNumber;
         this.maxHeigth = height;
     }
-    public String show() {
-        return "";//TODO	
-    }
     public boolean isEmpty() {
         return slots.size() == 0;
     }
@@ -40,12 +37,12 @@ public class Columns {
         .skip(row)
         .findFirst()
         .map(String::valueOf)
-        .orElse("");
+        .orElse(" ");
     }
     public boolean winnerInColumn (String piece){
-        return IntStream.range(0, slots.size() - 3)
-            .anyMatch(i -> slots.get(i).equals(piece) && slots.get(i + 1).equals(piece)
-                && slots.get(i + 2).equals(piece) && slots.get(i + 3).equals(piece));
+       return IntStream.range(0, slots.size() - 3)
+            .anyMatch(row -> IntStream.range(0, 4)
+            .allMatch(k -> slots.get(row + k).equals(piece)));
     }
 
 }

@@ -1,12 +1,12 @@
 package linea.GameMode;
 
-import linea.Dashoboard;
+import linea.Dashboard;
 
 public class VerticalReferee extends Referee {
     public VerticalReferee(){
        super(  'A' );
     }
-    public boolean anyoneWon (Dashoboard dashoboard , String player){
-        return dashoboard.anyoneWonVertical(player);
+    public boolean anyoneWon (Dashboard dashoboard , String player){
+        return dashoboard.anyoneWonVertical(player) || dashoboard.anyoneWonHorizontal(player);
     }
 }

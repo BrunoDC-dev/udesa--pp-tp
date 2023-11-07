@@ -1,12 +1,12 @@
 package linea.GameMode;
 
-import linea.Dashoboard;
+import linea.Dashboard;
 
 public class DiagonalReferee extends Referee{
     public DiagonalReferee(){
-       super( 'C' );
+       super( 'B' );
     }
-    public boolean anyoneWon (Dashoboard dashoboard,String piece){
+    public boolean anyoneWon (Dashboard dashoboard,String piece){
        return dashoboard.anyoneWonDiagonal(piece);
     }
 }

@@ -6,7 +6,7 @@ import java.util.stream.IntStream;
 
 import linea.GameMode.Referee;
 
-public class Dashoboard {
+public class Dashboard {
     public static final String White = "w";
 	public static final String Black = "b";
 	
@@ -17,13 +17,14 @@ public class Dashoboard {
     public static String columnErrorMessage = "No such column";
     private GameState state;
 
+
     int width;
     int height;
     Referee gameType;
     ArrayList<Columns> columns = new ArrayList<Columns>();
+    Printer printer = new Printer(this);
     
-    
-    public Dashoboard(int width, int height, char gameType){
+    public Dashboard(int width, int height, char gameType){
         this.width = width;
         this.height = height;
         this.gameType =  Referee.getReferee(gameType);
@@ -91,7 +92,7 @@ public class Dashoboard {
     }
 
     public String show() {
-        return ""; //TODO
+        return printer.show();
     }
     
     public boolean anyoneWonDiagonalChekcer(String piece){

@@ -2,9 +2,9 @@ package linea;
 import java.util.ArrayList;
 import java.util.List;
 public abstract class GameState {
-    protected Dashoboard currentGame;
+    protected Dashboard currentGame;
     protected ArrayList<GameState> State;
-    public  GameState (Dashoboard currentGame){
+    public  GameState (Dashboard currentGame){
         this.currentGame = currentGame;
     }
     public abstract void playWhiteAt(int columnNumber);
