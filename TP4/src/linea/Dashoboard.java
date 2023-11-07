@@ -3,7 +3,6 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import org.junit.jupiter.params.shadow.com.univocity.parsers.common.StringCache;
 
 import linea.GameMode.Referee;
 
@@ -56,67 +55,27 @@ public class Dashoboard {
     }
 
     public boolean anyoneWonVertical(String piece) {
-        // for (int i = 0; i < columns.size(); i++) {
-        //     if (columns.get(i).winnerInColumn(piece)) {
-        //         this.state = new GameOver(this);
-        //         return true;
-        //     }
-        // }
-        // return false;
-
-        boolean hay_ganador = IntStream.range(0, this.width)
+       return IntStream.range(0, this.width)
         .anyMatch(col -> IntStream.range(0, this.height - (4 - 1))
             .anyMatch(row -> IntStream.range(0, 4)
                 .allMatch(k -> this.getPieceAt(col, row + k) == piece)));
-        
-        if (hay_ganador){
-            this.state = new GameOver(this);
-            return true;
-        }
-        return false;
     }
    public boolean anyoneWonHorizontal(String piece) {
-    //iterate each column to check if there is 4 in a row
-
-    // for (int i = 0; i < height; i++) {
-    //     int counter = 0;
-    //     for (int j = 0; j < columns.size(); j++) {
-    //         if (columns.get(j).getAmountOfPieces() > i && columns.get(j).getPieceAt(i).equals(piece)) {
-    //             counter++;
-    //         } else {
-    //             counter = 0; // reset counter if the current piece is not equal to the given piece
-    //         }
-    //         if (counter == 4) {
-    //             this.state = new GameOver(this);
-    //             return true;
-    //         }
-    //     }
-    // }
-    
-    boolean hay_ganador = IntStream.range(0, this.width - (4 - 1))
+    return IntStream.range(0, this.width - (4 - 1))
     .anyMatch(col -> IntStream.range(0, this.height)
         .anyMatch(row -> IntStream.range(0, 4)
             .allMatch(k -> this.getPieceAt(col + k, row) == piece)));
 
-    if (hay_ganador){
-        this.state = new GameOver(this);
-        return true;
-    }
-    return false;
     }
     public boolean anyoneWonDiagonal(String piece) {
 
-         if (anyoneWonDiagonalChekcer(piece)) {
-             this.state = new GameOver(this);
-             return true;
-         }
-            return false;
+         return anyoneWonDiagonalChekcer(piece);
     }
     public String getPieceAt(int column, int row) {
         return columns.get(column).getPieceAt(row);
     }
     public boolean finished (){ 
-        return this.state.isFinished();
+        return  hasWhtieWon() || hasBlackWon() || isAdraw();
     }
     public int getWidth() {
         return width;
@@ -170,6 +129,6 @@ public class Dashoboard {
     }
 
     public boolean isAdraw() {
-        return this.isFull() && !this.hasWhtieWon() && !this.hasBlackWon() && this.finished();
+        return this.isFull() && !this.hasWhtieWon() && !this.hasBlackWon() ;
     }
 }

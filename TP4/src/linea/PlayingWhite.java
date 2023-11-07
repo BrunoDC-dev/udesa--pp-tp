@@ -7,7 +7,6 @@ public class PlayingWhite  extends GameState{
 
     public void playWhiteAt(int columnNumber) {
         currentGame.addPieceAt(columnNumber, Dashoboard.White);
-        currentGame.hasWhtieWon();
         currentGame.modifyState(selecState());
     }
 

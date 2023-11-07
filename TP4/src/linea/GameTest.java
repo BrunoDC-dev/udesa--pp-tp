@@ -109,17 +109,16 @@ public class GameTest {
          assertFalse(dashoboard.hasWhtieWon());
          assertTrue(dashoboard.hasBlackWon());
      }
-     // make it draw for the diferent types of games
-    // @Test public void testCanDraw(){
-    //     dashoboard = new Dashoboard(1, 1, 'A');
-    //     //simulate a draw
-    //     simulatePlaying(0);
-    //     assertTrue(dashoboard.finished());
-    //     assertFalse(dashoboard.hasWhtieWon());
-    //     assertFalse(dashoboard.hasBlackWon());
-    //     assertTrue(dashoboard.isAdraw());
+   
+    @Test public void testCanDraw(){
+        dashoboard = new Dashoboard(1, 1, 'A');
+        simulatePlaying(0);
+        assertTrue(dashoboard.finished());
+        assertFalse(dashoboard.hasWhtieWon());
+        assertFalse(dashoboard.hasBlackWon());
+        assertTrue(dashoboard.isAdraw());
     
-    //  }
+    }
     public String getColumnErrorString() {
         return dashoboard.columnErrorMessage;
     }

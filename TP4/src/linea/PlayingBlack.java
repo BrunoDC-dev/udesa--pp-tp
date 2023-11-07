@@ -12,7 +12,6 @@ public class PlayingBlack extends GameState {
 
     public void playBlackAt(int columnNumber) {
        currentGame.addPieceAt(columnNumber, Dashoboard.Black);
-       currentGame.hasBlackWon();
        currentGame.modifyState(selecState());
     }
 
