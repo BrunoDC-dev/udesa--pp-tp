@@ -31,6 +31,6 @@ public class WhiteWinState extends GameState {
     }
 
     public String show() {
-        return "White wins";
+        return "  White wins   ";
     }
 }

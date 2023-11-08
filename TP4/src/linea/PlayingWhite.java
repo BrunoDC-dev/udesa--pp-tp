@@ -33,6 +33,6 @@ public class PlayingWhite  extends GameState{
     }
     
     public String show() {
-        return "Playing White";
+        return " Playing White ";
     }
 }

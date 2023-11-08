@@ -19,7 +19,6 @@ public class DrawState extends GameState {
 
     public boolean isPlayingWhite() {   
         return false;
-     
     }
 
     public boolean isPlayingBlack() {
@@ -31,6 +30,6 @@ public class DrawState extends GameState {
     }
     
     public String show() {
-        return "Game is a draw";
+        return "Game is a draw ";
     }
 }

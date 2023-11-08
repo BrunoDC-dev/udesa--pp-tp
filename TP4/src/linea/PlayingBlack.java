@@ -32,6 +32,6 @@ public class PlayingBlack extends GameState {
         return false;
     }
     public String show() {
-        return "Playing Black";
+        return " Playing Black ";
     }
 }

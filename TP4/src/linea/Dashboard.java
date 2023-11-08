@@ -29,16 +29,9 @@ public class Dashboard {
     public Dashboard(int width, int height, char gameType){
         this.width = width;
         this.height = height;
-        this.gameType =  Referee.getReferee(gameType);
+        this.gameType =  Referee.getReferee(Character.toUpperCase(gameType));
         this.state= new PlayingWhite(this);
         columns = IntStream.range(0, width).mapToObj(column -> new ArrayList<String>()).collect(Collectors.toCollection(ArrayList::new));
-    }
-    public boolean isEmpty(){
-        return this.columns.stream().mapToInt(column-> column.size()).sum() == 0;
-
-    }
-    public boolean isFull(){
-        return this.columns.stream().mapToInt(column-> column.size()).sum() == this.width * this.height;
     }
 
     public void addPieceAt(int column, String piece) {
@@ -51,9 +44,6 @@ public class Dashboard {
             checkItIsInBounds(columnNumber);
             state.playWhiteAt(columnNumber);
     }
-    public boolean hasWon (String piece){
-        return gameType.anyoneWon(this, piece);
-    }
     public void playBlackAt(int column){
         checkItIsInBounds(column);
         state.playBlackAt(column);
@@ -62,23 +52,6 @@ public class Dashboard {
         state = newState;
     }
 
-    public boolean anyoneWonVertical(String piece) {
-       return IntStream.range(0, this.width)
-        .anyMatch(col -> IntStream.range(0, this.height - (4 - 1))
-            .anyMatch(row -> IntStream.range(0, 4)
-                .allMatch(k -> this.getPieceAt(col, row + k) == piece)));
-    }
-   public boolean anyoneWonHorizontal(String piece) {
-    return IntStream.range(0, this.width - (4 - 1))
-    .anyMatch(col -> IntStream.range(0, this.height)
-        .anyMatch(row -> IntStream.range(0, 4)
-            .allMatch(k -> this.getPieceAt(col + k, row) == piece)));
-
-    }
-    public boolean anyoneWonDiagonal(String piece) {
-
-        return anyoneWonDiagonalChekcer(piece);
-    }
     public String getPieceAt(int column, int row) {
         return columns.get(column).stream()
         .skip(row)
@@ -104,11 +77,31 @@ public class Dashboard {
         return this.columns.stream().mapToInt(column -> column.size()).sum();
     }
 
+    public boolean isEmpty(){
+        return this.getAmountOfPieces() == 0;
+    }
+
+    public boolean isFull(){
+        return this.getAmountOfPieces() == this.width * this.height;
+    }
+
     public String show() {
         return printer.show();
     }
+    public boolean anyoneWonVertical(String piece) {
+       return IntStream.range(0, this.width)
+        .anyMatch(col -> IntStream.range(0, this.height - (4 - 1))
+            .anyMatch(row -> IntStream.range(0, 4)
+                .allMatch(k -> this.getPieceAt(col, row + k) == piece)));
+    }
+    public boolean anyoneWonHorizontal(String piece) {
+        return IntStream.range(0, this.width - (4 - 1))
+        .anyMatch(col -> IntStream.range(0, this.height)
+            .anyMatch(row -> IntStream.range(0, 4)
+                .allMatch(k -> this.getPieceAt(col + k, row) == piece)));
+    }
     
-    public boolean anyoneWonDiagonalChekcer(String piece){
+    public boolean anyoneWonDiagonal(String piece){
         
         boolean leftSlantDiagonal = IntStream.range(0, this.width - (4 - 1))
         .anyMatch(col -> IntStream.range(0, this.height - (4 - 1))
@@ -134,15 +127,22 @@ public class Dashboard {
             throw new RuntimeException(columnErrorMessage);
         }
     }
+    
+    public boolean hasWon (String piece){
+        return gameType.anyoneWon(this, piece);
+    }
     public boolean hasWhiteWon (){
        return hasWon(White);
     }
-
     public boolean hasBlackWon() {
         return hasWon(Black);
     }
 
     public boolean isAdraw() {
         return this.isFull() && !this.hasWhiteWon() && !this.hasBlackWon() ;
+    }
+
+    public GameState getState() {
+        return this.state;
     }
 }

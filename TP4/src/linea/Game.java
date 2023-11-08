@@ -7,6 +7,7 @@ public class Game {
     Dashboard game = new Dashboard( promptAsInt( "Base? " ), 
                             promptAsInt( "Altura? " ), 
                             promptAsChar( "Estartegia de Juego: A, B o C? " ) );
+    System.out.println( game.getState() );
     System.out.println( game.show() );
     while ( !game.finished() ) {
       game.playWhiteAt( promptAsInt( "Rojas? " ) );
