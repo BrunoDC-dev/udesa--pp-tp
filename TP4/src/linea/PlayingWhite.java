@@ -15,8 +15,8 @@ public class PlayingWhite  extends GameState{
     }
 
     public boolean isValid() {
-        return !currentGame.isAdraw() && !currentGame.finished() && currentGame.isPlayingBlack()
-                && !currentGame.isPlayingWhite();
+        return !currentGame.isAdraw() && !currentGame.hasWhtieWon() && !currentGame.hasBlackWon()
+        && currentGame.isPlayingBlack() && !currentGame.isPlayingWhite();
     }
 
     public boolean isPlayingWhite() {   
@@ -27,7 +27,12 @@ public class PlayingWhite  extends GameState{
     public boolean isPlayingBlack() {
         return false;
     }
+
     public boolean isFinished() {
         return false;
+    }
+    
+    public String show() {
+        return "Playing White";
     }
 }

@@ -11,13 +11,17 @@ public abstract class GameState {
     public abstract void playBlackAt(int columnNumber);
     public abstract boolean isValid();
     public abstract boolean isPlayingWhite();
+
     public abstract boolean isPlayingBlack();
+
     public abstract boolean isFinished();
+
+    public abstract String show();
 
 
     public GameState selecState (){
         ArrayList<GameState> states = new ArrayList<GameState>(List.of(new PlayingWhite(currentGame),
-        new PlayingBlack(currentGame), new GameOver(currentGame)));
+        new PlayingBlack(currentGame), new WhiteWinState(currentGame), new BlackWinState(currentGame)));
         return states.stream().filter(state -> state.isValid()).findFirst().get();
     }
 }

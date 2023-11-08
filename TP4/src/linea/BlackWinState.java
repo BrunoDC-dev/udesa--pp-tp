@@ -1,20 +1,20 @@
 package linea;
 
-public class GameOver extends GameState {
-    public GameOver(Dashboard currentGame ) {
+public class BlackWinState  extends GameState{
+       public BlackWinState(Dashboard currentGame) {
         super(currentGame);
     }
 
     public void playWhiteAt(int columnNumber) {
-            throw new RuntimeException(Dashboard.canNotPlayWhenGameIsOverErrorMessage);
+        throw new RuntimeException(Dashboard.canNotPlayWhenGameIsOverErrorMessage);
     }
 
     public void playBlackAt(int columnNumber) {
-      throw new RuntimeException(Dashboard.canNotPlayWhenGameIsOverErrorMessage);
+        throw new RuntimeException(Dashboard.canNotPlayWhenGameIsOverErrorMessage);
     }
 
     public boolean isValid() {
-        return currentGame.finished() || currentGame.isAdraw();
+        return currentGame.hasBlackWon();
     }
 
     public boolean isPlayingWhite() {   
@@ -29,7 +29,8 @@ public class GameOver extends GameState {
     public boolean isFinished() {
         return true;
     }
+    
     public String show() {
-        return "Game Over";
+        return "Black wins";
     }
 }
