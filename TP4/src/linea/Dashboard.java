@@ -12,8 +12,8 @@ public class Dashboard {
 	
 	public static String positionIlegalErrorMessage = "Movement ilegal";
     public static String canNotPlayWhenGameIsOverErrorMessage = "Can not play when game is over";
-	public static String notWhiteTurnErrorMessage = "Not w´s turn";
-	public static String notBlackTurnErrorMessage = "Not b´s turn";
+	public static String notWhiteTurnErrorMessage = "Not w's turn";
+	public static String notBlackTurnErrorMessage = "Not b's turn";
     public static String columnErrorMessage = "No such column";
     public static String slotErrorMessage = "No empty slots";
     public static String emptySlot = "  ";
