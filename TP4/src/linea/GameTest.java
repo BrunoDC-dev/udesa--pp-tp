@@ -59,26 +59,26 @@ public class GameTest {
     @Test public void testGameIsOverWhenWhiteWins(){
         simulatePlaying(0,1,0,1,0,1,0);
         assertTrue(dashoboard.finished());
-        assertTrue(dashoboard.hasWhtieWon());
+        assertTrue(dashoboard.hasWhiteWon());
         assertFalse(dashoboard.hasBlackWon());
         System.out.println(dashoboard.show());
     }
     @Test public void testGamecanwinAnyoneAnywhere(){
         simulatePlaying(0,1,0,1,0,1,3,1);
         assertTrue(dashoboard.finished());
-        assertFalse(dashoboard.hasWhtieWon());
+        assertFalse(dashoboard.hasWhiteWon());
         assertTrue(dashoboard.hasBlackWon());
      }
     @Test public void testGameCanEndHorizontally(){
          simulatePlaying(0,0,1,1,2,2,3);
          assertTrue(dashoboard.finished());
-         assertTrue(dashoboard.hasWhtieWon());
+         assertTrue(dashoboard.hasWhiteWon());
             assertFalse(dashoboard.hasBlackWon());
     }
     @Test public void testyounotalwaysWIn (){
         simulatePlaying(0,0,1,1,2,2);
         assertFalse(dashoboard.finished());
-        assertFalse(dashoboard.hasWhtieWon());
+        assertFalse(dashoboard.hasWhiteWon());
         assertFalse(dashoboard.hasBlackWon());
      }
     @Test public void testCantPlaceOverAfullcolumn(){
@@ -88,15 +88,16 @@ public class GameTest {
     @Test public void testCanWinDiagonal(){
         dashoboard = new Dashboard(4, 4, 'C');
         simulatePlaying(0,1,1,2,2,3,2,3,3,0,3);
+        System.out.println(dashoboard.show());
         assertTrue(dashoboard.finished());
-        assertTrue(dashoboard.hasWhtieWon());
+        assertTrue(dashoboard.hasWhiteWon());
         assertFalse(dashoboard.hasBlackWon());
      }
     @Test public void testYouCanLooseDiagonal (){
         dashoboard = new Dashboard(4, 4, 'C');
         simulatePlaying(1,0,2,2,1,2,3,3,3,3);
         assertFalse(dashoboard.finished());
-        assertFalse(dashoboard.hasWhtieWon());
+        assertFalse(dashoboard.hasWhiteWon());
         assertFalse(dashoboard.hasBlackWon());
      }
 
@@ -105,7 +106,7 @@ public class GameTest {
          dashoboard = new Dashboard(4, 4, 'C');
          simulatePlaying(2, 0, 1, 3, 1, 2, 0, 1, 0, 0);
          assertTrue(dashoboard.finished());
-         assertFalse(dashoboard.hasWhtieWon());
+         assertFalse(dashoboard.hasWhiteWon());
          assertTrue(dashoboard.hasBlackWon());
      }
    
@@ -114,7 +115,7 @@ public class GameTest {
          dashoboard = new Dashboard(1, 1, 'A');
          simulatePlaying(0);
          assertTrue(dashoboard.finished());
-         assertFalse(dashoboard.hasWhtieWon());
+         assertFalse(dashoboard.hasWhiteWon());
          assertFalse(dashoboard.hasBlackWon());
          assertTrue(dashoboard.isAdraw());
 
@@ -125,7 +126,7 @@ public class GameTest {
             dashoboard = new Dashboard(1, 1, 'A');
             simulatePlaying(0);
                assertTrue(dashoboard.finished());
-         assertFalse(dashoboard.hasWhtieWon());
+         assertFalse(dashoboard.hasWhiteWon());
          assertFalse(dashoboard.hasBlackWon());
          assertTrue(dashoboard.isAdraw());
             assertThrowsLike(() -> dashoboard.playWhiteAt(0), Dashboard.canNotPlayWhenGameIsOverErrorMessage);

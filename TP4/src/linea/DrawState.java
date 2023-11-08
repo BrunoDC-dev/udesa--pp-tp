@@ -1,11 +1,11 @@
 package linea;
 
-public class WhiteWinState extends GameState {
-    public WhiteWinState(Dashboard currentGame) {
+public class DrawState extends GameState {
+    public DrawState(Dashboard currentGame) {
         super(currentGame);
     }
 
-    public void playWhiteAt(int columnNumber) {
+    public void playWhiteAt(int columnNumber ) {
         throw new RuntimeException(Dashboard.canNotPlayWhenGameIsOverErrorMessage);
     }
 
@@ -14,7 +14,7 @@ public class WhiteWinState extends GameState {
     }
 
     public boolean isValid() {
-        return currentGame.hasWhiteWon();
+        return currentGame.isAdraw() && !currentGame.hasWhiteWon() && !currentGame.hasBlackWon();
     }
 
     public boolean isPlayingWhite() {   
@@ -27,10 +27,10 @@ public class WhiteWinState extends GameState {
     }
 
     public boolean isFinished() {
-        return true;
+        return false;
     }
-
+    
     public String show() {
-        return "White wins";
+        return "Game is a draw";
     }
 }
