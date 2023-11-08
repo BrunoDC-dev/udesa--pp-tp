@@ -11,17 +11,19 @@ public class Dashboard {
 	public static final String Black = "b ";
 	
 	public static String positionIlegalErrorMessage = "Movement ilegal";
-	public static String canNotPlayWhenGameIsOverErrorMessage = "Can not play when game is over";
+    public static String canNotPlayWhenGameIsOverErrorMessage = "Can not play when game is over";
 	public static String notWhiteTurnErrorMessage = "Not w´s turn";
 	public static String notBlackTurnErrorMessage = "Not b´s turn";
     public static String columnErrorMessage = "No such column";
+    public static String slotErrorMessage = "No empty slots";
+    public static String emptySlot = "  ";
     private GameState state;
 
 
     int width;
     int height;
     Referee gameType;
-    ArrayList<Columns> columns = new ArrayList<Columns>();
+    ArrayList<ArrayList<String>> columns = new ArrayList<ArrayList<String>>();
     Printer printer = new Printer(this);
     
     public Dashboard(int width, int height, char gameType){
@@ -29,16 +31,21 @@ public class Dashboard {
         this.height = height;
         this.gameType =  Referee.getReferee(gameType);
         this.state= new PlayingWhite(this);
-        columns = IntStream.range(0, width).mapToObj(i -> new Columns(height, i)).collect(Collectors.toCollection(ArrayList::new));
+        columns = IntStream.range(0, width).mapToObj(column -> new ArrayList<String>()).collect(Collectors.toCollection(ArrayList::new));
     }
     public boolean isEmpty(){
-        return this.columns.stream().allMatch(column -> column.isEmpty());
+        return this.columns.stream().mapToInt(column-> column.size()).sum() == 0;
+
     }
     public boolean isFull(){
-        return this.columns.stream().allMatch(column -> column.isFull());
+        return this.columns.stream().mapToInt(column-> column.size()).sum() == this.width * this.height;
     }
-    public void addPieceAt(int column, String piece){
-        columns.get(column).addPieceAt(piece);
+
+    public void addPieceAt(int column, String piece) {
+         if (columns.get(column).size() == height) {
+            throw new RuntimeException(slotErrorMessage);
+        }
+        columns.get(column).add(piece);
     }
     public void playWhiteAt(int columnNumber){
             checkItIsInBounds(columnNumber);
@@ -70,10 +77,15 @@ public class Dashboard {
     }
     public boolean anyoneWonDiagonal(String piece) {
 
-         return anyoneWonDiagonalChekcer(piece);
+        return anyoneWonDiagonalChekcer(piece);
     }
     public String getPieceAt(int column, int row) {
-        return columns.get(column).getPieceAt(row);
+        return columns.get(column).stream()
+        .skip(row)
+        .findFirst()
+        .map(String::valueOf)
+        .orElse(emptySlot);
+
     }
     public boolean finished (){ 
         return  hasWhiteWon() || hasBlackWon() || isAdraw();
@@ -87,8 +99,9 @@ public class Dashboard {
     public char getGameMode() {
         return gameType.getType();
     }
-    public int getAmountOfPieces (){
-        return this.columns.stream().mapToInt(column -> column.getAmountOfPieces()).sum();
+
+    public int getAmountOfPieces() {
+        return this.columns.stream().mapToInt(column -> column.size()).sum();
     }
 
     public String show() {
