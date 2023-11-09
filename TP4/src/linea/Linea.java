@@ -4,8 +4,8 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Linea {
-    public static final String White = "w ";
-	public static final String Black = "b ";
+    public static final String Red = "R ";
+	public static final String Blue = "B ";
     public static String emptySlot = "  ";
 	
 	public static String positionIlegalErrorMessage = "Movement ilegal";
@@ -26,7 +26,7 @@ public class Linea {
         this.width = width;
         this.height = height;
         this.gameType =  GameMode.getReferee(Character.toUpperCase(gameType));
-        this.state= new PlayingWhiteSate(this);
+        this.state= new PlayingRedSate(this);
         columns = IntStream.range(0, width)
         .mapToObj(column -> new ArrayList<String>()).
                         collect(Collectors.toCollection(ArrayList::new));
@@ -45,14 +45,14 @@ public class Linea {
         }
     }
 
-    public void playWhiteAt(int columnNumber) {
+    public void playRedAt(int columnNumber) {
         checkItIsInBounds(columnNumber);
-        state.playWhiteAt(columnNumber);
+        state.playRedAt(columnNumber);
     }
     
-    public void playBlackAt(int column) {
+    public void playBlueAt(int column) {
         checkItIsInBounds(column);
-        state.playBlackAt(column);
+        state.playBlueAt(column);
     }
     
     public String getPieceAt(int column, int row) {
@@ -63,16 +63,16 @@ public class Linea {
                 .orElse(emptySlot);
     }
 
-    public boolean hasWhiteWon() {
-        return gameType.anyoneWon(this, White);
+    public boolean hasRedWon() {
+        return gameType.anyoneWon(this, Red);
     }
     
-    public boolean hasBlackWon() {
-        return gameType.anyoneWon(this, Black);
+    public boolean hasBlueWon() {
+        return gameType.anyoneWon(this, Blue);
     }
     
     public boolean isAdraw() {
-        return isFull() && !hasWhiteWon() && !hasBlackWon() ;
+        return isFull() && !hasRedWon() && !hasBlueWon() ;
     }
 
     public boolean anyoneWonVertical(String piece) {
@@ -116,12 +116,12 @@ public class Linea {
         return state.isFinished();
     }
     
-    public boolean isPlayingWhite() {
-        return state.isPlayingWhite();
+    public boolean isPlayingRed() {
+        return state.isPlayingRed();
     }
     
-    public boolean isPlayingBlack() {
-        return state.isPlayingBlack();
+    public boolean isPlayingBlue() {
+        return state.isPlayingBlue();
     }
 
     public GameState getState() {

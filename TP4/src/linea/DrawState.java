@@ -5,23 +5,23 @@ public class DrawState extends GameState {
         super(currentGame);
     }
 
-    public void playWhiteAt(int columnNumber ) {
+    public void playRedAt(int columnNumber ) {
         throw new RuntimeException(Linea.canNotPlayWhenGameIsOverErrorMessage);
     }
 
-    public void playBlackAt(int columnNumber) {
+    public void playBlueAt(int columnNumber) {
         throw new RuntimeException(Linea.canNotPlayWhenGameIsOverErrorMessage);
     }
 
     public boolean isValid() {
-        return currentGame.isAdraw() && !currentGame.hasWhiteWon() && !currentGame.hasBlackWon();
+        return currentGame.isAdraw() && !currentGame.hasRedWon() && !currentGame.hasBlueWon();
     }
 
-    public boolean isPlayingWhite() {   
+    public boolean isPlayingRed() {   
         return false;
     }
 
-    public boolean isPlayingBlack() {
+    public boolean isPlayingBlue() {
         return false;
     }
 

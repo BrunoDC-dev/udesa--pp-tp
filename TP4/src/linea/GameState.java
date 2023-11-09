@@ -9,18 +9,18 @@ public abstract class GameState {
         this.currentGame = currentGame;
     }
     
-    public abstract void playWhiteAt(int columnNumber);
-    public abstract void playBlackAt(int columnNumber);
+    public abstract void playRedAt(int columnNumber);
+    public abstract void playBlueAt(int columnNumber);
     public abstract boolean isValid();
-    public abstract boolean isPlayingWhite();
-    public abstract boolean isPlayingBlack();
+    public abstract boolean isPlayingRed();
+    public abstract boolean isPlayingBlue();
     public abstract boolean isFinished();
     public abstract String show();
 
     public GameState selecState (){
         ArrayList<GameState> states = new ArrayList<GameState>(List.of(
-                new PlayingWhiteSate(currentGame), new PlayingBlackSate(currentGame),
-                new WhiteWinState(currentGame), new BlackWinState(currentGame),
+                new PlayingRedSate(currentGame), new PlayingBlueSate(currentGame),
+                new RedWinState(currentGame), new BlueWinState(currentGame),
                 new DrawState(currentGame)
         ));
                 

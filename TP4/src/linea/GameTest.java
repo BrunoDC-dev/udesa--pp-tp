@@ -29,17 +29,17 @@ public class GameTest {
     }
     
     @Test public void testGameContinueAfterWhitePlay() {
-        dashoboard.playWhiteAt(0);
+        dashoboard.playRedAt(0);
         assertGameStatus(4, 4, 'A', false, false, false, 1);
     }
     
     @Test public void testCannotPlayBlackfirst() {
-        assertThrowsLike(() -> dashoboard.playBlackAt(0), getNotBlackTurnErrorString());
+        assertThrowsLike(() -> dashoboard.playBlueAt(0), getNotBlackTurnErrorString());
     }
     
     @Test public void testWhiteCannotPlayTwoTimes() {
-        dashoboard.playWhiteAt(0);
-        assertThrowsLike(() -> dashoboard.playWhiteAt(0), getNotWhiteTurnErrorString());
+        dashoboard.playRedAt(0);
+        assertThrowsLike(() -> dashoboard.playRedAt(0), getNotWhiteTurnErrorString());
     }
 
     @Test public void testGameContinueAfterWhiteAndBlackPlay() {
@@ -127,8 +127,8 @@ public class GameTest {
         dashoboard = new Linea(1, 1, 'A');
         simulatePlaying(0);
         asserGameOverSatus(true, false, false, true);
-        assertThrowsLike(() -> dashoboard.playWhiteAt(0), getCanNotPlayWhenGameIsOverErrorString());
-        assertThrowsLike(() -> dashoboard.playBlackAt(0), getCanNotPlayWhenGameIsOverErrorString());
+        assertThrowsLike(() -> dashoboard.playRedAt(0), getCanNotPlayWhenGameIsOverErrorString());
+        assertThrowsLike(() -> dashoboard.playBlueAt(0), getCanNotPlayWhenGameIsOverErrorString());
     }
 
     public String getColumnErrorString() {
@@ -163,17 +163,17 @@ public class GameTest {
     
     private void asserGameOverSatus(boolean finished, boolean hasWhiteWon, boolean hasBlackWon, boolean isAdraw) {
         assertEquals(finished, dashoboard.finished());
-        assertEquals(hasWhiteWon, dashoboard.hasWhiteWon());
-        assertEquals(hasBlackWon, dashoboard.hasBlackWon());
+        assertEquals(hasWhiteWon, dashoboard.hasRedWon());
+        assertEquals(hasBlackWon, dashoboard.hasBlueWon());
         assertEquals(isAdraw, dashoboard.isAdraw());
     }
     
     private void simulatePlaying(int... columns) {
         for (int i = 0; i < columns.length; i++) {
             if (i % 2 == 0) {
-                dashoboard.playWhiteAt(columns[i]);
+                dashoboard.playRedAt(columns[i]);
             } else {
-                dashoboard.playBlackAt(columns[i]);
+                dashoboard.playBlueAt(columns[i]);
             }
         }
     }
