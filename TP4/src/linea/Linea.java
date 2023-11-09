@@ -4,9 +4,9 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Linea {
-    public static final String Red = "R ";
-	public static final String Blue = "B ";
-    public static String emptySlot = "  ";
+    public static final String Red = "\u001B[31m" + "()" + "\u001B[0m"; // 🔴 🔵 () >< ▶◀  ◀▶ ⛌⛊ 𝕏 
+	public static final String Blue = "\u001B[34m" + "><" + "\u001B[0m";
+    public static String emptySlot = "--";
 	
 	public static String positionIlegalErrorMessage = "Movement ilegal";
     public static String canNotPlayWhenGameIsOverErrorMessage = "Can not play when game is over";
