@@ -1,16 +1,16 @@
 package linea;
 
 public class DrawState extends GameState {
-    public DrawState(Dashboard currentGame) {
+    public DrawState(Linea currentGame) {
         super(currentGame);
     }
 
     public void playWhiteAt(int columnNumber ) {
-        throw new RuntimeException(Dashboard.canNotPlayWhenGameIsOverErrorMessage);
+        throw new RuntimeException(Linea.canNotPlayWhenGameIsOverErrorMessage);
     }
 
     public void playBlackAt(int columnNumber) {
-        throw new RuntimeException(Dashboard.canNotPlayWhenGameIsOverErrorMessage);
+        throw new RuntimeException(Linea.canNotPlayWhenGameIsOverErrorMessage);
     }
 
     public boolean isValid() {
@@ -19,7 +19,6 @@ public class DrawState extends GameState {
 
     public boolean isPlayingWhite() {   
         return false;
-     
     }
 
     public boolean isPlayingBlack() {
@@ -27,10 +26,10 @@ public class DrawState extends GameState {
     }
 
     public boolean isFinished() {
-        return false;
+        return true;
     }
     
     public String show() {
-        return "Game is a draw";
+        return "Game is a draw ";
     }
 }

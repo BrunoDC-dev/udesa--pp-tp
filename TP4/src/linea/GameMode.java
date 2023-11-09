@@ -1,31 +1,32 @@
-package linea.GameMode;
+package linea;
 
 import java.util.List;
 
-import linea.Dashboard;
-
-public abstract class Referee {
+public abstract class GameMode {
     char type;
-    public static List<Referee> referees = List.of(
-        new VerticalReferee(),
-        new AllPosibilitiesReferee(),
-        new DiagonalReferee()
+    public static List<GameMode> referees = List.of(
+        new VerticalHorizontalMode(),
+        new CombineMode(),
+        new DiagonalMode()
     );
-    public Referee(char type){
+
+    public GameMode(char type) {
         this.type = type;
     }
-    public abstract boolean anyoneWon(Dashboard dashoboard , String player);
     
+    public abstract boolean anyoneWon(Linea dashoboard , String player);
+
     public  boolean canHandle(char type){
         return this.type ==type;
     };
     
-    public static Referee getReferee(char type) {
+    public static GameMode getReferee(char type) {
         return referees.stream()
                 .filter(referee -> referee.canHandle(type))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("No referee found for type: " + type));
     }
+
     public char getType(){
         return this.type;
     }

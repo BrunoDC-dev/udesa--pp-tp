@@ -1,16 +1,16 @@
 package linea;
 
 public class BlackWinState  extends GameState{
-       public BlackWinState(Dashboard currentGame) {
+       public BlackWinState(Linea currentGame) {
         super(currentGame);
     }
 
     public void playWhiteAt(int columnNumber) {
-        throw new RuntimeException(Dashboard.canNotPlayWhenGameIsOverErrorMessage);
+        throw new RuntimeException(Linea.canNotPlayWhenGameIsOverErrorMessage);
     }
 
     public void playBlackAt(int columnNumber) {
-        throw new RuntimeException(Dashboard.canNotPlayWhenGameIsOverErrorMessage);
+        throw new RuntimeException(Linea.canNotPlayWhenGameIsOverErrorMessage);
     }
 
     public boolean isValid() {
@@ -31,6 +31,6 @@ public class BlackWinState  extends GameState{
     }
     
     public String show() {
-        return "Black wins";
+        return "  Black wins   ";
     }
 }

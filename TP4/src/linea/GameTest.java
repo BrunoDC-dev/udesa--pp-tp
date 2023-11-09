@@ -11,132 +11,147 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class GameTest {
-    private Dashboard dashoboard;
-    @BeforeEach 
-    public void setUp(){
-        dashoboard = new Dashboard(4,4,'A');
 
+    private Linea dashoboard;
+    
+    @BeforeEach 
+    public void setUp() {
+        dashoboard = new Linea(4, 4, 'A');
     }
-    @Test public void testGameIntilaziesCorrectly(){
+    
+    @Test public void testGameIntilaziesCorrectly() {
         assertGameStatus(4, 4, 'A', false, false, true, 0);
     }
-    @Test public void testGameCanitializeAnyWay(){
-        dashoboard = new Dashboard(5,5,'B');
+    
+    @Test public void testGameCanitializeAnyWay() {
+        dashoboard = new Linea(5, 5, 'B');
         assertGameStatus(5, 5, 'B', false, false, true, 0);
     }
-    @Test public void testGameContinueAfterWhitePlay(){
+    
+    @Test public void testGameContinueAfterWhitePlay() {
         dashoboard.playWhiteAt(0);
         assertGameStatus(4, 4, 'A', false, false, false, 1);
     }
-    @Test public void testCannotPlayBlackfirst(){
-        assertThrowsLike(()->dashoboard.playBlackAt(0), Dashboard.notBlackTurnErrorMessage);
+    
+    @Test public void testCannotPlayBlackfirst() {
+        assertThrowsLike(() -> dashoboard.playBlackAt(0), getNotBlackTurnErrorString());
     }
-    @Test public void testGameContinueAfterWhiteAndBlackPlay(){
-        simulatePlaying(0,0);
+    
+    @Test public void testWhiteCannotPlayTwoTimes() {
+        dashoboard.playWhiteAt(0);
+        assertThrowsLike(() -> dashoboard.playWhiteAt(0), getNotWhiteTurnErrorString());
+    }
+
+    @Test public void testGameContinueAfterWhiteAndBlackPlay() {
+        simulatePlaying(0, 0);
         assertGameStatus(4, 4, 'A', false, false, false, 2);
     }
-    @Test public void testGameContinueAfterWhiteNormalAndBlackPlayInDifferentColumns(){
-        simulatePlaying(0,1);
-         assertGameStatus(4, 4, 'A', false, false, false, 2);
-     }
-    @Test public void testGameContinueAfterWhitePlayInDifferentColumnsAndBlackNormal(){
-        simulatePlaying(1,0);
+    
+    @Test public void testGameContinueAfterWhiteNormalAndBlackPlayInDifferentColumns() {
+        simulatePlaying(0, 1);
         assertGameStatus(4, 4, 'A', false, false, false, 2);
     }
-     @Test public void testCantplayinAcolumnthatdontexist (){
-         assertThrowsLike(()->simulatePlaying(4), getColumnErrorString());
-     }
-    @Test public void testCantplayinAcolumnthatdontexist2 (){
-         assertThrowsLike(()->simulatePlaying(0,4), getColumnErrorString());
+    
+    @Test public void testGameContinueAfterWhitePlayInDifferentColumnsAndBlackNormal() {
+        simulatePlaying(1, 0);
+        assertGameStatus(4, 4, 'A', false, false, false, 2);
     }
-     @Test public void testCantplayinAcolumnthatdontexist3 (){
-         assertThrowsLike(()->simulatePlaying(-1), getColumnErrorString());
-     }
-    @Test public void testcanPlayMorethan2Times(){
-        simulatePlaying(2,1,3,3,1,2);
+    
+    @Test public void testCantplayinAcolumnthatdontexist() {
+        assertThrowsLike(() -> simulatePlaying(4), getColumnErrorString());
+    }
+    
+    @Test public void testCantplayinAcolumnthatdontexist2() {
+        assertThrowsLike(() -> simulatePlaying(0, 4), getColumnErrorString());
+    }
+    
+    @Test public void testCantplayinAcolumnthatdontexist3() {
+        assertThrowsLike(() -> simulatePlaying(-1), getColumnErrorString());
+    }
+    
+    @Test public void testcanPlayMorethan2Times() {
+        simulatePlaying(2, 1, 3, 3, 1, 2);
         assertGameStatus(4, 4, 'A', false, false, false, 6);
     }
-    @Test public void testGameIsOverWhenWhiteWins(){
-        simulatePlaying(0,1,0,1,0,1,0);
-        assertTrue(dashoboard.finished());
-        assertTrue(dashoboard.hasWhiteWon());
-        assertFalse(dashoboard.hasBlackWon());
-        System.out.println(dashoboard.show());
+    
+    @Test public void testGameIsOverWhenWhiteWins() {
+        simulatePlaying(0, 1, 0, 1, 0, 1, 0);
+        asserGameOverSatus(true, true, false, false);
     }
-    @Test public void testGamecanwinAnyoneAnywhere(){
-        simulatePlaying(0,1,0,1,0,1,3,1);
-        assertTrue(dashoboard.finished());
-        assertFalse(dashoboard.hasWhiteWon());
-        assertTrue(dashoboard.hasBlackWon());
-     }
-    @Test public void testGameCanEndHorizontally(){
-         simulatePlaying(0,0,1,1,2,2,3);
-         assertTrue(dashoboard.finished());
-         assertTrue(dashoboard.hasWhiteWon());
-            assertFalse(dashoboard.hasBlackWon());
+    
+    @Test public void testGamecanwinAnyoneAnywhere() {
+        simulatePlaying(0, 1, 0, 1, 0, 1, 3, 1);
+        asserGameOverSatus(true, false, true, false);
     }
-    @Test public void testyounotalwaysWIn (){
-        simulatePlaying(0,0,1,1,2,2);
-        assertFalse(dashoboard.finished());
-        assertFalse(dashoboard.hasWhiteWon());
-        assertFalse(dashoboard.hasBlackWon());
-     }
-    @Test public void testCantPlaceOverAfullcolumn(){
-        
-        assertThrowsLike(()->simulatePlaying(0,0,0,0,0), "No empty slots");
-    }   
-    @Test public void testCanWinDiagonal(){
-        dashoboard = new Dashboard(4, 4, 'C');
-        simulatePlaying(0,1,1,2,2,3,2,3,3,0,3);
-        System.out.println(dashoboard.show());
-        assertTrue(dashoboard.finished());
-        assertTrue(dashoboard.hasWhiteWon());
-        assertFalse(dashoboard.hasBlackWon());
-     }
+    
+    @Test public void testGameCanEndHorizontally() {
+        simulatePlaying(0, 0, 1, 1, 2, 2, 3);
+        asserGameOverSatus(true, true, false, false);
+    }
+    
+    @Test public void testyounotalwaysWIn() {
+        simulatePlaying(0, 0, 1, 1, 2, 2);
+        asserGameOverSatus(false, false, false, false);
+    }
+    
+    @Test
+    public void testCantPlaceOverAfullcolumn() {
+        assertThrowsLike(() -> simulatePlaying(0, 0, 0, 0, 0), getSlotErrorString());
+    }
+    
+    @Test public void testCanWinDiagonal() {
+        dashoboard = new Linea(4, 4, 'C');
+        simulatePlaying(0, 1, 1, 2, 2, 3, 2, 3, 3, 0, 3);
+        asserGameOverSatus(true, true, false, false);
+    }
+    
     @Test public void testYouCanLooseDiagonal (){
-        dashoboard = new Dashboard(4, 4, 'C');
-        simulatePlaying(1,0,2,2,1,2,3,3,3,3);
-        assertFalse(dashoboard.finished());
-        assertFalse(dashoboard.hasWhiteWon());
-        assertFalse(dashoboard.hasBlackWon());
-     }
-
-     @Test
-     public void testCanWinReverseDiagonal() {
-         dashoboard = new Dashboard(4, 4, 'C');
-         simulatePlaying(2, 0, 1, 3, 1, 2, 0, 1, 0, 0);
-         assertTrue(dashoboard.finished());
-         assertFalse(dashoboard.hasWhiteWon());
-         assertTrue(dashoboard.hasBlackWon());
-     }
-   
-     @Test
-     public void testCanDraw() {
-         dashoboard = new Dashboard(1, 1, 'A');
-         simulatePlaying(0);
-         assertTrue(dashoboard.finished());
-         assertFalse(dashoboard.hasWhiteWon());
-         assertFalse(dashoboard.hasBlackWon());
-         assertTrue(dashoboard.isAdraw());
-
-     }
-
-     @Test
-     public void testCantPlay() {
-            dashoboard = new Dashboard(1, 1, 'A');
-            simulatePlaying(0);
-               assertTrue(dashoboard.finished());
-         assertFalse(dashoboard.hasWhiteWon());
-         assertFalse(dashoboard.hasBlackWon());
-         assertTrue(dashoboard.isAdraw());
-            assertThrowsLike(() -> dashoboard.playWhiteAt(0), Dashboard.canNotPlayWhenGameIsOverErrorMessage);
-            assertThrowsLike(() -> dashoboard.playBlackAt(0), Dashboard.canNotPlayWhenGameIsOverErrorMessage);
-     }
-    public String getColumnErrorString() {
-        return dashoboard.columnErrorMessage;
+        dashoboard = new Linea(4, 4, 'C');
+        simulatePlaying(1, 0, 2, 2, 1, 2, 3, 3, 3, 3);
+        asserGameOverSatus(false, false,false, false);
     }
+
+    @Test public void testCanWinReverseDiagonal() {
+        dashoboard = new Linea(4, 4, 'C');
+        simulatePlaying(2, 0, 1, 3, 1, 2, 0, 1, 0, 0);
+        asserGameOverSatus(true, false, true, false);
+    }
+    
+    @Test public void testCanDraw() {
+        dashoboard = new Linea(1, 1, 'A');
+        simulatePlaying(0);
+        asserGameOverSatus(true, false, false, true);
+    }
+
+    @Test public void testCantPlay() {
+        dashoboard = new Linea(1, 1, 'A');
+        simulatePlaying(0);
+        asserGameOverSatus(true, false, false, true);
+        assertThrowsLike(() -> dashoboard.playWhiteAt(0), getCanNotPlayWhenGameIsOverErrorString());
+        assertThrowsLike(() -> dashoboard.playBlackAt(0), getCanNotPlayWhenGameIsOverErrorString());
+    }
+
+    public String getColumnErrorString() {
+        return Linea.columnErrorMessage;
+    }
+
+    public String getSlotErrorString() {
+        return Linea.slotErrorMessage;
+    }
+
+    public String getNotBlackTurnErrorString() {
+        return Linea.notBlackTurnErrorMessage;
+    }
+
+    public String getNotWhiteTurnErrorString() {
+        return Linea.notWhiteTurnErrorMessage;
+    }
+    
+    public String getCanNotPlayWhenGameIsOverErrorString() {
+        return Linea.canNotPlayWhenGameIsOverErrorMessage;
+    }
+    
     private void assertGameStatus (int height, int width, char gameMode, boolean finished, boolean isFull, boolean isEmpty, int amountOfPieces){
-      //  System.out.println("Height:"+ height + " Width:" + width + " GameMode:" + gameMode + " Finished:" + finished + " IsFull:" + isFull + " IsEmpty:" + isEmpty + " AmountOfPieces:" + amountOfPieces);
         assertEquals(height, dashoboard.getHeight());
         assertEquals(width, dashoboard.getWidth());
         assertEquals(gameMode, dashoboard.getGameMode());
@@ -145,18 +160,25 @@ public class GameTest {
         assertEquals(isEmpty, dashoboard.isEmpty());
         assertEquals(amountOfPieces, dashoboard.getAmountOfPieces());
     }
-    private void simulatePlaying (int ... columns){
-       
-         for (int i = 0; i < columns.length; i++){
-              if (i % 2 == 0){
-                dashoboard.playWhiteAt(columns[i]);
-              }else{
-                dashoboard.playBlackAt(columns[i]);
-              }
-         }
+    
+    private void asserGameOverSatus(boolean finished, boolean hasWhiteWon, boolean hasBlackWon, boolean isAdraw) {
+        assertEquals(finished, dashoboard.finished());
+        assertEquals(hasWhiteWon, dashoboard.hasWhiteWon());
+        assertEquals(hasBlackWon, dashoboard.hasBlackWon());
+        assertEquals(isAdraw, dashoboard.isAdraw());
     }
+    
+    private void simulatePlaying(int... columns) {
+        for (int i = 0; i < columns.length; i++) {
+            if (i % 2 == 0) {
+                dashoboard.playWhiteAt(columns[i]);
+            } else {
+                dashoboard.playBlackAt(columns[i]);
+            }
+        }
+    }
+    
     private void assertThrowsLike(Executable executable, String message) {
         assertEquals(message, assertThrows(Exception.class, executable).getMessage());
     }
-
 }

@@ -2,16 +2,22 @@ package linea;
 
 public class Game {
 
-  public static void main( String[] args) throws Exception {
-    System.out.println( "Dimensiones?");
-    Dashboard game = new Dashboard( promptAsInt( "Base? " ), 
+  public static void main(String[] args) throws Exception {
+    System.out.println("Dimensiones?");
+    
+    Linea game = new Linea( promptAsInt( "Base? " ), 
                             promptAsInt( "Altura? " ), 
-                            promptAsChar( "Estartegia de Juego: A, B o C? " ) );
-    System.out.println( game.show() );
-    while ( !game.finished() ) {
+                            promptAsChar("Estartegia de Juego: A, B o C? "));
+    
+    System.out.println( game.getState() );
+    System.out.println(game.show());
+    
+    while (!game.finished()) {
+    
       game.playWhiteAt( promptAsInt( "Rojas? " ) );
-      System.out.println( game.show() );
-      if ( !game.finished() ) {
+      System.out.println(game.show());
+    
+      if (!game.finished()) {
         game.playBlackAt( promptAsInt( "Azul? " ) );
         System.out.println( game.show() );
       }

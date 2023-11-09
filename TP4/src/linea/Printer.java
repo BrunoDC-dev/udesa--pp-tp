@@ -1,30 +1,20 @@
 package linea;
 
 import java.util.stream.Collectors;
-import java.util.Collections;
 import java.util.stream.IntStream;
 
-// https://www.lookuptables.com/text/extended-ascii-table
-
 public class Printer {
-    Dashboard board;
 
-    public Printer(Dashboard board) {
+    Linea board;
+
+    public Printer(Linea board) {
         this.board = board;
     }
 
     public String show() {
-
-        // ┌ ┬ ┐┾ ┿ ┽ ┼ ─ │
         String top = getLine("┌", "──", "┬", "┐");
         String horizontalLine = getLine("├", "──", "┼", "┤");
         String bottom = getLine("└", "──", "┴", "┘");
-
-        // String body = IntStream.range(0, board.getHeight())
-        //     .mapToObj(row -> IntStream.range(0, board.getWidth())
-        //         .mapToObj(column -> board.getPieceAt(column, row))
-        //         .collect(Collectors.joining("│", "│", "│\n")))
-        //     .collect(Collectors.joining());
         
         String body = IntStream.range(0, board.getHeight())
             .mapToObj(row -> IntStream.range(0, board.getWidth())
@@ -36,8 +26,10 @@ public class Printer {
             IntStream.range(1, board.getWidth()+ 1)
             .mapToObj(Integer::toString)
             .collect(Collectors.joining(" │")) + " │\n";
+        
+        String current_state = "<" + this.board.getState().show() + ">\n";
 
-        return top + body + horizontalLine + columnNumbers + bottom;
+        return top + body + horizontalLine + columnNumbers + bottom + current_state;
 
     }
 
