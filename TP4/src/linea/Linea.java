@@ -33,14 +33,14 @@ public class Linea {
     }
 
     public void addPieceAt(int column, String piece) {
-        if (columns.get(column).size() == height) {
+        if (columns.get(column-1).size() == height) {
             throw new RuntimeException(slotErrorMessage);
         }
-        columns.get(column).add(piece);
+        columns.get(column-1).add(piece);
     }
 
     public void checkItIsInBounds(int columnNumber) {
-        if (columnNumber < 0 || columnNumber >= this.width) {
+        if (columnNumber < 1 || columnNumber > this.width) {
             throw new RuntimeException(columnErrorMessage);
         }
     }
@@ -151,5 +151,5 @@ public class Linea {
     public boolean isFull(){
         return this.getAmountOfPieces() == this.width * this.height;
     }
-    
+
 }

@@ -29,108 +29,176 @@ public class GameTest {
     }
     
     @Test public void testGameContinueAfterWhitePlay() {
-        dashoboard.playRedAt(0);
+        dashoboard.playRedAt(1);
         assertGameStatus(4, 4, 'A', false, false, false, 1);
     }
     
     @Test public void testCannotPlayBlackfirst() {
-        assertThrowsLike(() -> dashoboard.playBlueAt(0), getNotBlackTurnErrorString());
+        assertThrowsLike(() -> dashoboard.playBlueAt(1), getNotBlackTurnErrorString());
     }
     
     @Test public void testWhiteCannotPlayTwoTimes() {
-        dashoboard.playRedAt(0);
-        assertThrowsLike(() -> dashoboard.playRedAt(0), getNotWhiteTurnErrorString());
+        dashoboard.playRedAt(1);
+        assertThrowsLike(() -> dashoboard.playRedAt(1), getNotWhiteTurnErrorString());
     }
 
     @Test public void testGameContinueAfterWhiteAndBlackPlay() {
-        simulatePlaying(0, 0);
+        simulatePlaying(1, 1);
         assertGameStatus(4, 4, 'A', false, false, false, 2);
     }
     
     @Test public void testGameContinueAfterWhiteNormalAndBlackPlayInDifferentColumns() {
-        simulatePlaying(0, 1);
+        simulatePlaying(1, 2);
         assertGameStatus(4, 4, 'A', false, false, false, 2);
     }
     
     @Test public void testGameContinueAfterWhitePlayInDifferentColumnsAndBlackNormal() {
-        simulatePlaying(1, 0);
+        simulatePlaying(2, 1);
         assertGameStatus(4, 4, 'A', false, false, false, 2);
     }
     
     @Test public void testCantplayinAcolumnthatdontexist() {
-        assertThrowsLike(() -> simulatePlaying(4), getColumnErrorString());
+        assertThrowsLike(() -> simulatePlaying(5), getColumnErrorString());
     }
     
     @Test public void testCantplayinAcolumnthatdontexist2() {
-        assertThrowsLike(() -> simulatePlaying(0, 4), getColumnErrorString());
+        assertThrowsLike(() -> simulatePlaying(1, 5), getColumnErrorString());
     }
     
     @Test public void testCantplayinAcolumnthatdontexist3() {
-        assertThrowsLike(() -> simulatePlaying(-1), getColumnErrorString());
+        assertThrowsLike(() -> simulatePlaying(0), getColumnErrorString());
     }
     
     @Test public void testcanPlayMorethan2Times() {
-        simulatePlaying(2, 1, 3, 3, 1, 2);
+        simulatePlaying(3, 2, 4, 4, 2, 3);
         assertGameStatus(4, 4, 'A', false, false, false, 6);
     }
     
     @Test public void testGameIsOverWhenWhiteWins() {
-        simulatePlaying(0, 1, 0, 1, 0, 1, 0);
+        simulatePlaying(1, 2, 1, 2, 1, 2, 1);
         asserGameOverSatus(true, true, false, false);
     }
     
     @Test public void testGamecanwinAnyoneAnywhere() {
-        simulatePlaying(0, 1, 0, 1, 0, 1, 3, 1);
+        simulatePlaying(1, 2, 1, 2, 1, 2, 4, 2);
         asserGameOverSatus(true, false, true, false);
     }
     
     @Test public void testGameCanEndHorizontally() {
-        simulatePlaying(0, 0, 1, 1, 2, 2, 3);
+        simulatePlaying(1, 1, 2, 2, 3, 3, 4);
         asserGameOverSatus(true, true, false, false);
     }
     
     @Test public void testyounotalwaysWIn() {
-        simulatePlaying(0, 0, 1, 1, 2, 2);
+        simulatePlaying(1, 1, 2, 2, 3, 3);
         asserGameOverSatus(false, false, false, false);
     }
     
     @Test
     public void testCantPlaceOverAfullcolumn() {
-        assertThrowsLike(() -> simulatePlaying(0, 0, 0, 0, 0), getSlotErrorString());
+        assertThrowsLike(() -> simulatePlaying(1, 1, 1, 1, 1), getSlotErrorString());
     }
     
     @Test public void testCanWinDiagonal() {
         dashoboard = new Linea(4, 4, 'C');
-        simulatePlaying(0, 1, 1, 2, 2, 3, 2, 3, 3, 0, 3);
+        simulatePlaying(1, 2, 2, 3, 3, 4, 3, 4, 4, 1, 4);
         asserGameOverSatus(true, true, false, false);
     }
     
     @Test public void testYouCanLooseDiagonal (){
         dashoboard = new Linea(4, 4, 'C');
-        simulatePlaying(1, 0, 2, 2, 1, 2, 3, 3, 3, 3);
+        simulatePlaying(2, 1, 3, 3, 2, 3, 4, 4, 4, 4);
         asserGameOverSatus(false, false,false, false);
     }
 
     @Test public void testCanWinReverseDiagonal() {
         dashoboard = new Linea(4, 4, 'C');
-        simulatePlaying(2, 0, 1, 3, 1, 2, 0, 1, 0, 0);
+        simulatePlaying(3, 1, 2, 4, 2, 3, 1, 2, 1, 1);
         asserGameOverSatus(true, false, true, false);
     }
     
     @Test public void testCanDraw() {
         dashoboard = new Linea(1, 1, 'A');
-        simulatePlaying(0);
+        simulatePlaying(1);
         asserGameOverSatus(true, false, false, true);
     }
 
     @Test public void testCantPlay() {
         dashoboard = new Linea(1, 1, 'A');
-        simulatePlaying(0);
+        simulatePlaying(1);
         asserGameOverSatus(true, false, false, true);
-        assertThrowsLike(() -> dashoboard.playRedAt(0), getCanNotPlayWhenGameIsOverErrorString());
-        assertThrowsLike(() -> dashoboard.playBlueAt(0), getCanNotPlayWhenGameIsOverErrorString());
+        assertThrowsLike(() -> dashoboard.playRedAt(1), getCanNotPlayWhenGameIsOverErrorString());
+        assertThrowsLike(() -> dashoboard.playBlueAt(1), getCanNotPlayWhenGameIsOverErrorString());
+    }
+    
+    @Test public void testPrinter() {
+        String printGame =  "┌──┬──┬──┬──┐" + "\n" +
+                            "│  │  │  │  │" + "\n" +
+                            "│  │  │  │  │" + "\n" +
+                            "│  │  │  │  │" + "\n" +
+                            "│  │  │  │  │" + "\n" +
+                            "├──┼──┼──┼──┤" + "\n" +
+                            "│1 │2 │3 │4 │" + "\n" +
+                            "└──┴──┴──┴──┘" + "\n" +
+                            "< Playing Red >" + "\n";
+        assertEquals(printGame, dashoboard.show());
+    }
+    
+    @Test public void testPrinterAfterPlaying() {
+        simulatePlaying(1);
+        String printGame =  "┌──┬──┬──┬──┐" + "\n" +
+                            "│  │  │  │  │" + "\n" +
+                            "│  │  │  │  │" + "\n" +
+                            "│  │  │  │  │" + "\n" +
+                            "│R │  │  │  │" + "\n" +
+                            "├──┼──┼──┼──┤" + "\n" +
+                            "│1 │2 │3 │4 │" + "\n" +
+                            "└──┴──┴──┴──┘" + "\n" +
+                            "< Playing Blue >" + "\n";
+        assertEquals(printGame, dashoboard.show());
+    }
+    
+    @Test public void testPrinterAfterWinnigRED() {
+        simulatePlaying(1, 2, 1, 2, 1, 2, 1);
+        String printGame =  "┌──┬──┬──┬──┐" + "\n" +
+                            "│R │  │  │  │" + "\n" +
+                            "│R │B │  │  │" + "\n" +
+                            "│R │B │  │  │" + "\n" +
+                            "│R │B │  │  │" + "\n" +
+                            "├──┼──┼──┼──┤" + "\n" +
+                            "│1 │2 │3 │4 │" + "\n" +
+                            "└──┴──┴──┴──┘" + "\n" +
+                            "<  Red wins   >" + "\n";
+        assertEquals(printGame, dashoboard.show());
+    }
+    @Test public void testPrinterAfterWinnigBlue() {
+        simulatePlaying(1, 2, 1, 2, 1, 2, 4, 2);
+        String printGame =  "┌──┬──┬──┬──┐" + "\n" +
+                            "│  │B │  │  │" + "\n" +
+                            "│R │B │  │  │" + "\n" +
+                            "│R │B │  │  │" + "\n" +
+                            "│R │B │  │R │" + "\n" +
+                            "├──┼──┼──┼──┤" + "\n" +
+                            "│1 │2 │3 │4 │" + "\n" +
+                            "└──┴──┴──┴──┘" + "\n" +
+                            "<  Blue wins   >" + "\n";
+        assertEquals(printGame, dashoboard.show());
     }
 
+    @Test public void testPrinterDraw() {
+        simulatePlaying(1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 2, 1, 4, 3);
+        String printGame =  "┌──┬──┬──┬──┐" + "\n" +
+                            "│B │R │B │R │" + "\n" +
+                            "│R │B │R │B │" + "\n" +
+                            "│R │B │R │B │" + "\n" +
+                            "│R │B │R │B │" + "\n" +
+                            "├──┼──┼──┼──┤" + "\n" +
+                            "│1 │2 │3 │4 │" + "\n" +
+                            "└──┴──┴──┴──┘" + "\n" +
+                            "<Game is a draw >" + "\n";
+        assertEquals(printGame, dashoboard.show());
+    }
+    
     public String getColumnErrorString() {
         return Linea.columnErrorMessage;
     }
