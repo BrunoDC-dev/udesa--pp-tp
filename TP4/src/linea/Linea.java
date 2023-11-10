@@ -4,28 +4,29 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Linea {
-    public static final String Red = "\u001B[31m" + "()" + "\u001B[0m"; // 🔴 🔵 () >< ▶◀  ◀▶ ⛌⛊ 𝕏 
-	public static final String Blue = "\u001B[34m" + "><" + "\u001B[0m";
+    public static String Red = "\u001B[31m" + "()" + "\u001B[0m"; // 🔴 🔵 () >< ▶◀  ◀▶ ⛌⛊ 𝕏 
+	public static String Blue = "\u001B[34m" + "><" + "\u001B[0m";
     public static String emptySlot = "--";
 	
 	public static String positionIlegalErrorMessage = "Movement ilegal";
     public static String canNotPlayWhenGameIsOverErrorMessage = "Can not play when game is over";
-	public static String notWhiteTurnErrorMessage = "Not w's turn";
-	public static String notBlackTurnErrorMessage = "Not b's turn";
+	public static String notRedsTurnErrorMessage = "Not Red's turn";
+	public static String notBlueTurnErrorMessage = "Not blue's turn";
     public static String columnErrorMessage = "No such column";
     public static String slotErrorMessage = "No empty slots";
+    public static String gameModeErrorMessage = "No such game mode";
 
     private GameState state;
     private int width;
     private int height;
-    private GameMode gameType;
+    private GameMode gameMode;
     private ArrayList<ArrayList<String>> columns = new ArrayList<ArrayList<String>>();
     private Printer printer = new Printer(this);
     
-    public Linea(int width, int height, char gameType){
+    public Linea(int width, int height, char gameMode){
         this.width = width;
         this.height = height;
-        this.gameType =  GameMode.getReferee(Character.toUpperCase(gameType));
+        this.gameMode =  GameMode.getReferee(Character.toUpperCase(gameMode));
         this.state= new PlayingRedSate(this);
         columns = IntStream.range(0, width)
         .mapToObj(column -> new ArrayList<String>()).
@@ -68,11 +69,11 @@ public class Linea {
     }
 
     public boolean hasRedWon() {
-        return gameType.anyoneWon(this, Red);
+        return gameMode.anyoneWon(this, Red);
     }
     
     public boolean hasBlueWon() {
-        return gameType.anyoneWon(this, Blue);
+        return gameMode.anyoneWon(this, Blue);
     }
     
     public boolean isAdraw() {
@@ -141,7 +142,7 @@ public class Linea {
     }
 
     public char getGameMode() {
-        return gameType.getType();
+        return gameMode.getType();
     }
 
     public int getAmountOfPieces() {

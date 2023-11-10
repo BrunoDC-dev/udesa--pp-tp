@@ -24,7 +24,7 @@ public abstract class GameMode {
         return referees.stream()
                 .filter(referee -> referee.canHandle(type))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("No referee found for type: " + type));
+                .orElseThrow(() -> new RuntimeException(Linea.gameModeErrorMessage));
     }
 
     public char getType(){

@@ -7,7 +7,7 @@ public class PlayingBlueSate extends GameState {
     }
 
     public void playRedAt() {
-        throw new RuntimeException(Linea.notWhiteTurnErrorMessage);
+        throw new RuntimeException(Linea.notRedsTurnErrorMessage);
     }
 
     public void playBlueAt() {

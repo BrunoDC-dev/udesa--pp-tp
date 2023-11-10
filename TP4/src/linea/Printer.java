@@ -24,7 +24,7 @@ public class Printer {
 
       String columnNumbers = "│" +
             IntStream.range(1, board.getWidth() + 1)
-                .mapToObj(column -> column >= 10 ?  Integer.toString(column) :  column+" ")
+                .mapToObj(column -> column >= 10 ?  Integer.toString(column) :  column + " ")
                 .collect(Collectors.joining("│")) + "│\n";
 
         String current_state = "<" + this.board.getState().show() + ">\n";
