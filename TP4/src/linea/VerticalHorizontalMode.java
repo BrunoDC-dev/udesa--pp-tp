@@ -6,8 +6,12 @@ public class VerticalHorizontalMode extends GameMode {
         super('A');
     }
     
-    public boolean anyoneWon (Linea dashoboard , String player){
+    public boolean anyoneWon(Linea dashoboard, String player) {
         return dashoboard.anyoneWonVertical(player)
-            || dashoboard.anyoneWonHorizontal(player);
+                || dashoboard.anyoneWonHorizontal(player);
+    }
+    
+    public char show() {
+        return 'A'	;
     }
 }

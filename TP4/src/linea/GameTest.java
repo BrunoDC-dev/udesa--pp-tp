@@ -196,6 +196,7 @@ public class GameTest {
                             "├──┼──┼──┼──┤" + "\n" +
                             "│1 │2 │3 │4 │" + "\n" +
                             "└──┴──┴──┴──┘" + "\n" +
+                            "GameMode: A" + "\n"+
                             "< Playing Red >" + "\n";
         assertEquals(printGame, game.show());
     }
@@ -210,6 +211,7 @@ public class GameTest {
                             "├──┼──┼──┼──┤" + "\n" +
                             "│1 │2 │3 │4 │" + "\n" +
                             "└──┴──┴──┴──┘" + "\n" +
+                            "GameMode: A" + "\n"+
                             "< Playing Blue >" + "\n";
         assertEquals(printGame, game.show());
     }
@@ -224,6 +226,7 @@ public class GameTest {
                             "├──┼──┼──┼──┤" + "\n" +
                             "│1 │2 │3 │4 │" + "\n" +
                             "└──┴──┴──┴──┘" + "\n" +
+                            "GameMode: A" + "\n"+
                             "<  Red wins   >" + "\n";
         assertEquals(printGame, game.show());
     }
@@ -237,6 +240,7 @@ public class GameTest {
                             "├──┼──┼──┼──┤" + "\n" +
                             "│1 │2 │3 │4 │" + "\n" +
                             "└──┴──┴──┴──┘" + "\n" +
+                            "GameMode: A" + "\n"+
                             "<  Blue wins   >" + "\n";
         assertEquals(printGame, game.show());
     }
@@ -251,6 +255,7 @@ public class GameTest {
                             "├──┼──┼──┼──┤" + "\n" +
                             "│1 │2 │3 │4 │" + "\n" +
                             "└──┴──┴──┴──┘" + "\n" +
+                            "GameMode: A" + "\n"+
                             "<Game is a draw >" + "\n";
         assertEquals(printGame, game.show());
     }
