@@ -14,18 +14,14 @@ public class DrawState extends GameState {
     }
 
     public boolean isValid() {
-        return currentGame.isAdraw() && !currentGame.hasRedWon() && !currentGame.hasBlueWon();
-    }
-
-    public boolean isPlayingRed() {   
-        return false;
-    }
-
-    public boolean isPlayingBlue() {
-        return false;
+        return currentGame.isFull() && !currentGame.hasRedWon() && !currentGame.hasBlueWon();
     }
 
     public boolean isFinished() {
+        return true;
+    }
+
+    public boolean isADraw() {
         return true;
     }
     

@@ -12,10 +12,14 @@ import java.util.stream.IntStream;
 public class GameTest {
 
     private Linea game;
+    private String R;
+    private String B;
     
     @BeforeEach 
     public void setUp() {
         game = new Linea(4, 4, 'A');
+        R = getRedPiece();
+        B = getBluePiece();
     }
     
     @Test public void testGameInitializesCorrectly() {
@@ -98,23 +102,19 @@ public class GameTest {
     
     @Test public void testCantPlayAfterRedWon() {
         simulatePlaying(1, 1, 2, 2, 3, 3, 4);
-        assertThrowsLike(() -> game.playRedAt(1), getCanNotPlayWhenGameIsOverErrorString());
-        assertThrowsLike(() -> game.playBlueAt(1), getCanNotPlayWhenGameIsOverErrorString());
+        assertNoOneCanPalyAfterWinnig();
         asserGameOverSatus(true, true, false, false);
     }
     
     @Test public void testCantPlayAfterBlueWon() {
         simulatePlaying(1, 2, 1, 2, 1, 2, 4, 2);
-        assertThrowsLike(() -> game.playRedAt(1), getCanNotPlayWhenGameIsOverErrorString());
-        assertThrowsLike(() -> game.playBlueAt(1), getCanNotPlayWhenGameIsOverErrorString());
+        assertNoOneCanPalyAfterWinnig();
         asserGameOverSatus(true, false, true, false);
     }
     
     @Test public void testCantDrawInDefaultGameMode() {
         simulatePlaying(1,1,1,1,2,3,2,3,2,3,3,2,4,4,4,4);
-        asserGameOverSatus(true, false, false, true);
-        assertThrowsLike(() -> game.playRedAt(1), getCanNotPlayWhenGameIsOverErrorString());
-        assertThrowsLike(() -> game.playBlueAt(1), getCanNotPlayWhenGameIsOverErrorString());
+        assertGameDrawStatus();
     }
 
     @Test public void testCantPlaceOverAfullcolumn() {
@@ -148,16 +148,13 @@ public class GameTest {
     @Test public void testCantPlayAfterWinnigGameModeB() {
         game = new linea.Linea(4, 4, 'B');
         simulatePlaying(1, 2, 2, 3, 3, 4, 3, 4, 4, 1, 4);
-        assertThrowsLike(() -> game.playRedAt(1), getCanNotPlayWhenGameIsOverErrorString());
-        assertThrowsLike(() -> game.playBlueAt(1), getCanNotPlayWhenGameIsOverErrorString());
+        assertNoOneCanPalyAfterWinnig();
     }
     
     @Test public void testCantDrawInGameModeB() {
         game = new Linea(4, 4, 'B');
         simulatePlaying(1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4);
-        asserGameOverSatus(true, false, false, true);
-        assertThrowsLike(() -> game.playRedAt(1), getCanNotPlayWhenGameIsOverErrorString());
-        assertThrowsLike(() -> game.playBlueAt(1), getCanNotPlayWhenGameIsOverErrorString());
+        assertGameDrawStatus();
     }
 
     @Test public void testCanWinVericallyGameModeC() {
@@ -187,9 +184,7 @@ public class GameTest {
     @Test public void testCanDrawInGameModeC() {
         game = new Linea(4, 4, 'C');
         simulatePlaying(1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 2, 1, 4, 3);
-        asserGameOverSatus(true, false, false, true);
-        assertThrowsLike(() -> game.playRedAt(1), getCanNotPlayWhenGameIsOverErrorString());
-        assertThrowsLike(() -> game.playBlueAt(1), getCanNotPlayWhenGameIsOverErrorString());
+        assertGameDrawStatus();
     }
     
     @Test public void testPrinter() {
@@ -207,7 +202,6 @@ public class GameTest {
     
     @Test public void testPrinterAfterPlaying() {
         simulatePlaying(1);
-        String R=getRedPiece();
         String printGame =  "┌──┬──┬──┬──┐" + "\n" +
                             "│--│--│--│--│" + "\n" +
                             "│--│--│--│--│" + "\n" +
@@ -222,8 +216,6 @@ public class GameTest {
     
     @Test public void testPrinterAfterWinnigRED() {
         simulatePlaying(1, 2, 1, 2, 1, 2, 1);
-        String R = getRedPiece();
-        String B = getBluePiece();
         String printGame =  "┌──┬──┬──┬──┐" + "\n" +
                             "│"+R+"│--│--│--│" + "\n" +
                             "│"+R+"│"+B+"│--│--│" + "\n" +
@@ -237,8 +229,6 @@ public class GameTest {
     }
     @Test public void testPrinterAfterWinnigBlue() {
         simulatePlaying(1, 2, 1, 2, 1, 2, 4, 2);
-        String R = getRedPiece();
-        String B = getBluePiece();
         String printGame =  "┌──┬──┬──┬──┐" + "\n" +
                             "│--│"+B+"│--│--│" + "\n" +
                             "│"+R+"│"+B+"│--│--│" + "\n" +
@@ -253,8 +243,6 @@ public class GameTest {
 
     @Test public void testPrinterDraw() {
         simulatePlaying(1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 2, 1, 4, 3);
-        String R = getRedPiece();
-        String B = getBluePiece();
         String printGame =  "┌──┬──┬──┬──┐" + "\n" +
                             "│"+B+"│"+R+"│"+B+"│"+R+"│" + "\n" +
                             "│"+R+"│"+B+"│"+R+"│"+B+"│" + "\n" +
@@ -310,12 +298,26 @@ public class GameTest {
     }
     
     private void asserGameOverSatus(boolean finished, boolean hasRedWon, boolean hasBlueWon, boolean isAdraw) {
+        System.out.println(game.finished());
+        System.out.println(game.redWon());
+        System.out.println(game.blueWon());
+        System.out.println(game.isAdraw());
         assertEquals(finished, game.finished());
-        assertEquals(hasRedWon, game.hasRedWon());
-        assertEquals(hasBlueWon, game.hasBlueWon());
+        assertEquals(hasRedWon, game.redWon());
+        assertEquals(hasBlueWon, game.blueWon());
         assertEquals(isAdraw, game.isAdraw());
     }
     
+    private void assertGameDrawStatus() {
+        asserGameOverSatus(true, false, false, true);
+        assertNoOneCanPalyAfterWinnig();
+    }
+
+    private void assertNoOneCanPalyAfterWinnig() {
+        assertThrowsLike(() -> game.playRedAt(1), getCanNotPlayWhenGameIsOverErrorString());
+        assertThrowsLike(() -> game.playBlueAt(1), getCanNotPlayWhenGameIsOverErrorString());
+    }  
+
     private void simulatePlaying(int... columns) {
         IntStream.range(0, columns.length)
             .forEach(i -> {

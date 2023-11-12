@@ -76,39 +76,36 @@ public class Linea {
         return gameMode.anyoneWon(this, Blue);
     }
     
-    public boolean isAdraw() {
-        return isFull() && !hasRedWon() && !hasBlueWon() ;
-    }
-
+    
     public boolean anyoneWonVertical(String piece) {
         return IntStream.range(0, this.width)
                 .anyMatch(col -> IntStream.range(0, this.height - (4 - 1))
                         .anyMatch(row -> IntStream.range(0, 4)
-                                .allMatch(k -> this.getPieceAt(col, row + k) == piece)));
-    }
-    
-    public boolean anyoneWonHorizontal(String piece) {
-        return IntStream.range(0, this.width - (4 - 1))
-                .anyMatch(col -> IntStream.range(0, this.height)
+                        .allMatch(k -> this.getPieceAt(col, row + k) == piece)));
+                    }
+                    
+                    public boolean anyoneWonHorizontal(String piece) {
+                        return IntStream.range(0, this.width - (4 - 1))
+                        .anyMatch(col -> IntStream.range(0, this.height)
                         .anyMatch(row -> IntStream.range(0, 4)
-                                .allMatch(k -> this.getPieceAt(col + k, row) == piece)));
+                        .allMatch(k -> this.getPieceAt(col + k, row) == piece)));
     }
     
     public boolean anyoneWonDiagonal(String piece) {
         boolean leftSlantDiagonal = IntStream.range(0, this.width - (4 - 1))
-                .anyMatch(col -> IntStream.range(0, this.height - (4 - 1))
-                        .anyMatch(row -> IntStream.range(0, 4)
-                                .allMatch(k -> this.getPieceAt(col + k, row + k) == piece)));
-
+        .anyMatch(col -> IntStream.range(0, this.height - (4 - 1))
+        .anyMatch(row -> IntStream.range(0, 4)
+        .allMatch(k -> this.getPieceAt(col + k, row + k) == piece)));
+        
         boolean rightSlantDiagonal = IntStream.range(0, this.width - (4 - 1))
-                .anyMatch(col -> IntStream.range(0, this.height - (4 - 1))
-                        .anyMatch(row -> IntStream.range(0, 4)
-                                .allMatch(k -> this.getPieceAt(this.width - 1 - col - k, row + k) == piece)));
-
+        .anyMatch(col -> IntStream.range(0, this.height - (4 - 1))
+        .anyMatch(row -> IntStream.range(0, 4)
+        .allMatch(k -> this.getPieceAt(this.width - 1 - col - k, row + k) == piece)));
+        
         return rightSlantDiagonal || leftSlantDiagonal;
     }
     
-            
+    
     public String show() {
         return printer.show();
     }
@@ -128,6 +125,19 @@ public class Linea {
     public boolean isPlayingBlue() {
         return state.isPlayingBlue();
     }
+    
+    public boolean redWon() {
+        return state.redWon();
+    }
+    
+    public boolean blueWon() {
+        return state.blueWon();
+    }
+    
+    public boolean isAdraw() {
+        return state.isADraw() ;
+    }
+    
 
     public GameState getState() {
         return this.state;

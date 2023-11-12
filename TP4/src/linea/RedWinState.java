@@ -17,15 +17,11 @@ public class RedWinState extends GameState {
         return currentGame.hasRedWon();
     }
 
-    public boolean isPlayingRed() {   
-        return false;
-    }
-
-    public boolean isPlayingBlue() {
-        return false;
-    }
-
     public boolean isFinished() {
+        return true;
+    }
+    
+    public boolean redWon() {
         return true;
     }
 

@@ -9,13 +9,35 @@ public abstract class GameState {
         this.currentGame = currentGame;
     }
     
+    public abstract String show();
     public abstract void playRedAt();
     public abstract void playBlueAt();
     public abstract boolean isValid();
-    public abstract boolean isPlayingRed();
-    public abstract boolean isPlayingBlue();
-    public abstract boolean isFinished();
-    public abstract String show();
+    
+    public boolean isPlayingRed() {
+        return false;
+    };
+
+    public boolean isPlayingBlue() {
+        return false;
+    };
+
+    public boolean isFinished(){
+        return false;
+    };
+    
+    public boolean isADraw(){
+        return false;
+    };
+
+    public boolean redWon(){
+        return false;
+    };
+    
+    public boolean blueWon(){
+        return false;
+    };
+
 
     public GameState selecState (){
         ArrayList<GameState> states = new ArrayList<GameState>(List.of(

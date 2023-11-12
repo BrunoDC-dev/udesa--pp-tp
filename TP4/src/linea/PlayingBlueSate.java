@@ -15,23 +15,15 @@ public class PlayingBlueSate extends GameState {
     }
 
     public boolean isValid() {
-        return !currentGame.isAdraw()
+        return !currentGame.isFull()
             && !currentGame.hasRedWon()
             && !currentGame.hasBlueWon()
             && !currentGame.isPlayingBlue()
             && currentGame.isPlayingRed();
     }
 
-    public boolean isPlayingRed() {
-        return false;
-    }
-
     public boolean isPlayingBlue() {
         return true;
-    }
-
-    public boolean isFinished() {
-        return false;
     }
 
     public String show() {
