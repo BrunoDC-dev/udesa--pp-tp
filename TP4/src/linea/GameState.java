@@ -10,8 +10,8 @@ public abstract class GameState {
     }
     
     public abstract String show();
-    public abstract void playRedAt();
-    public abstract void playBlueAt();
+    public abstract void playRedAt(int column);
+    public abstract void playBlueAt(int column);
     public abstract boolean isValid();
     
     public boolean isPlayingRed() {

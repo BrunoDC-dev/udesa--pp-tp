@@ -48,16 +48,12 @@ public class Linea {
 
     public void playRedAt(int column) {
         checkItIsInBounds(column);
-        state.playRedAt();
-        addPieceAt(column, Red);
-        modifyState(state.selecState());
+        state.playRedAt(column);
     }
     
     public void playBlueAt(int column) {
         checkItIsInBounds(column);
-        state.playBlueAt();
-        addPieceAt(column, Blue);
-        modifyState(state.selecState());
+        state.playBlueAt(column);
     }
     
     public String getPieceAt(int column, int row) {

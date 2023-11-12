@@ -6,12 +6,13 @@ public class PlayingBlueSate extends GameState {
         super(currentGame);
     }
 
-    public void playRedAt() {
+    public void playRedAt(int column) {
         throw new RuntimeException(Linea.notRedsTurnErrorMessage);
     }
 
-    public void playBlueAt() {
-        return;
+    public void playBlueAt(int column) {
+        currentGame.addPieceAt(column , Linea.Blue);
+        currentGame.modifyState(selecState());
     }
 
     public boolean isValid() {

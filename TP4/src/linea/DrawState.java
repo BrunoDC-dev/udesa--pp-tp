@@ -5,11 +5,11 @@ public class DrawState extends GameState {
         super(currentGame);
     }
 
-    public void playRedAt( ) {
+    public void playRedAt(int column ) {
         throw new RuntimeException(Linea.canNotPlayWhenGameIsOverErrorMessage);
     }
 
-    public void playBlueAt() {
+    public void playBlueAt(int column) {
         throw new RuntimeException(Linea.canNotPlayWhenGameIsOverErrorMessage);
     }
 
