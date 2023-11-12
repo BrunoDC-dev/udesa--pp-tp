@@ -8,17 +8,15 @@ public class Game {
     Linea game = new Linea( promptAsInt( "Base? " ), 
                             promptAsInt( "Altura? " ), 
                             promptAsChar("Estartegia de Juego: A, B o C? "));
-    
-    System.out.println( game.getState() );
-    System.out.println(game.show());
+        System.out.println(game.show());
     
     while (!game.finished()) {
     
-      game.playWhiteAt( promptAsInt( "Rojas? " ) );
+      game.playRedAt( promptAsInt( "Rojas? " ) );
       System.out.println(game.show());
     
       if (!game.finished()) {
-        game.playBlackAt( promptAsInt( "Azul? " ) );
+        game.playBlueAt( promptAsInt( "Azul? " ) );
         System.out.println( game.show() );
       }
     }

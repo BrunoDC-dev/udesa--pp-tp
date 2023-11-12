@@ -4,55 +4,56 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Linea {
-    public static final String White = "w ";
-	public static final String Black = "b ";
-    public static String emptySlot = "  ";
+    public static String Red = "\u001B[31m" + "()" + "\u001B[0m"; // 🔴 🔵 () >< ▶◀  ◀▶ ⛌⛊ 𝕏 
+	public static String Blue = "\u001B[34m" + "><" + "\u001B[0m";
+    public static String emptySlot = "--";
 	
 	public static String positionIlegalErrorMessage = "Movement ilegal";
     public static String canNotPlayWhenGameIsOverErrorMessage = "Can not play when game is over";
-	public static String notWhiteTurnErrorMessage = "Not w's turn";
-	public static String notBlackTurnErrorMessage = "Not b's turn";
+	public static String notRedsTurnErrorMessage = "Not Red's turn";
+	public static String notBlueTurnErrorMessage = "Not blue's turn";
     public static String columnErrorMessage = "No such column";
     public static String slotErrorMessage = "No empty slots";
+    public static String gameModeErrorMessage = "No such game mode";
 
     private GameState state;
     private int width;
     private int height;
-    private GameMode gameType;
+    private GameMode gameMode;
     private ArrayList<ArrayList<String>> columns = new ArrayList<ArrayList<String>>();
     private Printer printer = new Printer(this);
     
-    public Linea(int width, int height, char gameType){
+    public Linea(int width, int height, char gameMode){
         this.width = width;
         this.height = height;
-        this.gameType =  GameMode.getReferee(Character.toUpperCase(gameType));
-        this.state= new PlayingWhiteSate(this);
+        this.gameMode =  GameMode.getReferee(Character.toUpperCase(gameMode));
+        this.state= new PlayingRedSate(this);
         columns = IntStream.range(0, width)
         .mapToObj(column -> new ArrayList<String>()).
                         collect(Collectors.toCollection(ArrayList::new));
     }
 
     public void addPieceAt(int column, String piece) {
-        if (columns.get(column).size() == height) {
+        if (columns.get(column-1).size() == height) {
             throw new RuntimeException(slotErrorMessage);
         }
-        columns.get(column).add(piece);
+        columns.get(column-1).add(piece);
     }
 
     public void checkItIsInBounds(int columnNumber) {
-        if (columnNumber < 0 || columnNumber >= this.width) {
+        if (columnNumber < 1 || columnNumber > this.width) {
             throw new RuntimeException(columnErrorMessage);
         }
     }
 
-    public void playWhiteAt(int columnNumber) {
-        checkItIsInBounds(columnNumber);
-        state.playWhiteAt(columnNumber);
+    public void playRedAt(int column) {
+        checkItIsInBounds(column);
+        state.playRedAt(column);
     }
     
-    public void playBlackAt(int column) {
+    public void playBlueAt(int column) {
         checkItIsInBounds(column);
-        state.playBlackAt(column);
+        state.playBlueAt(column);
     }
     
     public String getPieceAt(int column, int row) {
@@ -63,47 +64,44 @@ public class Linea {
                 .orElse(emptySlot);
     }
 
-    public boolean hasWhiteWon() {
-        return gameType.anyoneWon(this, White);
+    public boolean hasRedWon() {
+        return gameMode.anyoneWon(this, Red);
     }
     
-    public boolean hasBlackWon() {
-        return gameType.anyoneWon(this, Black);
+    public boolean hasBlueWon() {
+        return gameMode.anyoneWon(this, Blue);
     }
     
-    public boolean isAdraw() {
-        return isFull() && !hasWhiteWon() && !hasBlackWon() ;
-    }
-
+    
     public boolean anyoneWonVertical(String piece) {
         return IntStream.range(0, this.width)
                 .anyMatch(col -> IntStream.range(0, this.height - (4 - 1))
                         .anyMatch(row -> IntStream.range(0, 4)
-                                .allMatch(k -> this.getPieceAt(col, row + k) == piece)));
-    }
-    
-    public boolean anyoneWonHorizontal(String piece) {
-        return IntStream.range(0, this.width - (4 - 1))
-                .anyMatch(col -> IntStream.range(0, this.height)
+                        .allMatch(k -> this.getPieceAt(col, row + k) == piece)));
+                    }
+                    
+                    public boolean anyoneWonHorizontal(String piece) {
+                        return IntStream.range(0, this.width - (4 - 1))
+                        .anyMatch(col -> IntStream.range(0, this.height)
                         .anyMatch(row -> IntStream.range(0, 4)
-                                .allMatch(k -> this.getPieceAt(col + k, row) == piece)));
+                        .allMatch(k -> this.getPieceAt(col + k, row) == piece)));
     }
     
     public boolean anyoneWonDiagonal(String piece) {
         boolean leftSlantDiagonal = IntStream.range(0, this.width - (4 - 1))
-                .anyMatch(col -> IntStream.range(0, this.height - (4 - 1))
-                        .anyMatch(row -> IntStream.range(0, 4)
-                                .allMatch(k -> this.getPieceAt(col + k, row + k) == piece)));
-
+        .anyMatch(col -> IntStream.range(0, this.height - (4 - 1))
+        .anyMatch(row -> IntStream.range(0, 4)
+        .allMatch(k -> this.getPieceAt(col + k, row + k) == piece)));
+        
         boolean rightSlantDiagonal = IntStream.range(0, this.width - (4 - 1))
-                .anyMatch(col -> IntStream.range(0, this.height - (4 - 1))
-                        .anyMatch(row -> IntStream.range(0, 4)
-                                .allMatch(k -> this.getPieceAt(this.width - 1 - col - k, row + k) == piece)));
-
+        .anyMatch(col -> IntStream.range(0, this.height - (4 - 1))
+        .anyMatch(row -> IntStream.range(0, 4)
+        .allMatch(k -> this.getPieceAt(this.width - 1 - col - k, row + k) == piece)));
+        
         return rightSlantDiagonal || leftSlantDiagonal;
     }
     
-            
+    
     public String show() {
         return printer.show();
     }
@@ -116,13 +114,26 @@ public class Linea {
         return state.isFinished();
     }
     
-    public boolean isPlayingWhite() {
-        return state.isPlayingWhite();
+    public boolean isPlayingRed() {
+        return state.isPlayingRed();
     }
     
-    public boolean isPlayingBlack() {
-        return state.isPlayingBlack();
+    public boolean isPlayingBlue() {
+        return state.isPlayingBlue();
     }
+    
+    public boolean redWon() {
+        return state.redWon();
+    }
+    
+    public boolean blueWon() {
+        return state.blueWon();
+    }
+    
+    public boolean isAdraw() {
+        return state.isADraw() ;
+    }
+    
 
     public GameState getState() {
         return this.state;
@@ -137,7 +148,7 @@ public class Linea {
     }
 
     public char getGameMode() {
-        return gameType.getType();
+        return gameMode.getType();
     }
 
     public int getAmountOfPieces() {
@@ -151,5 +162,5 @@ public class Linea {
     public boolean isFull(){
         return this.getAmountOfPieces() == this.width * this.height;
     }
-    
+
 }

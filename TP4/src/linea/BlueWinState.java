@@ -1,11 +1,11 @@
 package linea;
 
-public class DrawState extends GameState {
-    public DrawState(Linea currentGame) {
+public class BlueWinState  extends GameState{
+       public BlueWinState(Linea currentGame) {
         super(currentGame);
     }
 
-    public void playRedAt(int column ) {
+    public void playRedAt(int column) {
         throw new RuntimeException(Linea.canNotPlayWhenGameIsOverErrorMessage);
     }
 
@@ -14,18 +14,18 @@ public class DrawState extends GameState {
     }
 
     public boolean isValid() {
-        return currentGame.isFull() && !currentGame.hasRedWon() && !currentGame.hasBlueWon();
+        return currentGame.hasBlueWon();
     }
 
     public boolean isFinished() {
         return true;
     }
-
-    public boolean isADraw() {
+    
+    public boolean blueWon() {
         return true;
     }
-    
+
     public String show() {
-        return "Game is a draw ";
+        return "  Blue wins   ";
     }
 }
