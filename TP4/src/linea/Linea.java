@@ -148,7 +148,7 @@ public class Linea {
     }
 
     public char getGameMode() {
-        return gameMode.getType();
+        return gameMode.show();
     }
 
     public int getAmountOfPieces() {

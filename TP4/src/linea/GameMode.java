@@ -14,7 +14,9 @@ public abstract class GameMode {
         this.type = type;
     }
     
-    public abstract boolean anyoneWon(Linea dashoboard , String player);
+    public abstract boolean anyoneWon(Linea dashoboard, String player);
+
+    public abstract char show();
 
     public  boolean canHandle(char type){
         return this.type ==type;

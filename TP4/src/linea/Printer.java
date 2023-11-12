@@ -22,14 +22,15 @@ public class Printer {
                 .collect(Collectors.joining("│", "│", "│\n")))
             .collect(Collectors.joining());
 
-      String columnNumbers = "│" +
+        String columnNumbers = "│" +
             IntStream.range(1, board.getWidth() + 1)
                 .mapToObj(column -> column >= 10 ?  Integer.toString(column) :  column + " ")
                 .collect(Collectors.joining("│")) + "│\n";
 
+        String gameMode = "GameMode: " + this.board.getGameMode() + "\n";
         String current_state = "<" + this.board.getState().show() + ">\n";
 
-        return top + body + horizontalLine + columnNumbers + bottom + current_state;
+        return top + body + horizontalLine + columnNumbers + bottom +gameMode + current_state;
 
     }
 
