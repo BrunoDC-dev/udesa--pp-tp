@@ -14,32 +14,32 @@ public class GameTest {
     private Linea game;
     private String R;
     private String B;
-    
-    @BeforeEach 
+
+    @BeforeEach
     public void setUp() {
         game = new Linea(4, 4, 'A');
         R = getRedPiece();
         B = getBluePiece();
     }
-    
+
     @Test public void testGameInitializesCorrectly() {
         assertGameStatus(4, 4, 'A', false, false, true, 0);
     }
-    
+
     @Test public void testGameInitializesWithAnySizeAndGameMode () {
         game = new Linea(5, 5, 'B');
         assertGameStatus(5, 5, 'B', false, false, true, 0);
     }
-    
+
     @Test public void testGameContinuesAfterRedPlay() {
         game.playRedAt(1);
         assertGameStatus(4, 4, 'A', false, false, false, 1);
     }
-    
+
     @Test public void testCannotPlayBlueFirst() {
         assertThrowsLike(() -> game.playBlueAt(1), getNotBlueTurnErrorString());
     }
-    
+
     @Test public void testRedCannotPlayTwoTimes() {
         game.playRedAt(1);
         assertThrowsLike(() -> game.playRedAt(1), getNotRedsTurnErrorString());
@@ -49,69 +49,69 @@ public class GameTest {
         simulatePlaying(1, 1);
         assertGameStatus(4, 4, 'A', false, false, false, 2);
     }
-    
+
     @Test public void testGameContinueAfterRedNormalAndBluePlayInDifferentColumns() {
         simulatePlaying(1, 2);
         assertGameStatus(4, 4, 'A', false, false, false, 2);
     }
-    
+
     @Test public void testGameContinueAfterRedPlayInDifferentColumnsAndBluekNormal() {
         simulatePlaying(2, 1);
         assertGameStatus(4, 4, 'A', false, false, false, 2);
     }
-    
+
     @Test public void testCantPlayInColumnThatDontExist() {
         assertThrowsLike(() -> simulatePlaying(5), getColumnErrorString());
     }
-    
+
     @Test public void testCantPlayInColumnThatDontExist2() {
         assertThrowsLike(() -> simulatePlaying(1, 5), getColumnErrorString());
     }
-    
+
     @Test public void testCantPlayInColumnThatDontExist3() {
         assertThrowsLike(() -> simulatePlaying(0), getColumnErrorString());
     }
     @Test public void testCantPlayGameWithWrongGameMode() {
         assertThrowsLike(() ->new Linea(4,4,'z'), getGameModeErrorMessage());
     }
-    
+
     @Test public void testRedCanWinVertical() {
         simulatePlaying(1, 2, 1, 2, 1, 2, 1);
         asserGameOverSatus(true, true, false, false);
     }
-    
+
     @Test public void testBlueCanWinVertical() {
         simulatePlaying(1, 2, 1, 2, 1, 2, 4, 2);
         asserGameOverSatus(true, false, true, false);
     }
-    
+
     @Test public void testRedCanWinHorizontally() {
         simulatePlaying(1, 1, 2, 2, 3, 3, 4);
         asserGameOverSatus(true, true, false, false);
     }
-    
+
     @Test public void testBlueCanWinHorizontally() {
         simulatePlaying(1, 1, 2, 2, 3, 3, 1, 4, 1, 4);
         asserGameOverSatus(true, false, true, false);
     }
-    
+
     @Test public void testCantWinDiagonalInDefaultGameMode() {
         simulatePlaying(1, 2, 2, 3, 3, 4, 3, 4, 4, 1, 4);
         asserGameOverSatus(false, false, false, false);
     }
-    
+
     @Test public void testCantPlayAfterRedWon() {
         simulatePlaying(1, 1, 2, 2, 3, 3, 4);
-        assertNoOneCanPalyAfterWinnig();
+        assertNoOneCanPalyAfterWinning();
         asserGameOverSatus(true, true, false, false);
     }
-    
+
     @Test public void testCantPlayAfterBlueWon() {
         simulatePlaying(1, 2, 1, 2, 1, 2, 4, 2);
-        assertNoOneCanPalyAfterWinnig();
+        assertNoOneCanPalyAfterWinning();
         asserGameOverSatus(true, false, true, false);
     }
-    
+
     @Test public void testCantDrawInDefaultGameMode() {
         simulatePlaying(1,1,1,1,2,3,2,3,2,3,3,2,4,4,4,4);
         assertGameDrawStatus();
@@ -120,13 +120,13 @@ public class GameTest {
     @Test public void testCantPlaceOverAfullcolumn() {
         assertThrowsLike(() -> simulatePlaying(1, 1, 1, 1, 1), getSlotErrorString());
     }
-    
+
     @Test public void testRedWinDiagonalGameModeB() {
         game = new Linea(4, 4, 'B');
         simulatePlaying(1, 2, 2, 3, 3, 4, 3, 4, 4, 1, 4);
         asserGameOverSatus(true, true, false, false);
     }
-    
+
     @Test public void testBlueWinDiagonalGameModeB() {
         game = new Linea(4, 4, 'B');
         simulatePlaying(2,4,1,1,3,3,2,2,1,1);
@@ -138,19 +138,19 @@ public class GameTest {
         simulatePlaying(1, 1, 2, 2, 3, 3, 4, 4);
         asserGameOverSatus(false, false, false, false);
     }
-    
+
     @Test public void testYouCantWinVerticallyInGameModeB() {
         game = new Linea(4, 4, 'B');
         simulatePlaying(1, 2, 1, 2, 1, 2, 1, 2);
         asserGameOverSatus(false, false, false, false);
     }
-    
+
     @Test public void testCantPlayAfterWinnigGameModeB() {
         game = new linea.Linea(4, 4, 'B');
         simulatePlaying(1, 2, 2, 3, 3, 4, 3, 4, 4, 1, 4);
-        assertNoOneCanPalyAfterWinnig();
+        assertNoOneCanPalyAfterWinning();
     }
-    
+
     @Test public void testCantDrawInGameModeB() {
         game = new Linea(4, 4, 'B');
         simulatePlaying(1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4);
@@ -162,13 +162,13 @@ public class GameTest {
         simulatePlaying(1, 2, 1, 2, 1, 2, 1);
         asserGameOverSatus(true, true, false, false);
     }
-    
+
     @Test public void testCanWinHorizontallyGameModeC() {
         game = new Linea(4, 4, 'C');
         simulatePlaying(1, 1, 2, 2, 3, 3, 1, 4, 2, 4);
         asserGameOverSatus(true, false, true, false);
     }
-    
+
     @Test public void testCanWinDiagonalGameModeC() {
         game = new Linea(4, 4, 'C');
         simulatePlaying(1, 2, 2, 3, 3, 4, 3, 4, 4, 1, 4);
@@ -180,13 +180,13 @@ public class GameTest {
         simulatePlaying(2, 4, 1, 1, 3, 3, 2, 2, 1, 1);
         asserGameOverSatus(true, false, true, false);
     }
-    
+
     @Test public void testCanDrawInGameModeC() {
         game = new Linea(4, 4, 'C');
         simulatePlaying(1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 2, 1, 4, 3);
         assertGameDrawStatus();
     }
-    
+
     @Test public void testPrinter() {
         String printGame =  "┌──┬──┬──┬──┐" + "\n" +
                             "│--│--│--│--│" + "\n" +
@@ -200,7 +200,7 @@ public class GameTest {
                             "< Playing Red >" + "\n";
         assertEquals(printGame, game.show());
     }
-    
+
     @Test public void testPrinterAfterPlaying() {
         simulatePlaying(1);
         String printGame =  "┌──┬──┬──┬──┐" + "\n" +
@@ -215,7 +215,7 @@ public class GameTest {
                             "< Playing Blue >" + "\n";
         assertEquals(printGame, game.show());
     }
-    
+
     @Test public void testPrinterAfterWinnigRED() {
         simulatePlaying(1, 2, 1, 2, 1, 2, 1);
         String printGame =  "┌──┬──┬──┬──┐" + "\n" +
@@ -259,7 +259,7 @@ public class GameTest {
                             "<Game is a draw >" + "\n";
         assertEquals(printGame, game.show());
     }
-    
+
     public String getRedPiece() {
         return Linea.Red;
     }
@@ -287,11 +287,11 @@ public class GameTest {
     public String getNotRedsTurnErrorString() {
         return Linea.notRedsTurnErrorMessage;
     }
-    
+
     public String getCanNotPlayWhenGameIsOverErrorString() {
         return Linea.canNotPlayWhenGameIsOverErrorMessage;
     }
-    
+
     private void assertGameStatus (int height, int width, char gameMode, boolean finished, boolean isFull, boolean isEmpty, int amountOfPieces){
         assertEquals(height, game.getHeight());
         assertEquals(width, game.getWidth());
@@ -301,7 +301,7 @@ public class GameTest {
         assertEquals(isEmpty, game.isEmpty());
         assertEquals(amountOfPieces, game.getAmountOfPieces());
     }
-    
+
     private void asserGameOverSatus(boolean finished, boolean hasRedWon, boolean hasBlueWon, boolean isAdraw) {
         System.out.println(game.finished());
         System.out.println(game.redWon());
@@ -312,16 +312,16 @@ public class GameTest {
         assertEquals(hasBlueWon, game.blueWon());
         assertEquals(isAdraw, game.isAdraw());
     }
-    
+
     private void assertGameDrawStatus() {
         asserGameOverSatus(true, false, false, true);
-        assertNoOneCanPalyAfterWinnig();
+        assertNoOneCanPalyAfterWinning();
     }
 
-    private void assertNoOneCanPalyAfterWinnig() {
+    private void assertNoOneCanPalyAfterWinning() {
         assertThrowsLike(() -> game.playRedAt(1), getCanNotPlayWhenGameIsOverErrorString());
         assertThrowsLike(() -> game.playBlueAt(1), getCanNotPlayWhenGameIsOverErrorString());
-    }  
+    }
 
     private void simulatePlaying(int... columns) {
         IntStream.range(0, columns.length)
@@ -333,7 +333,7 @@ public class GameTest {
                 }
             });
     }
-    
+
     private void assertThrowsLike(Executable executable, String message) {
         assertEquals(message, assertThrows(Exception.class, executable).getMessage());
     }

@@ -1,7 +1,7 @@
 package linea;
 
 public class BlueWinState  extends GameState{
-       public BlueWinState(Linea currentGame) {
+    public BlueWinState(Linea currentGame) {
         super(currentGame);
     }
 
@@ -20,7 +20,7 @@ public class BlueWinState  extends GameState{
     public boolean isFinished() {
         return true;
     }
-    
+
     public boolean blueWon() {
         return true;
     }
